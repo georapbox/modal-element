@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>&lt;modal-element&gt;</title>
+  <meta name="description" content="A custom element to create a modal dialog, using the native dialog element.">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="stylesheet" href="css/water.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body class="no-js">
+  <script>document.body.classList.remove('no-js');</script>
+
+  <h1>&lt;modal-element&gt;</h1>
+
+  <p>A custom element to create a modal dialog, using the native <a href="https://developer.mozilla.org/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener noopener">&lt;dialog&gt;</a> element.</p>
+
+  <h2>Demo</h2>
+
+  <button id="open-modal-1">Open modal</button>
+
+  <modal-element id="modal-1" open static-backdrop>
+    <h2 slot="header">Modal title</h2>
+
+    <div slot="body">
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officia suscipit, dignissimos, quod corporis debitis fuga nemo quia temporibus quasi expedita, aperiam accusamus?</p>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium eos, sunt, quas necessitatibus explicabo aliquam saepe unde voluptate vero sit, soluta totam voluptas earum? Minima nesciunt qui asperiores consequatur nobis.</p>
+    </div>
+  </modal-element>
+
+  <h2>Source</h2>
+  <p>Source code and documentation can be found in <a href="https://github.com/georapbox/modal-element" target="_blank" rel="noreferrer noopener">Github repository</a>.</p>
+
+  <h2>License</h2>
+  <p>Licensed under the <a href="https://georapbox.mit-license.org/@2023" target="_blank" rel="noreferrer noopener">The MIT License (MIT)</a></p>
+</body>
+</html>

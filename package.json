@@ -1,0 +1,81 @@
+{
+  "name": "@georapbox/modal-element",
+  "version": "1.0.0",
+  "description": "A custom element to create a modal dialog, using the native dialog element.",
+  "main": "dist/modal-element.js",
+  "module": "dist/modal-element.js",
+  "unpkg": "dist/modal-element.js",
+  "type": "module",
+  "targets": {
+    "modal-element": {
+      "context": "browser",
+      "outputFormat": "esmodule",
+      "source": "src/modal-element.js",
+      "optimize": true,
+      "isLibrary": true,
+      "distDir": "dist",
+      "engines": {
+        "browsers": "> 0.5%, last 2 versions, not dead"
+      }
+    },
+    "modal-element-defined": {
+      "context": "browser",
+      "outputFormat": "esmodule",
+      "source": "src/modal-element-defined.js",
+      "optimize": true,
+      "isLibrary": true,
+      "distDir": "dist",
+      "engines": {
+        "browsers": "> 0.5%, last 2 versions, not dead"
+      }
+    }
+  },
+  "files": [
+    "/src",
+    "/dist"
+  ],
+  "scripts": {
+    "lint": "eslint . --ext .js",
+    "test": "web-test-runner",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "npm run test -- --coverage",
+    "dev:parcel": "parcel watch",
+    "dev": "npm-run-all clean dev:parcel",
+    "build:parcel": "parcel build",
+    "build": "npm-run-all clean build:parcel",
+    "clean": "rimraf dist .parcel-cache",
+    "prepare": "npm-run-all clean lint test build"
+  },
+  "keywords": [
+    "custom element",
+    "web component",
+    "modal",
+    "dialog"
+  ],
+  "author": {
+    "name": "George Raptis",
+    "email": "georapbox@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georapbox/modal-element.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/georapbox/modal-element/issues"
+  },
+  "homepage": "https://github.com/georapbox/modal-element#readme",
+  "devDependencies": {
+    "@esm-bundle/chai": "~4.3.4-fix.0",
+    "@open-wc/testing": "~3.2.0",
+    "@web/test-runner": "~0.17.2",
+    "@web/test-runner-commands": "~0.8.1",
+    "@web/test-runner-playwright": "~0.10.1",
+    "eslint": "~8.52.0",
+    "eslint-plugin-wc": "~2.0.4",
+    "npm-run-all": "~4.1.5",
+    "parcel": "~2.10.0",
+    "rimraf": "~5.0.5",
+    "sinon": "~17.0.0"
+  }
+}

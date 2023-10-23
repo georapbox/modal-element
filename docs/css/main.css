@@ -1,0 +1,24 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+
+}
+
+modal-element [slot="header"] {
+  margin: 0;
+  font-weight: normal;
+  font-size: 1.25rem;
+}
+
+modal-element [slot="body"] p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+modal-element [slot="body"] p:last-child {
+  margin-bottom: 0;
+}
