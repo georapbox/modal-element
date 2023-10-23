@@ -1,5 +1,4 @@
 const COMPONENT_NAME = 'modal-element';
-const MODAL_STATIC_ANIMATION_DURATION = 300;
 const template = document.createElement('template');
 
 template.innerHTML = /* html */`
@@ -74,12 +73,6 @@ template.innerHTML = /* html */`
           opacity: 0;
         }
       }
-
-      .modal--static:not(.modal--no-animations) {
-        animation-name: modal-static;
-        animation-duration: ${MODAL_STATIC_ANIMATION_DURATION}ms;
-        animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
-      }
     }
 
     @keyframes modal-static {
@@ -137,6 +130,10 @@ template.innerHTML = /* html */`
       cursor: pointer;
     }
 
+    .modal__close:disabled {
+      cursor: not-allowed;
+    }
+
     /* Utils */
     .visually-hidden {
       position: absolute !important;
@@ -158,12 +155,12 @@ template.innerHTML = /* html */`
 
         <form method="dialog">
           <button type="submit" part="modal-close" class="modal__close">
-            <slot name="close-icon">
-              <svg part="modal-close-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <slot name="modal-close">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
               </svg>
+              <span class="visually-hidden">Close</span>
             </slot>
-            <span class="visually-hidden">Close</span>
           </button>
         </form>
       </header>
@@ -195,7 +192,7 @@ class ModalElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['open', 'no-header', 'no-animations'];
+    return ['open', 'no-header', 'no-animations', 'no-closable'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -214,6 +211,14 @@ class ModalElement extends HTMLElement {
     if (name === 'no-animations' && oldValue !== newValue) {
       this.#dialogEl?.classList.toggle('modal--no-animations', this.noAnimations);
     }
+
+    if (name === 'no-closable' && oldValue !== newValue) {
+      const closeBtnEl = this.#dialogEl?.querySelector('.modal__close');
+
+      if (closeBtnEl) {
+        closeBtnEl.disabled = this.noClosable;
+      }
+    }
   }
 
   connectedCallback() {
@@ -221,9 +226,11 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('staticBackDrop');
     this.#upgradeProperty('noHeader');
     this.#upgradeProperty('noAnimations');
+    this.#upgradeProperty('noClosable');
 
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
+    this.#dialogEl?.addEventListener('cancel', this.#handleDialogCancel);
     this.#footerSlotEl?.addEventListener('slotchange', this.#handleFooterSlotChange);
   }
 
@@ -231,6 +238,7 @@ class ModalElement extends HTMLElement {
     this.#modalStaticAnimationTimeout && clearTimeout(this.#modalStaticAnimationTimeout);
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.removeEventListener('close', this.#handleDialogClose);
+    this.#dialogEl?.removeEventListener('cancel', this.#handleDialogCancel);
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
   }
 
@@ -282,6 +290,18 @@ class ModalElement extends HTMLElement {
     }
   }
 
+  get noClosable() {
+    return this.hasAttribute('no-closable');
+  }
+
+  set noClosable(value) {
+    if (value) {
+      this.setAttribute('no-closable', '');
+    } else {
+      this.removeAttribute('no-closable');
+    }
+  }
+
   async #openDialog() {
     this.#dialogEl.showModal();
     document.body.style.overflowY = 'hidden';
@@ -289,9 +309,7 @@ class ModalElement extends HTMLElement {
     this.dispatchEvent(new CustomEvent(`${COMPONENT_NAME}-open`, {
       bubbles: true,
       composed: true,
-      detail: {
-        dialog: this.#dialogEl
-      }
+      detail: { modal: this }
     }));
   }
 
@@ -310,28 +328,18 @@ class ModalElement extends HTMLElement {
     this.dispatchEvent(new CustomEvent(`${COMPONENT_NAME}-close`, {
       bubbles: true,
       composed: true,
-      detail: {
-        dialog: this.#dialogEl
-      }
+      detail: { modal: this }
     }));
   };
 
-  #handleDialogClick = evt => {
-    if (evt.target === evt.currentTarget && this.staticBackDrop) {
-      if (this.#modalStaticAnimationTimeout) {
-        return;
-      }
-
-      this.#dialogEl.classList.add('modal--static');
-
-      this.#modalStaticAnimationTimeout = setTimeout(() => {
-        this.#dialogEl.classList.remove('modal--static');
-        clearTimeout(this.#modalStaticAnimationTimeout);
-        this.#modalStaticAnimationTimeout = null;
-      }, MODAL_STATIC_ANIMATION_DURATION);
+  #handleDialogCancel = evt => {
+    if (this.noClosable) {
+      evt.preventDefault();
     }
+  };
 
-    if (evt.target === evt.currentTarget && !this.staticBackDrop) {
+  #handleDialogClick = evt => {
+    if (evt.target === evt.currentTarget && !this.staticBackDrop && !this.noClosable) {
       this.#closeDialog();
     }
   };
