@@ -1,4 +1,5 @@
 const COMPONENT_NAME = 'modal-element';
+const MODAL_STATIC_ANIMATION_DURATION = 300;
 const template = document.createElement('template');
 
 template.innerHTML = /* html */`
@@ -73,12 +74,18 @@ template.innerHTML = /* html */`
           opacity: 0;
         }
       }
-    }
 
-    @keyframes modal-static {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.01); }
-      100% { transform: scale(1); }
+      .modal--static-backdrop:not(.modal--no-animations) {
+        animation-name: modal-static;
+        animation-duration: ${MODAL_STATIC_ANIMATION_DURATION}ms;
+        animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
+      }
+
+      @keyframes modal-static {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.01); }
+        100% { transform: scale(1); }
+      }
     }
 
     /* Modal content */
@@ -318,10 +325,6 @@ class ModalElement extends HTMLElement {
   }
 
   #handleDialogClose = () => {
-    if (!this.open) {
-      return;
-    }
-
     this.open = false;
     document.body.style.overflowY = null;
 
@@ -339,6 +342,25 @@ class ModalElement extends HTMLElement {
   };
 
   #handleDialogClick = evt => {
+    if (
+      evt.target === evt.currentTarget
+      && this.staticBackDrop
+      && !this.noAnimations
+      || this.noClosable
+    ) {
+      if (this.#modalStaticAnimationTimeout) {
+        return;
+      }
+
+      this.#dialogEl.classList.add('modal--static-backdrop');
+
+      this.#modalStaticAnimationTimeout = setTimeout(() => {
+        this.#dialogEl.classList.remove('modal--static-backdrop');
+        clearTimeout(this.#modalStaticAnimationTimeout);
+        this.#modalStaticAnimationTimeout = null;
+      }, MODAL_STATIC_ANIMATION_DURATION);
+    }
+
     if (evt.target === evt.currentTarget && !this.staticBackDrop && !this.noClosable) {
       this.#closeDialog();
     }
