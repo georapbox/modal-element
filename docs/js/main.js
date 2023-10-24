@@ -1,20 +1,44 @@
 const isLocalhost = window.location.href.includes('127.0.0.1') || window.location.href.includes('localhost');
-const componentUrl = isLocalhost ? '../../dist/modal-element-defined.js' : '../lib/modal-element-defined.js';
+const componentUrl = isLocalhost ? '../../dist/modal-element.js' : '../lib/modal-element.js';
 
-import(componentUrl).then(() => {
-  const openModal1 = document.getElementById('open-modal-1');
-  const modal1 = document.getElementById('modal-1');
+import(componentUrl).then(module => {
+  module.ModalElement.defineCustomElement();
 
-  openModal1.addEventListener('click', () => {
-    modal1.open = true;
+  document.querySelectorAll('[data-open^="modal"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modal = document.getElementById(btn.dataset.open);
+
+      if (modal) {
+        modal.open = true;
+      }
+    });
   });
 
   const handleEvents = evt => {
     console.log(`${evt.type} =>`, evt.detail);
   };
 
-  modal1.addEventListener('modal-element-open', handleEvents);
-  modal1.addEventListener('modal-element-close', handleEvents);
+  document.addEventListener('modal-element-open', handleEvents);
+  document.addEventListener('modal-element-close', handleEvents);
+
+  const userForm = document.getElementById('user-form');
+
+  userForm.addEventListener('submit', evt => {
+    evt.preventDefault();
+
+    const modal = userForm.closest('modal-element');
+    const submitButton = modal.querySelector('button[type="submit"]');
+
+    modal.setAttribute('no-closable', '');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+
+    setTimeout(() => {
+      modal.removeAttribute('no-closable');
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit';
+    }, 2000);
+  });
 }).catch(err => {
   console.error(err);
 });

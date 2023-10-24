@@ -59,7 +59,7 @@ template.innerHTML = /* html */`
 
       /* EXIT STATE */
       .modal {
-        transform: scale(0.9);
+        transform: scale(0.95);
         opacity: 0;
       }
 
@@ -123,7 +123,7 @@ template.innerHTML = /* html */`
       padding: var(--footer-spacing);
     }
 
-    .modal__close {
+    .modal__dismiss {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -133,11 +133,11 @@ template.innerHTML = /* html */`
       background-color: transparent;
     }
 
-    .modal__close:not(:disabled) {
+    .modal__dismiss:not(:disabled) {
       cursor: pointer;
     }
 
-    .modal__close:disabled {
+    .modal__dismiss:disabled {
       cursor: not-allowed;
     }
 
@@ -155,14 +155,14 @@ template.innerHTML = /* html */`
     }
   </style>
 
-  <dialog part="modal" class="modal">
+  <dialog part="dialog" class="modal">
     <div part="content" class="modal__content">
       <header part="header" class="modal__header">
         <slot name="header" class="modal__title"></slot>
 
         <form method="dialog">
-          <button type="submit" part="modal-close" class="modal__close">
-            <slot name="modal-close">
+          <button type="submit" part="dismiss" class="modal__dismiss">
+            <slot name="dismiss">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
               </svg>
@@ -220,7 +220,7 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-closable' && oldValue !== newValue) {
-      const closeBtnEl = this.#dialogEl?.querySelector('.modal__close');
+      const closeBtnEl = this.#dialogEl?.querySelector('.modal__dismiss');
 
       if (closeBtnEl) {
         closeBtnEl.disabled = this.noClosable;
@@ -310,7 +310,7 @@ class ModalElement extends HTMLElement {
   }
 
   async #openDialog() {
-    this.#dialogEl.showModal();
+    this.#dialogEl?.showModal();
     document.body.style.overflowY = 'hidden';
 
     this.dispatchEvent(new CustomEvent(`${COMPONENT_NAME}-open`, {
@@ -321,7 +321,7 @@ class ModalElement extends HTMLElement {
   }
 
   #closeDialog() {
-    this.#dialogEl.close();
+    this.#dialogEl?.close();
   }
 
   #handleDialogClose = () => {
@@ -352,10 +352,10 @@ class ModalElement extends HTMLElement {
         return;
       }
 
-      this.#dialogEl.classList.add('modal--static-backdrop');
+      this.#dialogEl?.classList.add('modal--static-backdrop');
 
       this.#modalStaticAnimationTimeout = setTimeout(() => {
-        this.#dialogEl.classList.remove('modal--static-backdrop');
+        this.#dialogEl?.classList.remove('modal--static-backdrop');
         clearTimeout(this.#modalStaticAnimationTimeout);
         this.#modalStaticAnimationTimeout = null;
       }, MODAL_STATIC_ANIMATION_DURATION);

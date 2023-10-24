@@ -8,9 +8,12 @@
   <title>&lt;modal-element&gt;</title>
   <meta name="description" content="A custom element to create a modal dialog, using the native dialog element.">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="stylesheet" href="lib/highlight/highlight-github-dark.min.css">
   <link rel="stylesheet" href="css/water.css">
   <link rel="stylesheet" href="css/main.css">
   <script type="module" src="js/main.js"></script>
+  <script src="lib/highlight/highlight.min.js" defer></script>
+  <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
 </head>
 <body class="no-js">
   <script>document.body.classList.remove('no-js');</script>
@@ -19,18 +22,310 @@
 
   <p>A custom element to create a modal dialog, using the native <a href="https://developer.mozilla.org/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener noopener">&lt;dialog&gt;</a> element.</p>
 
-  <h2>Demo</h2>
+  <h2>Examples</h2>
 
-  <button id="open-modal-1">Open modal</button>
+  <h3>Default configuration</h3>
+  <p>
+    This is a modal with the default configurations.
+    It will close by clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key.
+  </p>
 
-  <modal-element id="modal-1" open static-backdrop>
-    <h2 slot="header">Modal title</h2>
+  <div class="card">
+    <button type="button" data-open="modal-1">Open Modal</button>
 
-    <div slot="body">
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officia suscipit, dignissimos, quod corporis debitis fuga nemo quia temporibus quasi expedita, aperiam accusamus?</p>
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium eos, sunt, quas necessitatibus explicabo aliquam saepe unde voluptate vero sit, soluta totam voluptas earum? Minima nesciunt qui asperiores consequatur nobis.</p>
-    </div>
-  </modal-element>
+    <modal-element id="modal-1">
+      <h2 slot="header">Modal title</h2>
+      <div slot="body">This is a modal with the default configuration.</div>
+      <div slot="footer">
+        <small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.
+      </div>
+    </modal-element>
+
+  <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;div slot="body"&gt;This is a modal with the default configuration.&lt;/div&gt;
+  &lt;div slot="footer"&gt;
+    &lt;small&gt;
+      Close the modal by either clicking the "X" button, clicking on the backdrop,
+      or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
+    &lt;/small&gt;
+  &lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  document.querySelector('button').addEventListener('click', () => {
+    document.querySelector('modal-element').open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
+
+  <h3>Static backdrop</h3>
+  <p>
+    By adding the <code>static-backdrop</code> attribute, the modal will not close by clicking on the backdrop.
+    The modal will still close by clicking the "X" button, or pressing the <kbd>Esc</kbd> key.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-2">Open Modal</button>
+
+    <modal-element id="modal-2" static-backdrop>
+      <h2 slot="header">Modal title</h2>
+      <div slot="body">This is a modal with static backdrop.</div>
+    </modal-element>
+
+  <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element static-backdrop&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;div slot="body"&gt;This is a modal with static backdrop.&lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  document.querySelector('button').addEventListener('click', () => {
+    document.querySelector('modal-element').open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
+
+  <h3>Without header</h3>
+  <p>
+    By adding the <code>no-header</code> attribute, the modal will not have a header.
+    Note that this will also remove the default close button.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-3">Open Modal</button>
+
+    <modal-element id="modal-3" no-header>
+      <h2 slot="header">Modal title</h2>
+      <div slot="body">This is a modal without header.</div>
+    </modal-element>
+
+    <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element no-header&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;div slot="body"&gt;This is a modal without header.&lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  document.querySelector('button').addEventListener('click', () => {
+    document.querySelector('modal-element').open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
+
+  <h3>Without animations</h3>
+  <p>
+    By adding the <code>no-animations</code> attribute, the modal will not use animations on open and close.
+    It also removes the backdrop click animation if the <code>static-backdrop</code> attribute is present.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-4">Open Modal</button>
+
+    <modal-element id="modal-4" no-animations static-backdrop>
+      <h2 slot="header">Modal title</h2>
+      <div slot="body">
+        This is a modal that does not use animations on open and close or backdrop click.
+      </div>
+    </modal-element>
+
+    <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element no-animations static-backdrop&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;div slot="body"&gt;
+    This is a modal that does not use animations
+    on open and close or backdrop click.
+  &lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  document.querySelector('button').addEventListener('click', () => {
+    document.querySelector('modal-element').open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
+
+  <h3>Scrolling long content</h3>
+  <p>
+    By design, the modal's height will not exceed that of the viewport.
+    If the content is longer than the viewport, the body will scroll
+    while the header and footer will remain fixed and visible.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-5">Open modal</button>
+
+    <modal-element id="modal-5">
+      <h2 slot="header">Modal title</h2>
+      <div slot="body" style="min-height: 2500px;">
+        <p>
+          This is a modal with really long content.
+          The header and footer will remain fixed, while the body will scroll.
+        </p>
+        <p>Scroll down and see for yourself! 👇</p>
+      </div>
+      <div slot="footer">
+        <small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.
+      </div>
+    </modal-element>
+
+    <pre><code>&lt;style&gt;
+  modal-element [slot="body"] {
+    min-height: 2500px; /* Really long body */
+  }
+&lt;/style&gt;
+
+&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element id="modal-5"&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;div slot="body"&gt;
+    &lt;p&gt;
+      This is a modal with really long content.
+      The header and footer will remain fixed, while the body will scroll.
+    &lt;/p&gt;
+    &lt;p&gt;Scroll down and see for yourself! 👇&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div slot="footer"&gt;
+    &lt;small&gt;
+      Close the modal by either clicking the "X" button, clicking on the backdrop,
+      or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
+    &lt;/small&gt;.
+  &lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  document.querySelector('button').addEventListener('click', () => {
+    document.querySelector('modal-element').open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
+
+  <h3>Custom styling</h3>
+  <p>
+    The modal can be styled and customized as you wish.
+    The following example uses <a href="https://watercss.kognise.dev/" target="_blank" rel="noopener noreferrer">Water.css</a> for styling.
+    It also demonstrates how to use a form inside the modal.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-6">Open Modal</button>
+
+    <modal-element id="modal-6" class="custom-modal">
+      <h2 slot="header">Send message</h2>
+      <div slot="body">
+        <form id="user-form">
+          <div class="form-control">
+            <label for="username">Username:</label>
+            <input type="email" name="username" id="username" value="john@doe" required>
+          </div>
+
+          <div class="form-control">
+            <label for="message">Message:</label>
+            <textarea name="message" id="message" required></textarea>
+          </div>
+        </form>
+
+        <p style="color: var(--text-muted);">
+          <small>
+            Any data you submit will mot be sent anywhere; this is just a demo form.
+            It emulates a form submission with a fake timeout, in order to demonstrate
+            the usage of <code>no-closable</code> attribute while the form is being submitted.
+          </small>
+        </p>
+      </div>
+      <div slot="footer">
+        <button type="submit" form="user-form">Send</button>
+      </div>
+    </modal-element>
+
+    <pre><code>&lt;style&gt;
+  modal-element {
+    --width: 28rem;
+  }
+
+  modal-element::part(dialog) {
+    border: none;
+    border-radius: 0.375rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+    background-color: var(--background-body);
+  }
+
+  modal-element::part(header) {
+    border-bottom: 1px solid var(--border);
+  }
+
+  modal-element::part(footer) {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border);
+  }
+&lt;/style&gt;
+
+&lt;button type="button" id="open-modal"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element&gt;
+  &lt;h2 slot="header"&gt;Send message&lt;/h2&gt;
+  &lt;div slot="body"&gt;
+    &lt;form id="user-form"&gt;
+      &lt;div class="form-control"&gt;
+        &lt;label for="username"&gt;Username:&lt;/label&gt;
+        &lt;input type="email" name="username" id="username" required&gt;
+      &lt;/div&gt;
+      &lt;div class="form-control"&gt;
+        &lt;label for="message"&gt;Message:&lt;/label&gt;
+        &lt;textarea name="message" id="message" required&gt;&lt;/textarea&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div slot="footer"&gt;
+    &lt;button type="submit" form="user-form"&gt;Send&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal');
+  const modalElement = document.querySelector('modal-element');
+  const userForm = document.getElementById('user-form');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  userForm.addEventListener('submit', evt => {
+    evt.preventDefault();
+
+    const submitButton = modalElement.querySelector('button[type="submit"]');
+
+    // Prevent closing the modal when submitting the form.
+    modalElement.setAttribute('no-closable', '');
+
+    // Disable the submit button and change its text.
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+
+    setTimeout(() => {
+      // Ensure that the modal can be closed again.
+      modalElement.removeAttribute('no-closable');
+
+      // Enable the submit button and change its text.
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit';
+    }, 2000);
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
 
   <h2>Source</h2>
   <p>Source code and documentation can be found in <a href="https://github.com/georapbox/modal-element" target="_blank" rel="noreferrer noopener">Github repository</a>.</p>

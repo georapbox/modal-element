@@ -3,7 +3,7 @@
  * NOTE: This is a customized version of water.css.
  */
 :root {
-  --body-max-width: 768px;
+  --body-max-width: 900px;
 
   --background-body: #fff;
   --background: #efefef;
