@@ -16,8 +16,8 @@ template.innerHTML = /* html */`
     }
 
     :host {
-      --width: 32rem;
-      --height: fit-content;
+      --modal-width: 32rem;
+      --modal-height: fit-content;
       --header-spacing: 1rem;
       --body-spacing: 1rem;
       --footer-spacing: 1rem;
@@ -25,57 +25,57 @@ template.innerHTML = /* html */`
       display: contents;
     }
 
-    /* Modal */
-    .modal {
-      width: var(--width);
-      height: var(--height);
+    /* Dialog */
+    .dialog {
+      width: var(--modal-width);
+      height: var(--modal-height);
       padding: 0;
     }
 
-    .modal[open] {
+    .dialog[open] {
       display: flex;
     }
 
-    .modal::backdrop {
+    .dialog::backdrop {
       background-color: rgba(0, 0, 0, 0.4);
       opacity: 0;
     }
 
-    .modal[open]::backdrop {
+    .dialog[open]::backdrop {
       opacity: 1;
     }
 
     @media (prefers-reduced-motion: no-preference) {
-      .modal:not(.modal--no-animations),
-      .modal:not(.modal--no-animations)::backdrop {
+      .dialog:not(.dialog--no-animations),
+      .dialog:not(.dialog--no-animations)::backdrop {
         transition: transform 0.3s, opacity 0.3s, display 0.3s allow-discrete, overlay 0.3s allow-discrete;
       }
 
-      /* IS-OPEN STATE */
-      .modal[open] {
+      /* 1. IS-OPEN STATE */
+      .dialog[open] {
         transform: scale(1);
         opacity: 1;
       }
 
-      /* EXIT STATE */
-      .modal {
+      /* 2. EXIT STATE */
+      .dialog {
         transform: scale(0.95);
         opacity: 0;
       }
 
-      /* BEFORE-OPEN STATE */
+      /* 0. BEFORE-OPEN STATE */
       @starting-style {
-        .modal[open] {
+        .dialog[open] {
           transform: scale(0.9);
           opacity: 0;
         }
 
-        .modal[open]::backdrop {
+        .dialog[open]::backdrop {
           opacity: 0;
         }
       }
 
-      .modal--static-backdrop:not(.modal--no-animations) {
+      .dialog--static-backdrop:not(.dialog--no-animations) {
         animation-name: modal-static;
         animation-duration: ${MODAL_STATIC_ANIMATION_DURATION}ms;
         animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
@@ -88,42 +88,38 @@ template.innerHTML = /* html */`
       }
     }
 
-    /* Modal content */
-    .modal__content {
+    /* Dialog panel, header, body, footer */
+    .dialog__panel {
       display: flex;
       flex-direction: column;
       flex: 1 1 auto;
     }
 
-    .modal__header {
+    .dialog__header {
       display: flex;
       padding: var(--header-spacing);
       column-gap: 0.5rem;
     }
 
-    .modal__title {
+    .dialog__title {
       display: block;
       flex: 1 1 auto;
       padding: 0;
       margin: 0;
     }
 
-    .modal__body {
+    .dialog__body {
       display: block;
       flex: 1 1 auto;
       padding: var(--body-spacing);
       overflow: auto;
     }
 
-    .modal__body::slotted(*) {
-      color: inherit;
-    }
-
-    .modal__footer {
+    .dialog__footer {
       padding: var(--footer-spacing);
     }
 
-    .modal__dismiss {
+    .dialog__close {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -133,11 +129,11 @@ template.innerHTML = /* html */`
       background-color: transparent;
     }
 
-    .modal__dismiss:not(:disabled) {
+    .dialog__close:not(:disabled) {
       cursor: pointer;
     }
 
-    .modal__dismiss:disabled {
+    .dialog__close:disabled {
       cursor: not-allowed;
     }
 
@@ -155,14 +151,14 @@ template.innerHTML = /* html */`
     }
   </style>
 
-  <dialog part="dialog" class="modal">
-    <div part="content" class="modal__content">
-      <header part="header" class="modal__header">
-        <slot name="header" class="modal__title"></slot>
+  <dialog part="base" class="dialog">
+    <div part="panel" class="dialog__panel">
+      <header part="header" class="dialog__header">
+        <slot name="header" class="dialog__title"></slot>
 
         <form method="dialog">
-          <button type="submit" part="dismiss" class="modal__dismiss">
-            <slot name="dismiss">
+          <button type="submit" part="close" class="dialog__close">
+            <slot name="close">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
               </svg>
@@ -172,9 +168,9 @@ template.innerHTML = /* html */`
         </form>
       </header>
 
-      <slot name="body" part="body" class="modal__body"></slot>
+      <slot name="body" part="body" class="dialog__body"></slot>
 
-      <footer part="footer" class="modal__footer" hidden>
+      <footer part="footer" class="dialog__footer" hidden>
         <slot name="footer"></slot>
       </footer>
     </div>
@@ -208,7 +204,7 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-header' && oldValue !== newValue) {
-      const headerEl = this.#dialogEl?.querySelector('.modal__header');
+      const headerEl = this.#dialogEl?.querySelector('.dialog__header');
 
       if (headerEl) {
         headerEl.hidden = this.noHeader;
@@ -216,11 +212,11 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-animations' && oldValue !== newValue) {
-      this.#dialogEl?.classList.toggle('modal--no-animations', this.noAnimations);
+      this.#dialogEl?.classList.toggle('dialog--no-animations', this.noAnimations);
     }
 
     if (name === 'no-closable' && oldValue !== newValue) {
-      const closeBtnEl = this.#dialogEl?.querySelector('.modal__dismiss');
+      const closeBtnEl = this.#dialogEl?.querySelector('.dialog__close');
 
       if (closeBtnEl) {
         closeBtnEl.disabled = this.noClosable;
@@ -316,7 +312,7 @@ class ModalElement extends HTMLElement {
     this.dispatchEvent(new CustomEvent(`${COMPONENT_NAME}-open`, {
       bubbles: true,
       composed: true,
-      detail: { modal: this }
+      detail: { element: this }
     }));
   }
 
@@ -331,7 +327,7 @@ class ModalElement extends HTMLElement {
     this.dispatchEvent(new CustomEvent(`${COMPONENT_NAME}-close`, {
       bubbles: true,
       composed: true,
-      detail: { modal: this }
+      detail: { element: this }
     }));
   };
 
@@ -352,10 +348,10 @@ class ModalElement extends HTMLElement {
         return;
       }
 
-      this.#dialogEl?.classList.add('modal--static-backdrop');
+      this.#dialogEl?.classList.add('dialog--static-backdrop');
 
       this.#modalStaticAnimationTimeout = setTimeout(() => {
-        this.#dialogEl?.classList.remove('modal--static-backdrop');
+        this.#dialogEl?.classList.remove('dialog--static-backdrop');
         clearTimeout(this.#modalStaticAnimationTimeout);
         this.#modalStaticAnimationTimeout = null;
       }, MODAL_STATIC_ANIMATION_DURATION);
@@ -367,7 +363,7 @@ class ModalElement extends HTMLElement {
   };
 
   #handleFooterSlotChange = () => {
-    const footerEl = this.#dialogEl?.querySelector('.modal__footer');
+    const footerEl = this.#dialogEl?.querySelector('.dialog__footer');
     const hasFooterSlotNodes = this.#footerSlotEl?.assignedNodes()?.length > 0;
 
     if (!footerEl) {
