@@ -186,7 +186,7 @@
 
 &lt;button type="button"&gt;Open Modal&lt;/button&gt;
 
-&lt;modal-element id="modal-5"&gt;
+&lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
   &lt;div slot="body"&gt;
     &lt;p&gt;
@@ -221,7 +221,7 @@
   <div class="card">
     <button type="button" data-open="modal-6">Open Modal</button>
 
-    <modal-element id="modal-6" class="custom-modal">
+    <modal-element id="modal-6" class="custom-styling">
       <h2 slot="header">Send message</h2>
       <div slot="body">
         <form id="user-form">
@@ -322,6 +322,67 @@
       submitButton.disabled = false;
       submitButton.textContent = 'Submit';
     }, 2000);
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
+
+  <h3>Custom transitions</h3>
+  <p>
+    You can customize the modal's enter/leave transition using CSS.
+    Note, that browser support is limited to those that suport the
+    <a href="https://caniuse.com/?search=%40starting" target="_blank" rel="noopener noreferrer"><code>@starting-style</code></a>
+    CSS at-rule.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-7">Open Modal</button>
+
+    <modal-element id="modal-7" class="custom-animations">
+      <h2 slot="header">Modal title</h2>
+      <div slot="body">This is a modal with custom transitions.</div>
+    </modal-element>
+
+    <pre><code>&lt;style&gt;
+  modal-element {
+    transition:
+      transform 0.5s,
+      opacity 0.5s,
+      display 0.5s allow-discrete,
+      overlay 0.5s allow-discrete;
+  }
+
+  /* IS-OPEN STATE */
+  modal-element[open]::part(dialog) {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* EXIT STATE */
+  modal-element::part(dialog) {
+    transform: translateY(-1rem);
+    opacity: 0;
+  }
+
+  /* BEFORE-OPEN STATE */
+  @starting-style {
+    modal-element[open]::part(dialog) {
+      transform: translateY(-1rem);
+      opacity: 0;
+    }
+  }
+&lt;/style&gt;
+
+&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;div slot="body"&gt;This is a modal with custom transitions.&lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  document.querySelector('button').addEventListener('click', () => {
+    document.querySelector('modal-element').open = true;
   });
 &lt;/script&gt;
 </code></pre>

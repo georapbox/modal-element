@@ -63,7 +63,7 @@ template.innerHTML = /* html */`
         opacity: 0;
       }
 
-      /* 0. BEFORE-OPEN STATE */
+      /* BEFORE-OPEN STATE */
       @starting-style {
         .modal[open] {
           transform: scale(0.9);
