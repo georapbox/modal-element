@@ -18,8 +18,8 @@ import(componentUrl).then(module => {
     console.log(`${evt.type} =>`, evt.detail);
   };
 
-  document.addEventListener('modal-element-open', handleEvents);
-  document.addEventListener('modal-element-close', handleEvents);
+  document.addEventListener('me-open', handleEvents);
+  document.addEventListener('me-close', handleEvents);
 
   const userForm = document.getElementById('user-form');
 
@@ -36,7 +36,7 @@ import(componentUrl).then(module => {
     setTimeout(() => {
       modal.removeAttribute('no-closable');
       submitButton.disabled = false;
-      submitButton.textContent = 'Submit';
+      submitButton.textContent = 'Send';
     }, 2000);
   });
 }).catch(err => {

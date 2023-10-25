@@ -51,14 +51,13 @@ modal-element [slot="body"] p:last-child {
 
 /* Custom styling on modal-element */
 modal-element.custom-styling {
-  --width: 28rem;
-}
-
-modal-element.custom-styling::part(dialog) {
-  border: none;
-  border-radius: 0.375rem;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
-  background-color: var(--background-body);
+  --me-width: 28rem;
+  --me-border-width: 0;
+  --me-border-radius: 0.375rem;
+  --me-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+  --me-header-bg-color: var(--background-alt);
+  --me-body-bg-color: var(--background-body);
+  --me-footer-bg-color: var(--background-alt);
 }
 
 modal-element.custom-styling::part(header) {
@@ -80,25 +79,25 @@ modal-element.custom-styling [slot="footer"] button {
 }
 
 /* Customize animations */
-modal-element.custom-animations {
+modal-element.custom-animations::part(base) {
   transition: transform 0.5s, opacity 0.5s, display 0.5s allow-discrete, overlay 0.5s allow-discrete;
 }
 
 /* IS-OPEN STATE */
-modal-element.custom-animations[open]::part(dialog) {
+modal-element.custom-animations[open]::part(base) {
   transform: translateY(0);
   opacity: 1;
 }
 
 /* EXIT STATE */
-modal-element.custom-animations::part(dialog) {
+modal-element.custom-animations::part(base) {
   transform: translateY(-2rem);
   opacity: 0;
 }
 
 /* BEFORE-OPEN STATE */
 @starting-style {
-  modal-element.custom-animations[open]::part(dialog) {
+  modal-element.custom-animations[open]::part(base) {
     transform: translateY(-2rem);
     opacity: 0;
   }
