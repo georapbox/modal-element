@@ -41,10 +41,10 @@ describe('modal-element', () => {
   // });
 
   // describe('custom events', () => {
-  //   it('should fire "modal-element-open" event', async () => {
+  //   it('should fire "me-open" event', async () => {
   //     const el = await fixture(html`
   //     `);
-  //     const listener = oneEvent(el, 'modal-element-open');
+  //     const listener = oneEvent(el, 'me-open');
   //     el.open = true;
   //     const { detail } = await listener;
   //     expect(detail).to.deep.equal({});

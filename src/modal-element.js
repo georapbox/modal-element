@@ -1,4 +1,3 @@
-const COMPONENT_NAME = 'modal-element';
 const MODAL_STATIC_ANIMATION_DURATION = 300;
 const template = document.createElement('template');
 
@@ -16,20 +15,36 @@ template.innerHTML = /* html */`
     }
 
     :host {
-      --modal-width: 32rem;
-      --modal-height: fit-content;
-      --header-spacing: 1rem;
-      --body-spacing: 1rem;
-      --footer-spacing: 1rem;
-
+      --me-width: 32rem;
+      --me-height: fit-content;
+      --me-border-color: initial;
+      --me-border-style: solid;
+      --me-border-width: initial;
+      --me-border-radius: 0;
+      --me-box-shadow: none;
+      --me-bg-color: canvas;
+      --me-header-spacing: 1rem;
+      --me-body-spacing: 1rem;
+      --me-footer-spacing: 1rem;
+      --me-header-bg-color: transparent;
+      --me-body-bg-color: transparent;
+      --me-footer-bg-color: transparent;
+      --me-close-border-radius: 0;
+      --me-close-bg-color: transparent;
       display: contents;
     }
 
     /* Dialog */
     .dialog {
-      width: var(--modal-width);
-      height: var(--modal-height);
+      width: var(--me-width);
+      height: var(--me-height);
       padding: 0;
+      border-color: var(--me-border-color);
+      border-style: var(--me-border-style);
+      border-width: var(--me-border-width);
+      border-radius: var(--me-border-radius);
+      box-shadow: var(--me-box-shadow);
+      background-color: var(--me-bg-color);
     }
 
     .dialog[open] {
@@ -97,8 +112,9 @@ template.innerHTML = /* html */`
 
     .dialog__header {
       display: flex;
-      padding: var(--header-spacing);
+      padding: var(--me-header-spacing);
       column-gap: 0.5rem;
+      background-color: var(--me-header-bg-color);
     }
 
     .dialog__title {
@@ -111,12 +127,14 @@ template.innerHTML = /* html */`
     .dialog__body {
       display: block;
       flex: 1 1 auto;
-      padding: var(--body-spacing);
+      padding: var(--me-body-spacing);
       overflow: auto;
+      background-color: var(--me-body-bg-color);
     }
 
     .dialog__footer {
-      padding: var(--footer-spacing);
+      padding: var(--me-footer-spacing);
+      background-color: var(--me-footer-bg-color);
     }
 
     .dialog__close {
@@ -125,7 +143,6 @@ template.innerHTML = /* html */`
       justify-content: center;
       padding: 0.4375rem;
       border: none;
-      border-radius: 0.25rem;
       background-color: transparent;
     }
 
@@ -309,7 +326,7 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.showModal();
     document.body.style.overflowY = 'hidden';
 
-    this.dispatchEvent(new CustomEvent(`${COMPONENT_NAME}-open`, {
+    this.dispatchEvent(new CustomEvent('me-open', {
       bubbles: true,
       composed: true,
       detail: { element: this }
@@ -324,7 +341,7 @@ class ModalElement extends HTMLElement {
     this.open = false;
     document.body.style.overflowY = null;
 
-    this.dispatchEvent(new CustomEvent(`${COMPONENT_NAME}-close`, {
+    this.dispatchEvent(new CustomEvent('me-close', {
       bubbles: true,
       composed: true,
       detail: { element: this }
@@ -381,7 +398,7 @@ class ModalElement extends HTMLElement {
     }
   }
 
-  static defineCustomElement(elementName = COMPONENT_NAME) {
+  static defineCustomElement(elementName = 'modal-element') {
     if (typeof window !== 'undefined' && !window.customElements.get(elementName)) {
       window.customElements.define(elementName, ModalElement);
     }
