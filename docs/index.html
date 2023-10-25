@@ -343,7 +343,7 @@
     </modal-element>
 
     <pre><code>&lt;style&gt;
-  modal-element::part(base) {
+  modal-element:not([no-animations])::part(base) {
     transition:
       transform 0.5s,
       opacity 0.5s,
@@ -352,20 +352,20 @@
   }
 
   /* IS-OPEN STATE */
-  modal-element[open]::part(base) {
+  modal-element[open]:not([no-animations])::part(base) {
     transform: translateY(0);
     opacity: 1;
   }
 
   /* EXIT STATE */
-  modal-element::part(base) {
+  modal-element:not([no-animations])::part(base) {
     transform: translateY(-2rem);
     opacity: 0;
   }
 
   /* BEFORE-OPEN STATE */
   @starting-style {
-    modal-element[open]::part(base) {
+    modal-element[open]:not([no-animations])::part(base) {
       transform: translateY(-2rem);
       opacity: 0;
     }
