@@ -42,7 +42,7 @@
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-1">Close</button>
     </modal-element>
 
-  <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+  <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -50,12 +50,20 @@
     &lt;p&gt;This is a modal with the default configuration.&lt;/p&gt;
     &lt;p&gt;&lt;small&gt;Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key&lt;/small&gt;.&lt;/p&gt;
   &lt;/div&gt;
-  &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
-  document.querySelector('button').addEventListener('click', () => {
-    document.querySelector('modal-element').open = true;
+  const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
   });
 &lt;/script&gt;
 </code></pre>
@@ -75,7 +83,7 @@
       <div slot="body">This is a modal with static backdrop.</div>
     </modal-element>
 
-  <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+  <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element static-backdrop&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -83,8 +91,11 @@
 &lt;/modal-element&gt;
 
 &lt;script&gt;
-  document.querySelector('button').addEventListener('click', () => {
-    document.querySelector('modal-element').open = true;
+  const openModalButton = document.getElementById('open-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
   });
 &lt;/script&gt;
 </code></pre>
@@ -105,17 +116,63 @@
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-3">Close</button>
     </modal-element>
 
-    <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+    <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
   &lt;div slot="body"&gt;This is a modal without header.&lt;/div&gt;
-  &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
-  document.querySelector('button').addEventListener('click', () => {
-    document.querySelector('modal-element').open = true;
+  const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
+  });
+&lt;/script&gt;
+</code></pre>
+  </div>
+
+  <h3>Without default close button</h3>
+  <p>
+    By adding the <code>no-close-button</code> attribute, the modal will not have a default close button.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-4">Open Modal</button>
+
+    <modal-element id="modal-4" no-close-button>
+      <h2 slot="header">Modal title</h2>
+      <div slot="body">This is a modal without default close button.</div>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-4">Close</button>
+    </modal-element>
+
+    <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element no-header&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;div slot="body"&gt;This is a modal without default close button.&lt;/div&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
   });
 &lt;/script&gt;
 </code></pre>
@@ -128,16 +185,16 @@
   </p>
 
   <div class="card">
-    <button type="button" data-open="modal-4">Open Modal</button>
+    <button type="button" data-open="modal-5">Open Modal</button>
 
-    <modal-element id="modal-4" no-animations static-backdrop>
+    <modal-element id="modal-5" no-animations static-backdrop>
       <h2 slot="header">Modal title</h2>
       <div slot="body">
         This is a modal that does not use animations on open and close or backdrop click.
       </div>
     </modal-element>
 
-    <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+    <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element no-animations static-backdrop&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -148,8 +205,11 @@
 &lt;/modal-element&gt;
 
 &lt;script&gt;
-  document.querySelector('button').addEventListener('click', () => {
-    document.querySelector('modal-element').open = true;
+  const openModalButton = document.getElementById('open-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
   });
 &lt;/script&gt;
 </code></pre>
@@ -163,9 +223,9 @@
   </p>
 
   <div class="card">
-    <button type="button" data-open="modal-5">Open modal</button>
+    <button type="button" data-open="modal-6">Open modal</button>
 
-    <modal-element id="modal-5">
+    <modal-element id="modal-6">
       <h2 slot="header">Modal title</h2>
       <div slot="body" style="min-height: 2500px;">
         <p>
@@ -174,7 +234,7 @@
         </p>
         <p>Scroll down and see for yourself! 👇</p>
       </div>
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-5">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-6">Close</button>
     </modal-element>
 
     <pre><code>&lt;style&gt;
@@ -183,7 +243,7 @@
   }
 &lt;/style&gt;
 
-&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -194,12 +254,20 @@
     &lt;/p&gt;
     &lt;p&gt;Scroll down and see for yourself! 👇&lt;/p&gt;
   &lt;/div&gt;
-  &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
-  document.querySelector('button').addEventListener('click', () => {
-    document.querySelector('modal-element').open = true;
+  const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
   });
 &lt;/script&gt;
 </code></pre>
@@ -213,9 +281,9 @@
   </p>
 
   <div class="card">
-    <button type="button" data-open="modal-6">Open Modal</button>
+    <button type="button" data-open="modal-7">Open Modal</button>
 
-    <modal-element id="modal-6" class="custom-styling">
+    <modal-element id="modal-7" class="custom-styling">
       <h2 slot="header">Send message</h2>
       <div slot="body">
         <form id="user-form">
@@ -261,7 +329,7 @@
   }
 &lt;/style&gt;
 
-&lt;button type="button" id="open-modal"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Send message&lt;/h2&gt;
@@ -281,7 +349,7 @@
 &lt;/modal-element&gt;
 
 &lt;script&gt;
-  const openModalButton = document.getElementById('open-modal');
+  const openModalButton = document.getElementById('open-modal-button');
   const modalElement = document.querySelector('modal-element');
   const userForm = document.getElementById('user-form');
 
@@ -323,9 +391,9 @@
   </p>
 
   <div class="card">
-    <button type="button" data-open="modal-7">Open Modal</button>
+    <button type="button" data-open="modal-8">Open Modal</button>
 
-    <modal-element id="modal-7" class="custom-animations">
+    <modal-element id="modal-8" class="custom-animations">
       <h2 slot="header">Modal title</h2>
       <div slot="body">This is a modal with custom transitions.</div>
     </modal-element>
@@ -362,7 +430,7 @@
   }
 &lt;/style&gt;
 
-&lt;button type="button"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -370,8 +438,11 @@
 &lt;/modal-element&gt;
 
 &lt;script&gt;
-  document.querySelector('button').addEventListener('click', () => {
-    document.querySelector('modal-element').open = true;
+  const openModalButton = document.getElementById('open-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
   });
 &lt;/script&gt;
 </code></pre>

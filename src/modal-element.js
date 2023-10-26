@@ -118,6 +118,10 @@ template.innerHTML = /* html */`
       background-color: var(--me-header-bg-color);
     }
 
+    :host([no-close-button]) .dialog__header {
+      column-gap: 0;
+    }
+
     .dialog__title {
       display: block;
       flex: 1 1 auto;
@@ -216,7 +220,7 @@ class ModalElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['open', 'no-header', 'no-animations', 'no-closable'];
+    return ['open', 'no-header', 'no-animations', 'no-closable', 'no-close-button'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -243,6 +247,14 @@ class ModalElement extends HTMLElement {
         closeBtnEl.disabled = this.noClosable;
       }
     }
+
+    if (name === 'no-close-button' && oldValue !== newValue) {
+      const closeBtnEl = this.#dialogEl?.querySelector('.dialog__close');
+
+      if (closeBtnEl) {
+        closeBtnEl.hidden = this.noCloseButton;
+      }
+    }
   }
 
   connectedCallback() {
@@ -251,6 +263,7 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('noHeader');
     this.#upgradeProperty('noAnimations');
     this.#upgradeProperty('noClosable');
+    this.#upgradeProperty('noCloseButton');
 
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
@@ -323,6 +336,18 @@ class ModalElement extends HTMLElement {
       this.setAttribute('no-closable', '');
     } else {
       this.removeAttribute('no-closable');
+    }
+  }
+
+  get noCloseButton() {
+    return this.hasAttribute('no-close-button');
+  }
+
+  set noCloseButton(value) {
+    if (value) {
+      this.setAttribute('no-close-button', '');
+    } else {
+      this.removeAttribute('no-close-button');
     }
   }
 
