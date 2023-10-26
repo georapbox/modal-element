@@ -49,6 +49,10 @@ import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
 By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS Parts](#css-parts) or by overriding the default [CSS Custom Properties](#css-custom-properties). A working example of styling the component can be found [here][demo]. Below are demonstrated some available parts for styling.
 
 ```css
+modal-element:not(:defined) {
+  display: none;
+}
+
 modal-element {
   --me-width: 38rem;
   --me-border-width: 0;
@@ -80,7 +84,7 @@ modal-element::part(footer) {
 | `staticBackDrop`<br>*`static-backdrop`* | ✓ | Boolean | - | `false` | Indicates whether the modal should be closed when the user clicks outside the modal or not. |
 | `noHeader`<br>*`no-header`* | ✓ | Boolean | - | `false` | Indicates whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
 | `noAnimations`<br>*`no-animations`*<sup>1</sup> | ✓ | Boolean | - | `false` | Indicates whether the modal should have animations or not. Animations include the modal's entrance and exit animations, as well as the static backdrop's bounce effect when users clicks on it. |
-| `noClosable`<br>*`no-closable`* | ✓ | Boolean | - | `false` | Indicates whether the modal should be closable or not. If the modal is not closable, the modal cannot be dismissed by either clicking on the close button or by pressing the `ESC` key or by clicking outside the modal. Nevertheless, you can still programmatically close the modal by setting the `open` property to `false`. This property is useful when you want to prevent users from dismissing the modal until they have completed a certain task, eg submitting a form. Use it with caution and always remember to set the `open` property to `true` when the task is completed. |
+| `noClosable`<br>*`no-closable`* | ✓ | Boolean | - | `false` | Indicates whether the modal should be closable or not. If the modal is not closable, the modal cannot be dismissed by either clicking on the close button or by pressing the `Esc` key or by clicking outside the modal. Nevertheless, you can still programmatically close the modal by setting the `open` property to `false` or by calling the `hide()` method. This property is useful when you want to prevent users from dismissing the modal until they have completed a certain task, eg submitting a form. Use it with caution and always remember to set the `noClosable` property to `false` when the task is completed. |
 | `noCloseButton`<br>*`no-close-button`* | ✓ | Boolean | - | `false` | Indicates whether the modal should have a default close button or not. If the modal has no close button, you probably need to provide an accessible way for users to dismiss the modal. |
 
 All of the above properties reflect their values as HTML attributes to keep the element's DOM representation in sync with its JavaScript state.
@@ -138,6 +142,10 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | Name | Type | Description | Arguments |
 | ---- | ---- | ----------- | --------- |
 | `defineCustomElement` | Static | Defines/registers the custom element with the name provided. If no name is provided, the default name is used. The method checks if the element is already defined, hence will skip trying to redefine it. | `elementName='modal-element'` |
+| `show`<sup>1</sup> | Instance | Opens the modal. | - |
+| `hide`<sup>1</sup> | Instance | Closes the modal. | - |
+
+<sup>1</sup> These methods are only available after the component has been defined. To ensure the component is defined, you can use `whenDefined` method of the `CustomElementRegistry` interface, eg `customElements.whenDefined('modal-element').then(() => { /* call methods here */ });`
 
 ## Changelog
 

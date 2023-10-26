@@ -42,7 +42,10 @@
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-1">Close</button>
     </modal-element>
 
-  <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -67,6 +70,7 @@
   });
 &lt;/script&gt;
 </code></pre>
+  </details>
   </div>
 
   <h3>Static backdrop</h3>
@@ -83,7 +87,10 @@
       <div slot="body">This is a modal with static backdrop.</div>
     </modal-element>
 
-  <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element static-backdrop&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -99,6 +106,7 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
   </div>
 
   <h3>Without header</h3>
@@ -115,8 +123,10 @@
       <div slot="body">This is a modal without header.</div>
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-3">Close</button>
     </modal-element>
+    <details>
+      <summary>Source code</summary>
 
-    <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -138,6 +148,7 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
   </div>
 
   <h3>Without default close button</h3>
@@ -154,7 +165,10 @@
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-4">Close</button>
     </modal-element>
 
-    <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -176,6 +190,7 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
   </div>
 
   <h3>Without animations</h3>
@@ -194,7 +209,10 @@
       </div>
     </modal-element>
 
-    <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element no-animations static-backdrop&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
@@ -213,6 +231,7 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
   </div>
 
   <h3>Scrolling long content</h3>
@@ -237,7 +256,10 @@
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-6">Close</button>
     </modal-element>
 
-    <pre><code>&lt;style&gt;
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;style&gt;
   modal-element [slot="body"] {
     min-height: 2500px; /* Really long body */
   }
@@ -271,6 +293,7 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
   </div>
 
   <h3>Custom styling</h3>
@@ -309,7 +332,10 @@
       <button slot="footer" type="submit" form="user-form" style="margin: 0;">Send</button>
     </modal-element>
 
-    <pre><code>&lt;style&gt;
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;style&gt;
   modal-element {
     --me-width: 28rem;
     --me-border-width: 0;
@@ -380,6 +406,7 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
   </div>
 
   <h3>Custom transitions</h3>
@@ -398,7 +425,10 @@
       <div slot="body">This is a modal with custom transitions.</div>
     </modal-element>
 
-    <pre><code>&lt;style&gt;
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;style&gt;
   @media (prefers-reduced-motion: no-preference) {
     modal-element:not([no-animations])::part(base) {
       transition:
@@ -446,10 +476,11 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
   </div>
 
-  <h2>Source</h2>
-  <p>Source code and documentation can be found in <a href="https://github.com/georapbox/modal-element" target="_blank" rel="noreferrer noopener">Github repository</a>.</p>
+  <h2>Source code</h2>
+  <p>Source code code and documentation can be found in <a href="https://github.com/georapbox/modal-element" target="_blank" rel="noreferrer noopener">Github repository</a>.</p>
 
   <h2>License</h2>
   <p>Licensed under the <a href="https://georapbox.mit-license.org/@2023" target="_blank" rel="noreferrer noopener">The MIT License (MIT)</a></p>

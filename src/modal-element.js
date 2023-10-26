@@ -427,6 +427,14 @@ class ModalElement extends HTMLElement {
     }
   }
 
+  show() {
+    this.#openDialog();
+  }
+
+  hide() {
+    this.#closeDialog();
+  }
+
   static defineCustomElement(elementName = 'modal-element') {
     if (typeof window !== 'undefined' && !window.customElements.get(elementName)) {
       window.customElements.define(elementName, ModalElement);

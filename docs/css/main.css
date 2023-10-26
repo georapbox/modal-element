@@ -20,6 +20,10 @@
   margin: 0;
 }
 
+.card > details {
+  margin-bottom: 0;
+}
+
 .form-control {
   margin-bottom: 1rem;
 }
