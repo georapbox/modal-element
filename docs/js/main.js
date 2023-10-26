@@ -14,6 +14,16 @@ import(componentUrl).then(module => {
     });
   });
 
+  document.querySelectorAll('[data-close^="modal"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modal = document.getElementById(btn.dataset.close);
+
+      if (modal) {
+        modal.open = false;
+      }
+    });
+  });
+
   const handleEvents = evt => {
     console.log(`${evt.type} =>`, evt.detail);
   };

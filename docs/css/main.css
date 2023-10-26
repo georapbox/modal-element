@@ -65,8 +65,6 @@ modal-element.custom-styling::part(header) {
 }
 
 modal-element.custom-styling::part(footer) {
-  display: flex;
-  justify-content: flex-end;
   border-top: 1px solid var(--border);
 }
 

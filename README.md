@@ -92,7 +92,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | ---- | ----------- |
 | `header` | The modal's header content, usually a title. |
 | `body` | The modal's main content. |
-| `footer` | The modals' foter content. |
+| `footer` | The modals' footer content. Usually used for buttons or other actions. |
 | `close` | The content of the close button that appears in the modal's header. |
 
 ### CSS Parts
@@ -131,6 +131,12 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | ---- | ----------- | ------------ |
 | `me-open` | Emitted when the modal opens. | `{element: HTMLElement}` |
 | `me-close` | Emitted when the modal is dismissed in any way, either by clicking on the close button, by pressing the `ESC` key or by clicking outside the modal. | `{element: HTMLElement}` |
+
+### Methods
+
+| Name | Type | Description | Arguments |
+| ---- | ---- | ----------- | --------- |
+| `defineCustomElement` | Static | Defines/registers the custom element with the name provided. If no name is provided, the default name is used. The method checks if the element is already defined, hence will skip trying to redefine it. | `elementName='modal-element'` |
 
 ## Changelog
 

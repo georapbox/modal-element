@@ -35,23 +35,22 @@
 
     <modal-element id="modal-1">
       <h2 slot="header">Modal title</h2>
-      <div slot="body">This is a modal with the default configuration.</div>
-      <div slot="footer">
-        <small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.
+      <div slot="body">
+        <p>This is a modal with the default configuration.</p>
+        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
       </div>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-1">Close</button>
     </modal-element>
 
   <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;This is a modal with the default configuration.&lt;/div&gt;
-  &lt;div slot="footer"&gt;
-    &lt;small&gt;
-      Close the modal by either clicking the "X" button, clicking on the backdrop,
-      or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
-    &lt;/small&gt;
+  &lt;div slot="body"&gt;
+    &lt;p&gt;This is a modal with the default configuration.&lt;/p&gt;
+    &lt;p&gt;&lt;small&gt;Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key&lt;/small&gt;.&lt;/p&gt;
   &lt;/div&gt;
+  &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -103,6 +102,7 @@
     <modal-element id="modal-3" no-header>
       <h2 slot="header">Modal title</h2>
       <div slot="body">This is a modal without header.</div>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-3">Close</button>
     </modal-element>
 
     <pre><code>&lt;button type="button"&gt;Open Modal&lt;/button&gt;
@@ -110,6 +110,7 @@
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
   &lt;div slot="body"&gt;This is a modal without header.&lt;/div&gt;
+  &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -173,9 +174,7 @@
         </p>
         <p>Scroll down and see for yourself! 👇</p>
       </div>
-      <div slot="footer">
-        <small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.
-      </div>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-5">Close</button>
     </modal-element>
 
     <pre><code>&lt;style&gt;
@@ -195,12 +194,7 @@
     &lt;/p&gt;
     &lt;p&gt;Scroll down and see for yourself! 👇&lt;/p&gt;
   &lt;/div&gt;
-  &lt;div slot="footer"&gt;
-    &lt;small&gt;
-      Close the modal by either clicking the "X" button, clicking on the backdrop,
-      or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
-    &lt;/small&gt;.
-  &lt;/div&gt;
+  &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -244,9 +238,7 @@
           </small>
         </p>
       </div>
-      <div slot="footer">
-        <button type="submit" form="user-form">Send</button>
-      </div>
+      <button slot="footer" type="submit" form="user-form" style="margin: 0;">Send</button>
     </modal-element>
 
     <pre><code>&lt;style&gt;
@@ -265,8 +257,6 @@
   }
 
   modal-element::part(footer) {
-    display: flex;
-    justify-content: flex-end;
     border-top: 1px solid var(--border);
   }
 &lt;/style&gt;
@@ -287,9 +277,7 @@
       &lt;/div&gt;
     &lt;/form&gt;
   &lt;/div&gt;
-  &lt;div slot="footer"&gt;
-    &lt;button type="submit" form="user-form"&gt;Send&lt;/button&gt;
-  &lt;/div&gt;
+  &lt;button slot="footer" type="submit" form="user-form"&gt;Send&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
