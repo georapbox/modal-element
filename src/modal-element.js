@@ -112,6 +112,7 @@ template.innerHTML = /* html */`
 
     .dialog__header {
       display: flex;
+      align-items: center;
       padding: var(--me-header-spacing);
       column-gap: 0.5rem;
       background-color: var(--me-header-bg-color);
@@ -133,6 +134,9 @@ template.innerHTML = /* html */`
     }
 
     .dialog__footer {
+      flex: 0 0 auto;
+      text-align: right;
+
       padding: var(--me-footer-spacing);
       background-color: var(--me-footer-bg-color);
     }
