@@ -25,30 +25,16 @@ import(componentUrl).then(module => {
   });
 
   const handleEvents = evt => {
+    if (evt.type === 'me-request-close' && evt.detail.reason === 'close-button' && evt.detail.element.id === 'modal-9') {
+      evt.preventDefault();
+    }
+
     console.log(`${evt.type} =>`, evt.detail);
   };
 
   document.addEventListener('me-open', handleEvents);
   document.addEventListener('me-close', handleEvents);
-
-  const userForm = document.getElementById('user-form');
-
-  userForm.addEventListener('submit', evt => {
-    evt.preventDefault();
-
-    const modal = userForm.closest('modal-element');
-    const submitButton = modal.querySelector('button[type="submit"]');
-
-    modal.setAttribute('no-closable', '');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Sending...';
-
-    setTimeout(() => {
-      modal.removeAttribute('no-closable');
-      submitButton.disabled = false;
-      submitButton.textContent = 'Send';
-    }, 2000);
-  });
+  document.addEventListener('me-request-close', handleEvents);
 }).catch(err => {
   console.error(err);
 });

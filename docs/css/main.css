@@ -6,6 +6,23 @@
 
 :root {
   --card-bg-color: #fffff;
+  scroll-behavior: smooth;
+}
+
+.noscript-banner {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  background-color: var(--focus);
+  text-align: center;
+}
+
+.component-description p {
+  margin: 0 0 0.5rem 0;
+}
+
+.component-description p:last-child {
+  margin-bottom: 0;
 }
 
 .card {
@@ -13,7 +30,7 @@
   padding: 1rem;
   border-radius: 6px;
   border: 1px solid var(--border);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .card > button {
@@ -24,8 +41,23 @@
   margin-bottom: 0;
 }
 
+.card details summary {
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.card details summary::marker {
+  content: '';
+}
+
 .form-control {
   margin-bottom: 1rem;
+}
+
+.back-top {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.875rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,8 +87,9 @@ modal-element [slot="body"] p:last-child {
 
 /* Custom styling on modal-element */
 modal-element.custom-styling {
-  --me-width: 28rem;
-  --me-border-width: 0;
+  --me-width: 35rem;
+  --me-border-width: 1px;
+  --me-border-color: var(--border);
   --me-border-radius: 0.375rem;
   --me-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
   --me-header-bg-color: var(--background-alt);
@@ -72,8 +105,15 @@ modal-element.custom-styling::part(footer) {
   border-top: 1px solid var(--border);
 }
 
-modal-element.custom-styling [slot="body"] input {
-  width: 100%;
+modal-element.custom-styling::part(close) {
+  background-color: var(--button-base);
+  border-radius: 0.25rem;
+  color: var(--text-bright);
+  transition: background-color 0.2s ease;
+}
+
+modal-element.custom-styling::part(close):hover {
+  background-color: var(--button-hover);
 }
 
 modal-element.custom-styling [slot="footer"] button {
@@ -83,7 +123,7 @@ modal-element.custom-styling [slot="footer"] button {
 /* Customize animations */
 @media (prefers-reduced-motion: no-preference) {
   modal-element.custom-animations:not([no-animations])::part(base) {
-    transition: transform 0.5s, opacity 0.5s, display 0.5s allow-discrete, overlay 0.5s allow-discrete;
+    transition: transform 0.35s, opacity 0.35s, display 0.35s allow-discrete, overlay 0.35s allow-discrete;
   }
 
   /* IS-OPEN STATE */
