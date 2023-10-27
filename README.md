@@ -9,7 +9,7 @@
 
 # &lt;modal-element&gt;
 
-A custom element to create a modal dialog, using the native [&lt;dialog&gt;](https://developer.mozilla.org/docs/Web/HTML/Element/dialog) element.
+A custom element to create a modal, using the native [&lt;dialog&gt;](https://developer.mozilla.org/docs/Web/HTML/Element/dialog) element under the hood.
 
 [API documentation](#api) &bull; [Demo][demo]
 

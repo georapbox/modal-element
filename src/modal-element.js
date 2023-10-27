@@ -98,7 +98,7 @@ template.innerHTML = /* html */`
 
       @keyframes pulse {
         0%   { transform: scale(1); }
-        50%  { transform: scale(1.01); }
+        50%  { transform: scale(1.02); }
         100% { transform: scale(1); }
       }
     }
