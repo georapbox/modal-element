@@ -1,4 +1,4 @@
-const MODAL_STATIC_ANIMATION_DURATION = 300;
+const PULSE_ANIMATION_DURATION = 300;
 const template = document.createElement('template');
 
 template.innerHTML = /* html */`
@@ -52,7 +52,7 @@ template.innerHTML = /* html */`
     }
 
     .dialog::backdrop {
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.5);
       opacity: 0;
     }
 
@@ -90,13 +90,13 @@ template.innerHTML = /* html */`
         }
       }
 
-      .dialog--static-backdrop:not(.dialog--no-animations) {
-        animation-name: modal-static;
-        animation-duration: ${MODAL_STATIC_ANIMATION_DURATION}ms;
+      .dialog--pulse:not(.dialog--no-animations) {
+        animation-name: pulse;
+        animation-duration: ${PULSE_ANIMATION_DURATION}ms;
         animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
       }
 
-      @keyframes modal-static {
+      @keyframes pulse {
         0%   { transform: scale(1); }
         50%  { transform: scale(1.01); }
         100% { transform: scale(1); }
@@ -161,33 +161,19 @@ template.innerHTML = /* html */`
     .dialog__close:disabled {
       cursor: not-allowed;
     }
-
-    /* Utils */
-    .visually-hidden {
-      position: absolute !important;
-      width: 1px !important;
-      height: 1px !important;
-      padding: 0 !important;
-      margin: -1px !important;
-      overflow: hidden !important;
-      clip: rect(0,0,0,0) !important;
-      white-space: nowrap !important;
-      border: 0 !important;
-    }
   </style>
 
   <dialog part="base" class="dialog">
-    <div part="panel" class="dialog__panel">
+    <div part="panel" class="dialog__panel" aria-labelledby="title">
       <header part="header" class="dialog__header">
-        <slot name="header" class="dialog__title"></slot>
+        <slot name="header" class="dialog__title" id="title"></slot>
 
         <form method="dialog">
-          <button type="submit" part="close" class="dialog__close">
+          <button type="submit" part="close" class="dialog__close" aria-label="Close">
             <slot name="close">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
               </svg>
-              <span class="visually-hidden">Close</span>
             </slot>
           </button>
         </form>
@@ -205,7 +191,7 @@ template.innerHTML = /* html */`
 class ModalElement extends HTMLElement {
   #dialogEl;
   #footerSlotEl;
-  #modalStaticAnimationTimeout;
+  #pulseAnimationTimeout;
 
   constructor() {
     super();
@@ -220,7 +206,7 @@ class ModalElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['open', 'no-header', 'no-animations', 'no-closable', 'no-close-button'];
+    return ['open', 'no-header', 'no-animations', 'no-close-button'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -240,14 +226,6 @@ class ModalElement extends HTMLElement {
       this.#dialogEl?.classList.toggle('dialog--no-animations', this.noAnimations);
     }
 
-    if (name === 'no-closable' && oldValue !== newValue) {
-      const closeBtnEl = this.#dialogEl?.querySelector('.dialog__close');
-
-      if (closeBtnEl) {
-        closeBtnEl.disabled = this.noClosable;
-      }
-    }
-
     if (name === 'no-close-button' && oldValue !== newValue) {
       const closeBtnEl = this.#dialogEl?.querySelector('.dialog__close');
 
@@ -262,20 +240,21 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('staticBackDrop');
     this.#upgradeProperty('noHeader');
     this.#upgradeProperty('noAnimations');
-    this.#upgradeProperty('noClosable');
     this.#upgradeProperty('noCloseButton');
 
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
     this.#dialogEl?.addEventListener('cancel', this.#handleDialogCancel);
+    this.#dialogEl?.querySelector('form[method="dialog"]')?.addEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.addEventListener('slotchange', this.#handleFooterSlotChange);
   }
 
   disconnectedCallback() {
-    this.#modalStaticAnimationTimeout && clearTimeout(this.#modalStaticAnimationTimeout);
+    this.#pulseAnimationTimeout && clearTimeout(this.#pulseAnimationTimeout);
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.removeEventListener('close', this.#handleDialogClose);
     this.#dialogEl?.removeEventListener('cancel', this.#handleDialogCancel);
+    this.#dialogEl?.querySelector('form[method="dialog"]')?.removeEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
   }
 
@@ -327,18 +306,6 @@ class ModalElement extends HTMLElement {
     }
   }
 
-  get noClosable() {
-    return this.hasAttribute('no-closable');
-  }
-
-  set noClosable(value) {
-    if (value) {
-      this.setAttribute('no-closable', '');
-    } else {
-      this.removeAttribute('no-closable');
-    }
-  }
-
   get noCloseButton() {
     return this.hasAttribute('no-close-button');
   }
@@ -366,6 +333,20 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.close();
   }
 
+  #createPulseEffect() {
+    if (this.#pulseAnimationTimeout) {
+      return;
+    }
+
+    this.#dialogEl?.classList.add('dialog--pulse');
+
+    this.#pulseAnimationTimeout = setTimeout(() => {
+      this.#dialogEl?.classList.remove('dialog--pulse');
+      clearTimeout(this.#pulseAnimationTimeout);
+      this.#pulseAnimationTimeout = null;
+    }, PULSE_ANIMATION_DURATION);
+  }
+
   #handleDialogClose = () => {
     this.open = false;
     document.body.style.overflowY = null;
@@ -378,34 +359,42 @@ class ModalElement extends HTMLElement {
   };
 
   #handleDialogCancel = evt => {
-    if (this.noClosable) {
+    const requestCloseEvent = this.#createRequestCloseEvent('escape-key');
+
+    this.dispatchEvent(requestCloseEvent);
+
+    if (requestCloseEvent.defaultPrevented) {
       evt.preventDefault();
+      !this.noAnimations && this.#createPulseEffect();
+    }
+  };
+
+  #handleCloseButtonClick = evt => {
+    const requestCloseEvent = this.#createRequestCloseEvent('close-button');
+
+    this.dispatchEvent(requestCloseEvent);
+
+    if (requestCloseEvent.defaultPrevented) {
+      evt.preventDefault();
+      !this.noAnimations && this.#createPulseEffect();
     }
   };
 
   #handleDialogClick = evt => {
-    if (
-      evt.target === evt.currentTarget
-      && this.staticBackDrop
-      && !this.noAnimations
-      || this.noClosable
-    ) {
-      if (this.#modalStaticAnimationTimeout) {
-        return;
-      }
-
-      this.#dialogEl?.classList.add('dialog--static-backdrop');
-
-      this.#modalStaticAnimationTimeout = setTimeout(() => {
-        this.#dialogEl?.classList.remove('dialog--static-backdrop');
-        clearTimeout(this.#modalStaticAnimationTimeout);
-        this.#modalStaticAnimationTimeout = null;
-      }, MODAL_STATIC_ANIMATION_DURATION);
+    if (evt.target !== evt.currentTarget) {
+      return;
     }
 
-    if (evt.target === evt.currentTarget && !this.staticBackDrop && !this.noClosable) {
-      this.#closeDialog();
+    const requestCloseEvent = this.#createRequestCloseEvent('backdrop-click');
+
+    this.dispatchEvent(requestCloseEvent);
+
+    if (requestCloseEvent.defaultPrevented || this.staticBackDrop) {
+      !this.noAnimations && this.#createPulseEffect();
+      return;
     }
+
+    this.#closeDialog();
   };
 
   #handleFooterSlotChange = () => {
@@ -418,6 +407,18 @@ class ModalElement extends HTMLElement {
 
     footerEl.hidden = !hasFooterSlotNodes;
   };
+
+  #createRequestCloseEvent(reason) {
+    return new CustomEvent('me-request-close', {
+      bubbles: true,
+      composed: true,
+      cancelable: true,
+      detail: {
+        reason,
+        element: this
+      }
+    });
+  }
 
   #upgradeProperty(prop) {
     if (Object.prototype.hasOwnProperty.call(this, prop)) {
