@@ -274,7 +274,21 @@ class ModalElement extends HTMLElement {
    */
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'open' && oldValue !== newValue) {
-      this.open ? this.#openDialog() : this.#closeDialog();
+      if (this.open) {
+        this.#dialogEl?.showModal();
+
+        if (document.body) {
+          document.body.style.overflowY = 'hidden';
+        }
+
+        this.dispatchEvent(new CustomEvent('me-open', {
+          bubbles: true,
+          composed: true,
+          detail: { element: this }
+        }));
+      } else {
+        this.#dialogEl?.close();
+      }
     }
 
     if (name === 'no-header' && oldValue !== newValue) {
@@ -420,27 +434,6 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Opens the modal.
-   */
-  async #openDialog() {
-    this.#dialogEl?.showModal();
-    document.body.style.overflowY = 'hidden';
-
-    this.dispatchEvent(new CustomEvent('me-open', {
-      bubbles: true,
-      composed: true,
-      detail: { element: this }
-    }));
-  }
-
-  /**
-   * Closes the modal.
-   */
-  #closeDialog() {
-    this.#dialogEl?.close();
-  }
-
-  /**
    * Applies a pulse effect on the dialog.
    */
   #applyPulseEffectOnDialog() {
@@ -461,8 +454,13 @@ class ModalElement extends HTMLElement {
    * Handles the close event of the dialog.
    */
   #handleDialogClose = () => {
+    // This is needed because the dialog element does not reset
+    // the open property when the dialog is closed by the user.
     this.open = false;
-    document.body.style.overflowY = null;
+
+    if (document.body) {
+      document.body.style.overflowY = null;
+    }
 
     this.dispatchEvent(new CustomEvent('me-close', {
       bubbles: true,
@@ -521,7 +519,7 @@ class ModalElement extends HTMLElement {
       return;
     }
 
-    this.#closeDialog();
+    this.#dialogEl?.close();
   };
 
   /**
@@ -574,31 +572,40 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Shows the modal.
+   * Opens the modal if it is closed, otherwise does nothing.
+   * Make sure that the custom element is defined before calling this method.
    *
-   * @fires me-open - Dispatched when the modal is opened.
    * @example
    * const modal = document.querySelector('modal-element');
    * modal.show();
    */
   show() {
-    this.#openDialog();
+    if (this.open) {
+      return;
+    }
+
+    this.open = true;
   }
 
   /**
-   * Hides the modal.
+   * Closes the modal if it is open, otherwise does nothing.
+   * Make sure that the custom element is defined before calling this method.
    *
-   * @fires me-close - Dispatched when the modal is closed.
    * @example
    * const modal = document.querySelector('modal-element');
    * modal.hide();
    */
   hide() {
-    this.#closeDialog();
+    if (!this.open) {
+      return;
+    }
+
+    this.open = false;
   }
 
   /**
    * Defines a custom element with the given name.
+   * The name must contain a dash (-).
    *
    * @param {string} [elementName='modal-element']
    * @example
