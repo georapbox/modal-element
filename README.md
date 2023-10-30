@@ -83,7 +83,7 @@ modal-element::part(footer) {
 | Name | Reflects | Type | Required | Default | Description |
 | ---- | -------- | ---- | -------- | ------- | ----------- |
 | `open` | ✓ | Boolean | - | `false` | Indicates whether the modal is open or not. |
-| `staticBackDrop`<br>*`static-backdrop`* | ✓ | Boolean | - | `false` | Indicates whether the modal should be closed when the user clicks outside the modal or not. |
+| `staticBackdrop`<br>*`static-backdrop`* | ✓ | Boolean | - | `false` | Indicates whether the modal should be closed when the user clicks outside the modal or not. |
 | `noHeader`<br>*`no-header`* | ✓ | Boolean | - | `false` | Indicates whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
 | `noAnimations`<br>*`no-animations`*<sup>1</sup> | ✓ | Boolean | - | `false` | Indicates whether the modal should have animations or not. Animations include the modal's entrance and exit animations, as well as the static backdrop's bounce effect when users clicks on it. |
 | `noCloseButton`<br>*`no-close-button`* | ✓ | Boolean | - | `false` | Indicates whether the modal should have a default close button or not. If the modal has no close button, you probably need to provide an accessible way for users to dismiss the modal. |

@@ -195,7 +195,7 @@ template.innerHTML = /* html */`
  * @extends HTMLElement
  *
  * @property {boolean} open - Determines if the modal is open or not.
- * @property {boolean} staticBackDrop - Determines if the modal should close when the backdrop is clicked.
+ * @property {boolean} staticBackdrop - Determines if the modal should close when the backdrop is clicked.
  * @property {boolean} noHeader - Determines if the modal should have a header or not.
  * @property {boolean} noAnimations - Determines if the modal should have animations or not when opening and closing.
  * @property {boolean} noCloseButton - Determines if the modal should have a default close button or not.
@@ -319,7 +319,7 @@ class ModalElement extends HTMLElement {
    */
   connectedCallback() {
     this.#upgradeProperty('open');
-    this.#upgradeProperty('staticBackDrop');
+    this.#upgradeProperty('staticBackdrop');
     this.#upgradeProperty('noHeader');
     this.#upgradeProperty('noAnimations');
     this.#upgradeProperty('noCloseButton');
@@ -365,13 +365,13 @@ class ModalElement extends HTMLElement {
    * Determines if the modal should close when the backdrop is clicked.
    *
    * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false. Default is false.
-   * @attribute static-backdrop - Reflects the staticBackDrop property.
+   * @attribute static-backdrop - Reflects the staticBackdrop property.
    */
-  get staticBackDrop() {
+  get staticBackdrop() {
     return this.hasAttribute('static-backdrop');
   }
 
-  set staticBackDrop(value) {
+  set staticBackdrop(value) {
     if (value) {
       this.setAttribute('static-backdrop', '');
     } else {
@@ -514,7 +514,7 @@ class ModalElement extends HTMLElement {
 
     this.dispatchEvent(requestCloseEvent);
 
-    if (requestCloseEvent.defaultPrevented || this.staticBackDrop) {
+    if (requestCloseEvent.defaultPrevented || this.staticBackdrop) {
       !this.noAnimations && this.#applyPulseEffectOnDialog();
       return;
     }
