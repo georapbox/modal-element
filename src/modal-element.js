@@ -347,6 +347,7 @@ class ModalElement extends HTMLElement {
    * Deternimes if the modal is open or not.
    *
    * @type {boolean} - True if the modal is open, otherwise false. Default is false.
+   * @default false
    * @attribute open - Reflects the open property.
    */
   get open() {
@@ -365,6 +366,7 @@ class ModalElement extends HTMLElement {
    * Determines if the modal should close when the backdrop is clicked.
    *
    * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false. Default is false.
+   * @default false
    * @attribute static-backdrop - Reflects the staticBackdrop property.
    */
   get staticBackdrop() {
@@ -383,6 +385,7 @@ class ModalElement extends HTMLElement {
    * Determines if the modal should have a header or not.
    *
    * @type {boolean} - True if the modal should have a header, otherwise false. Default is false.
+   * @default false
    * @attribute no-header - Reflects the noHeader property.
    */
   get noHeader() {
@@ -401,6 +404,7 @@ class ModalElement extends HTMLElement {
    * Determines if the modal should have animations or not when opening and closing.
    *
    * @type {boolean} - True if the modal should have animations, otherwise false. Default is false.
+   * @default false
    * @attribute no-animations - Reflects the noAnimations property.
    */
   get noAnimations() {
@@ -419,6 +423,7 @@ class ModalElement extends HTMLElement {
    * Determines if the modal should have a default close button or not.
    *
    * @type {boolean} - True if the modal should have a close button, otherwise false. Default is false.
+   * @default false
    * @attribute no-close-button - Reflects the noCloseButton property.
    */
   get noCloseButton() {
