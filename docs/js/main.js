@@ -35,6 +35,46 @@ import(componentUrl).then(module => {
   document.addEventListener('me-open', handleEvents);
   document.addEventListener('me-close', handleEvents);
   document.addEventListener('me-request-close', handleEvents);
+
+  // Interactive demo
+  const attributesForm = document.getElementById('attributes-form');
+  const reasonsForm = document.getElementById('reasons-form');
+  const customStylingForm = document.getElementById('custom-styling-form');
+  const interactiveDemoModal = document.getElementById('modal-10');
+
+  attributesForm.addEventListener('change', evt => {
+    evt.preventDefault();
+
+    [...attributesForm.elements].forEach(el => {
+      if (el.type === 'checkbox') {
+        el.checked ? interactiveDemoModal.setAttribute(el.name, '') : interactiveDemoModal.removeAttribute(el.name);
+      } else if (el.type === 'input') {
+        interactiveDemoModal.setAttribute(el.name, el.value);
+      }
+    });
+  });
+
+  interactiveDemoModal.addEventListener('me-request-close', evt => {
+    reasonsForm.querySelectorAll('[name^="reason"]').forEach(el => {
+      if (el.checked && el.value === evt.detail.reason) {
+        evt.preventDefault();
+      }
+    });
+  });
+
+  customStylingForm.addEventListener('change', evt => {
+    evt.preventDefault();
+
+    [...customStylingForm.elements].forEach(el => {
+      if (el.type === 'checkbox') {
+        interactiveDemoModal.classList.toggle('custom-styling', el.checked);
+      }
+    });
+  });
+
+  reasonsForm.addEventListener('change', evt => {
+    evt.preventDefault();
+  });
 }).catch(err => {
   console.error(err);
 });

@@ -41,6 +41,7 @@
     <li><a href="#example-7">Custom styling</a></li>
     <li><a href="#example-8">Custom transitions</a></li>
     <li><a href="#example-9">Prevent modal from closing</a></li>
+    <li><a href="#example-10">Interactive demo</a></li>
   </ol>
 
   <h3 id="example-1">Example 1 - Default configuration</h3>
@@ -534,6 +535,89 @@
 &lt;/script&gt;
 </code></pre>
     </details>
+  </div>
+
+  <a href="#" class="back-top">↑ Back to top</a>
+
+  <h3 id="example-10">Example 10 - Interactive demo</h3>
+  <p>
+    The following example is an interactive demo of the component.
+    You can play around with the various options and see how they affect the modal.
+  </p>
+
+  <div class="card">
+    <button type="button" data-open="modal-10">Open Modal</button>
+
+    <modal-element id="modal-10" class="custom-styling" style="--me-width: 40rem;">
+      <h2 slot="header">Interactive demo</h2>
+      <div slot="body">
+        <p>This is an interactive demo of the component.</p>
+
+        <form id="attributes-form">
+          <fieldset>
+            <legend>Attributes</legend>
+            <p>
+              Play around with the various attributes and see how they affect the modal.
+            </p>
+            <p>
+              <input type="checkbox" id="static-backdrop" name="static-backdrop">
+              <label for="static-backdrop">static-backdrop</label>
+            </p>
+            <p>
+              <input type="checkbox" id="no-header" name="no-header">
+              <label for="no-header">no-header</label>
+            </p>
+            <p>
+              <input type="checkbox" id="no-close-button" name="no-close-button">
+              <label for="no-close-button">no-close-button</label>
+            </p>
+            <p>
+              <input type="checkbox" id="no-animations" name="no-animations">
+              <label for="no-animations">no-animations</label>
+            </p>
+            <p>
+              <small>For more info on attributes, check the <a href="https://github.com/georapbox/modal-element#properties" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
+            </p>
+          </fieldset>
+        </form>
+
+        <form id="reasons-form">
+          <fieldset>
+            <legend>Prevent modal from closing</legend>
+            <p>Play around with the different ways to prevent the modal from closing.</p>
+            <p>
+              <input type="checkbox" id="reason-close-button" name="reason-close-button" value="close-button">
+              <label for="reason-close-button">By clicking the close button</label>
+            </p>
+            <p>
+              <input type="checkbox" id="reason-backdrop-click" name="reason-backdrop-click" value="backdrop-click">
+              <label for="reason-backdrop-click">By clicking on the backdrop</label>
+            </p>
+            <p>
+              <input type="checkbox" id="reason-escape-key" name="reason-escape-key" value="escape-key">
+              <label for="reason-escape-key">By pressing the <kbd>Esc</kbd> key</label>
+            </p>
+            <p>
+              <small>For more info on events, check the <a href="https://github.com/georapbox/modal-element#events" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
+            </p>
+          </fieldset>
+        </form>
+
+        <form id="custom-styling-form">
+          <fieldset>
+            <legend>Custom styling</legend>
+            <p>
+              <input type="checkbox" id="custom-styling" name="custom-styling" checked>
+              <label for="custom-styling">Apply custom styling</label>
+            </p>
+            <p>
+              <small>For more info on styling, check the <a href="https://github.com/georapbox/modal-element#style" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
+            </p>
+          </fieldset>
+        </form>
+      </div>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-10">Close</button>
+    </modal-element>
   </div>
 
   <a href="#" class="back-top">↑ Back to top</a>
