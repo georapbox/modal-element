@@ -108,6 +108,17 @@ describe('modal-element', () => {
   });
 
   describe('slots', () => {
+    it('should have a default/unnamed slot', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      const bodySlot = el.shadowRoot.querySelector('slot:not([name])');
+      expect(bodySlot).to.exist;
+      const body = document.createElement('p');
+      body.textContent = 'Main content goes here';
+      el.appendChild(body);
+      await elementUpdated(el);
+      expect(bodySlot.assignedElements()).to.deep.equal([body]);
+    });
+
     it('should have "header" slot', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       const headerSlot = el.shadowRoot.querySelector('slot[name="header"]');
@@ -130,18 +141,6 @@ describe('modal-element', () => {
       el.appendChild(footer);
       await elementUpdated(el);
       expect(footerSlot.assignedElements()).to.deep.equal([footer]);
-    });
-
-    it('should have "body" slot', async () => {
-      const el = await fixture(html`<modal-element></modal-element>`);
-      const bodySlot = el.shadowRoot.querySelector('slot[name="body"]');
-      expect(bodySlot).to.exist;
-      const body = document.createElement('p');
-      body.setAttribute('slot', 'body');
-      body.textContent = 'Main content goes here';
-      el.appendChild(body);
-      await elementUpdated(el);
-      expect(bodySlot.assignedElements()).to.deep.equal([body]);
     });
 
     it('should have "close" slot', async () => {

@@ -76,12 +76,12 @@ modal-element [slot="header"] {
   font-size: 1.25rem;
 }
 
-modal-element [slot="body"] p {
+modal-element p {
   margin-top: 0;
   margin-bottom: 1rem;
 }
 
-modal-element [slot="body"] p:last-child {
+modal-element p:last-of-type {
   margin-bottom: 0;
 }
 

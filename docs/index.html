@@ -55,10 +55,8 @@
 
     <modal-element id="modal-1">
       <h2 slot="header">Modal title</h2>
-      <div>
-        <p>This is a modal with the default configuration.</p>
-        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-      </div>
+      <p>This is a modal with the default configuration.</p>
+      <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-1">Close</button>
     </modal-element>
 
@@ -69,10 +67,8 @@
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;
-    &lt;p&gt;This is a modal with the default configuration.&lt;/p&gt;
-    &lt;p&gt;&lt;small&gt;Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key&lt;/small&gt;.&lt;/p&gt;
-  &lt;/div&gt;
+  &lt;p&gt;This is a modal with the default configuration.&lt;/p&gt;
+  &lt;p&gt;&lt;small&gt;Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key&lt;/small&gt;.&lt;/p&gt;
   &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
@@ -106,7 +102,7 @@
 
     <modal-element id="modal-2" static-backdrop>
       <h2 slot="header">Modal title</h2>
-      <div slot="body">This is a modal with static backdrop.</div>
+      <p>This is a modal with static backdrop.</p>
     </modal-element>
 
     <details open>
@@ -116,7 +112,7 @@
 
 &lt;modal-element static-backdrop&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;This is a modal with static backdrop.&lt;/div&gt;
+  &lt;p&gt;This is a modal with static backdrop.&lt;/p&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -144,7 +140,7 @@
 
     <modal-element id="modal-3" no-header>
       <h2 slot="header">Modal title</h2>
-      <div slot="body">This is a modal without header.</div>
+      <p>This is a modal without header.</p>
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-3">Close</button>
     </modal-element>
     <details open>
@@ -154,7 +150,7 @@
 
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;This is a modal without header.&lt;/div&gt;
+  &lt;p&gt;This is a modal without header.&lt;/p&gt;
   &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
@@ -187,7 +183,7 @@
 
     <modal-element id="modal-4" no-close-button>
       <h2 slot="header">Modal title</h2>
-      <div slot="body">This is a modal without default close button.</div>
+      <p>This is a modal without default close button.</p>
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-4">Close</button>
     </modal-element>
 
@@ -198,7 +194,7 @@
 
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;This is a modal without default close button.&lt;/div&gt;
+  &lt;p&gt;This is a modal without default close button.&lt;/p&gt;
   &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
@@ -232,7 +228,7 @@
 
     <modal-element id="modal-5" no-animations static-backdrop>
       <h2 slot="header">Modal title</h2>
-      <div slot="body">This is a modal that does not use animations on open and close or backdrop click.</div>
+      <p>This is a modal that does not use animations on open and close or backdrop click.</p>
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-5">Close</button>
     </modal-element>
 
@@ -243,9 +239,7 @@
 
 &lt;modal-element no-animations static-backdrop&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;
-    This is a modal that does not use animations on open and close or backdrop click.
-  &lt;/div&gt;
+  &lt;p&gt;This is a modal that does not use animations on open and close or backdrop click.&lt;/p&gt;
   &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
@@ -280,11 +274,8 @@
 
     <modal-element id="modal-6">
       <h2 slot="header">Modal title</h2>
-      <div slot="body" style="min-height: 2500px;">
-        <p>
-          This is a modal with really long content.
-          The header and footer will remain fixed, while the body will scroll.
-        </p>
+      <div style="min-height: 2500px;">
+        <p>This is a modal with really long content. The header and footer will remain fixed, while the body will scroll.</p>
         <p>Scroll down and see for yourself! 👇</p>
       </div>
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-6">Close</button>
@@ -294,7 +285,7 @@
       <summary>Source code</summary>
 
 <pre><code>&lt;style&gt;
-  modal-element [slot="body"] {
+  .long-content {
     min-height: 2500px; /* Really long body */
   }
 &lt;/style&gt;
@@ -303,7 +294,7 @@
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;
+  &lt;div class="long-content"&gt;
     &lt;p&gt;
       This is a modal with really long content.
       The header and footer will remain fixed, while the body will scroll.
@@ -343,14 +334,12 @@
 
     <modal-element id="modal-7" class="custom-styling">
       <h2 slot="header">Modal title</h2>
-      <div slot="body">
-        <p>This is a modal with custom styling.</p>
-        <p>
-          You can style the various elements of the component using the available
-          <a href="https://github.com/georapbox/modal-element#css-parts" target="_blank" rel="noopener noreferrer">CSS Parts</a>
-          or by overriding the default <a href="https://github.com/georapbox/modal-element#css-custom-properties" target="_blank" rel="noopener noreferrer">CSS Custom Properties</a>.
-        </p>
-      </div>
+      <p>This is a modal with custom styling.</p>
+      <p>
+        You can style the various elements of the component using the available
+        <a href="https://github.com/georapbox/modal-element#css-parts" target="_blank" rel="noopener noreferrer">CSS Parts</a>
+        or by overriding the default <a href="https://github.com/georapbox/modal-element#css-custom-properties" target="_blank" rel="noopener noreferrer">CSS Custom Properties</a>.
+      </p>
       <button slot="footer" type="submit" form="user-form" style="margin: 0;">Close</button>
     </modal-element>
 
@@ -393,9 +382,7 @@
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;
-    This is a modal with custom styling.
-  &lt;/div&gt;
+  &lt;p&gt;This is a modal with custom styling.&lt;/p&gt;
   &lt;button slot="footer" type="submit" form="user-form"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
@@ -426,7 +413,7 @@
 
     <modal-element id="modal-8" class="custom-animations">
       <h2 slot="header">Modal title</h2>
-      <div slot="body">This is a modal with custom transitions.</div>
+      <p>This is a modal with custom transitions.</p>
     </modal-element>
 
     <details open>
@@ -468,7 +455,7 @@
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;This is a modal with custom transitions.&lt;/div&gt;
+  &lt;p&gt;This is a modal with custom transitions.&lt;/p&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -496,11 +483,11 @@
 
     <modal-element id="modal-9">
       <h2 slot="header">Modal title</h2>
-      <div slot="body">
+      <p>
         This modal will not close when clicking the "X" button,
         but it will close when clicking on the backdrop
         or pressing the <kbd>Esc</kbd> key.
-      </div>
+      </p>
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-9">Close</button>
     </modal-element>
 
@@ -511,11 +498,11 @@
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
-  &lt;div slot="body"&gt;
+  &lt;p&gt;
     This modal will not close when clicking the "X" button,
     but it will close when clicking on the backdrop
     or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
-  &lt;/div&gt;
+  &lt;/p&gt;
   &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
@@ -550,72 +537,72 @@
 
     <modal-element id="modal-10" class="custom-styling" style="--me-width: 40rem;">
       <h2 slot="header">Interactive demo</h2>
-      <div slot="body">
-        <p>This is an interactive demo of the component.</p>
 
-        <form id="attributes-form">
-          <fieldset>
-            <legend>Attributes</legend>
-            <p>
-              Play around with the various attributes and see how they affect the modal.
-            </p>
-            <p>
-              <input type="checkbox" id="static-backdrop" name="static-backdrop">
-              <label for="static-backdrop">static-backdrop</label>
-            </p>
-            <p>
-              <input type="checkbox" id="no-header" name="no-header">
-              <label for="no-header">no-header</label>
-            </p>
-            <p>
-              <input type="checkbox" id="no-close-button" name="no-close-button">
-              <label for="no-close-button">no-close-button</label>
-            </p>
-            <p>
-              <input type="checkbox" id="no-animations" name="no-animations">
-              <label for="no-animations">no-animations</label>
-            </p>
-            <p>
-              <small>For more info on attributes, check the <a href="https://github.com/georapbox/modal-element#properties" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
-            </p>
-          </fieldset>
-        </form>
+      <p>This is an interactive demo of the component.</p>
 
-        <form id="reasons-form">
-          <fieldset>
-            <legend>Prevent modal from closing</legend>
-            <p>Play around with the different ways to prevent the modal from closing.</p>
-            <p>
-              <input type="checkbox" id="reason-close-button" name="reason-close-button" value="close-button">
-              <label for="reason-close-button">By clicking the close button</label>
-            </p>
-            <p>
-              <input type="checkbox" id="reason-backdrop-click" name="reason-backdrop-click" value="backdrop-click">
-              <label for="reason-backdrop-click">By clicking on the backdrop</label>
-            </p>
-            <p>
-              <input type="checkbox" id="reason-escape-key" name="reason-escape-key" value="escape-key">
-              <label for="reason-escape-key">By pressing the <kbd>Esc</kbd> key</label>
-            </p>
-            <p>
-              <small>For more info on events, check the <a href="https://github.com/georapbox/modal-element#events" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
-            </p>
-          </fieldset>
-        </form>
+      <form id="attributes-form">
+        <fieldset>
+          <legend>Attributes</legend>
+          <p>
+            Play around with the various attributes and see how they affect the modal.
+          </p>
+          <p>
+            <input type="checkbox" id="static-backdrop" name="static-backdrop">
+            <label for="static-backdrop">static-backdrop</label>
+          </p>
+          <p>
+            <input type="checkbox" id="no-header" name="no-header">
+            <label for="no-header">no-header</label>
+          </p>
+          <p>
+            <input type="checkbox" id="no-close-button" name="no-close-button">
+            <label for="no-close-button">no-close-button</label>
+          </p>
+          <p>
+            <input type="checkbox" id="no-animations" name="no-animations">
+            <label for="no-animations">no-animations</label>
+          </p>
+          <p>
+            <small>For more info on attributes, check the <a href="https://github.com/georapbox/modal-element#properties" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
+          </p>
+        </fieldset>
+      </form>
 
-        <form id="custom-styling-form">
-          <fieldset>
-            <legend>Custom styling</legend>
-            <p>
-              <input type="checkbox" id="custom-styling" name="custom-styling" checked>
-              <label for="custom-styling">Apply custom styling</label>
-            </p>
-            <p>
-              <small>For more info on styling, check the <a href="https://github.com/georapbox/modal-element#style" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
-            </p>
-          </fieldset>
-        </form>
-      </div>
+      <form id="reasons-form">
+        <fieldset>
+          <legend>Prevent modal from closing</legend>
+          <p>Play around with the different ways to prevent the modal from closing.</p>
+          <p>
+            <input type="checkbox" id="reason-close-button" name="reason-close-button" value="close-button">
+            <label for="reason-close-button">By clicking the close button</label>
+          </p>
+          <p>
+            <input type="checkbox" id="reason-backdrop-click" name="reason-backdrop-click" value="backdrop-click">
+            <label for="reason-backdrop-click">By clicking on the backdrop</label>
+          </p>
+          <p>
+            <input type="checkbox" id="reason-escape-key" name="reason-escape-key" value="escape-key">
+            <label for="reason-escape-key">By pressing the <kbd>Esc</kbd> key</label>
+          </p>
+          <p>
+            <small>For more info on events, check the <a href="https://github.com/georapbox/modal-element#events" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
+          </p>
+        </fieldset>
+      </form>
+
+      <form id="custom-styling-form">
+        <fieldset>
+          <legend>Custom styling</legend>
+          <p>
+            <input type="checkbox" id="custom-styling" name="custom-styling" checked>
+            <label for="custom-styling">Apply custom styling</label>
+          </p>
+          <p>
+            <small>For more info on styling, check the <a href="https://github.com/georapbox/modal-element#style" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
+          </p>
+        </fieldset>
+      </form>
+
       <button slot="footer" type="button" style="margin: 0;" data-close="modal-10">Close</button>
     </modal-element>
   </div>

@@ -181,7 +181,7 @@ template.innerHTML = /* html */`
         </form>
       </header>
 
-      <slot name="body" part="body" class="dialog__body"></slot>
+      <slot part="body" class="dialog__body"></slot>
 
       <footer part="footer" class="dialog__footer" hidden>
         <slot name="footer"></slot>
@@ -206,10 +206,10 @@ template.innerHTML = /* html */`
  * @attribute {boolean} no-animations - Determines if the modal should have animations or not when opening and closing.
  * @attribute {boolean} no-close-button - Determines if the modal should have a default close button or not.
  *
- * @slot header - The header of the modal.
- * @slot body - The body of the modal.
- * @slot footer - The footer of the modal.
- * @slot close - The close button of the modal.
+ * @slot - The modal's main content (default/unnamed slot).
+ * @slot header - The modal's header content, usually a title.
+ * @slot footer - The modals' footer content. Usually used for buttons or other actions.
+ * @slot close - The content of the close button that appears in the modal's header.
  *
  * @cssproperty --me-width - The width of the modal. Default is 32rem.
  * @cssproperty --me-height - The height of the modal. Default is fit-content.

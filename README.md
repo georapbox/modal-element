@@ -41,7 +41,7 @@ import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
 ```html
 <modal-element>
   <h1 slot="header">Modal Title</h1>
-  <div slot="body">Modal content</div>
+  <p>Modal content</p>
   <div slot="footer">Modal footer</div>
 </modal-element>
 ```
@@ -96,8 +96,8 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 | Name | Description |
 | ---- | ----------- |
+| (default/unnamed) | The modal's main content. |
 | `header` | The modal's header content, usually a title. |
-| `body` | The modal's main content. |
 | `footer` | The modals' footer content. Usually used for buttons or other actions. |
 | `close` | The content of the close button that appears in the modal's header. |
 
