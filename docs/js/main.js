@@ -42,9 +42,7 @@ import(componentUrl).then(module => {
   const customStylingForm = document.getElementById('custom-styling-form');
   const interactiveDemoModal = document.getElementById('modal-10');
 
-  attributesForm.addEventListener('change', evt => {
-    evt.preventDefault();
-
+  attributesForm.addEventListener('change', () => {
     [...attributesForm.elements].forEach(el => {
       if (el.type === 'checkbox') {
         el.checked ? interactiveDemoModal.setAttribute(el.name, '') : interactiveDemoModal.removeAttribute(el.name);
@@ -70,10 +68,6 @@ import(componentUrl).then(module => {
         interactiveDemoModal.classList.toggle('custom-styling', el.checked);
       }
     });
-  });
-
-  reasonsForm.addEventListener('change', evt => {
-    evt.preventDefault();
   });
 }).catch(err => {
   console.error(err);

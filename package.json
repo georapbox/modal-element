@@ -40,13 +40,13 @@
     "test": "web-test-runner",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "npm run test -- --coverage",
+    "types": "tsc --project tsconfig.json",
     "dev:parcel": "parcel watch",
     "dev": "npm-run-all clean dev:parcel",
     "build:parcel": "parcel build",
     "build": "npm-run-all clean build:parcel",
     "clean": "rimraf dist .parcel-cache",
-    "prepare": "npm-run-all clean lint test build types",
-    "types": "tsc --project tsconfig.json"
+    "prepare": "npm-run-all clean lint test build types"
   },
   "keywords": [
     "custom element",

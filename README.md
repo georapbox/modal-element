@@ -59,7 +59,7 @@ modal-element {
   --me-width: 38rem;
   --me-border-width: 0;
   --me-border-radius: 0.375rem;
-  --me-bg-color: #ffffff;
+  --me-background-color: #ffffff;
   --me-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
   --me-header-spacing: 1.25rem;
   --me-body-spacing: 1.25rem;
@@ -123,13 +123,13 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `--me-border-width` | The modal's border width. | `initial` |
 | `--me-border-radius` | The modal's border radius. | `0` |
 | `--me-box-shadow` | The modal's box shadow. | `none` |
-| `--me-bg-color` | The modal's background color. | `canvas` |
+| `--me-background-color` | The modal's background color. | `canvas` |
 | `--me-header-spacing` | The amount of spacing (padding) to use for the header element. | `1rem` |
 | `--me-body-spacing` | The amount of spacing (padding) to use for the body element. | `1rem` |
 | `--me-footer-spacing` | The amount of spacing (padding) to use for the footer element. | `1rem` |
-| `--me-header-bg-color` | The header's background color. | `transparent` |
-| `--me-body-bg-color` | The body's background color. | `transparent` |
-| `--me-footer-bg-color` | The footer's background color. | `transparent` |
+| `--me-header-background-color` | The header's background color. | `transparent` |
+| `--me-body-background-color` | The body's background color. | `transparent` |
+| `--me-footer-background-color` | The footer's background color. | `transparent` |
 
 ### Events
 

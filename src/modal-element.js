@@ -24,15 +24,15 @@ template.innerHTML = /* html */`
       --me-border-width: initial;
       --me-border-radius: 0;
       --me-box-shadow: none;
-      --me-bg-color: canvas;
+      --me-background-color: canvas;
       --me-header-spacing: 1rem;
       --me-body-spacing: 1rem;
       --me-footer-spacing: 1rem;
-      --me-header-bg-color: transparent;
-      --me-body-bg-color: transparent;
-      --me-footer-bg-color: transparent;
+      --me-header-background-color: transparent;
+      --me-body-background-color: transparent;
+      --me-footer-background-color: transparent;
       --me-close-border-radius: 0;
-      --me-close-bg-color: transparent;
+      --me-close-background-color: transparent;
       display: contents;
     }
 
@@ -46,7 +46,7 @@ template.innerHTML = /* html */`
       border-width: var(--me-border-width);
       border-radius: var(--me-border-radius);
       box-shadow: var(--me-box-shadow);
-      background-color: var(--me-bg-color);
+      background-color: var(--me-background-color);
     }
 
     .dialog[open] {
@@ -117,7 +117,7 @@ template.innerHTML = /* html */`
       align-items: center;
       padding: var(--me-header-spacing);
       column-gap: 0.5rem;
-      background-color: var(--me-header-bg-color);
+      background-color: var(--me-header-background-color);
     }
 
     :host([no-close-button]) .dialog__header {
@@ -136,7 +136,7 @@ template.innerHTML = /* html */`
       flex: 1 1 auto;
       padding: var(--me-body-spacing);
       overflow: auto;
-      background-color: var(--me-body-bg-color);
+      background-color: var(--me-body-background-color);
     }
 
     .dialog__footer {
@@ -144,7 +144,7 @@ template.innerHTML = /* html */`
       text-align: right;
 
       padding: var(--me-footer-spacing);
-      background-color: var(--me-footer-bg-color);
+      background-color: var(--me-footer-background-color);
     }
 
     .dialog__close {
@@ -200,33 +200,33 @@ template.innerHTML = /* html */`
  * @property {boolean} noAnimations - Determines if the modal should have animations or not when opening and closing.
  * @property {boolean} noCloseButton - Determines if the modal should have a default close button or not.
  *
- * @attribute {boolean} open
- * @attribute {boolean} static-backdrop
- * @attribute {boolean} no-header
- * @attribute {boolean} no-animations
- * @attribute {boolean} no-close-button
+ * @attribute {boolean} open - Determines if the modal is open or not.
+ * @attribute {boolean} static-backdrop - Determines if the modal should close when the backdrop is clicked.
+ * @attribute {boolean} no-header - Determines if the modal should have a header or not.
+ * @attribute {boolean} no-animations - Determines if the modal should have animations or not when opening and closing.
+ * @attribute {boolean} no-close-button - Determines if the modal should have a default close button or not.
  *
  * @slot header - The header of the modal.
  * @slot body - The body of the modal.
  * @slot footer - The footer of the modal.
  * @slot close - The close button of the modal.
  *
- * @cssprop --me-width - The width of the modal. Default is 32rem.
- * @cssprop --me-height - The height of the modal. Default is fit-content.
- * @cssprop --me-border-color - The border color of the modal. Default is initial.
- * @cssprop --me-border-style - The border style of the modal. Default is solid.
- * @cssprop --me-border-width - The border width of the modal. Default is initial.
- * @cssprop --me-border-radius - The border radius of the modal. Default is 0.
- * @cssprop --me-box-shadow - The box shadow of the modal. Default is none.
- * @cssprop --me-bg-color - The background color of the modal. Default is canvas.
- * @cssprop --me-header-spacing - The spacing of the header. Default is 1rem.
- * @cssprop --me-body-spacing - The spacing of the body. Default is 1rem.
- * @cssprop --me-footer-spacing - The spacing of the footer. Default is 1rem.
- * @cssprop --me-header-bg-color - The background color of the header. Default is transparent.
- * @cssprop --me-body-bg-color - The background color of the body. Default is transparent.
- * @cssprop --me-footer-bg-color - The background color of the footer. Default is transparent.
- * @cssprop --me-close-border-radius - The border radius of the close button. Default is 0.
- * @cssprop --me-close-bg-color - The background color of the close button. Default is transparent.
+ * @cssproperty --me-width - The width of the modal. Default is 32rem.
+ * @cssproperty --me-height - The height of the modal. Default is fit-content.
+ * @cssproperty --me-border-color - The border color of the modal. Default is initial.
+ * @cssproperty --me-border-style - The border style of the modal. Default is solid.
+ * @cssproperty --me-border-width - The border width of the modal. Default is initial.
+ * @cssproperty --me-border-radius - The border radius of the modal. Default is 0.
+ * @cssproperty --me-box-shadow - The box shadow of the modal. Default is none.
+ * @cssproperty --me-background-color - The background color of the modal. Default is canvas.
+ * @cssproperty --me-header-spacing - The spacing of the header. Default is 1rem.
+ * @cssproperty --me-body-spacing - The spacing of the body. Default is 1rem.
+ * @cssproperty --me-footer-spacing - The spacing of the footer. Default is 1rem.
+ * @cssproperty --me-header-background-color - The background color of the header. Default is transparent.
+ * @cssproperty --me-body-background-color - The background color of the body. Default is transparent.
+ * @cssproperty --me-footer-background-color - The background color of the footer. Default is transparent.
+ * @cssproperty --me-close-border-radius - The border radius of the close button. Default is 0.
+ * @cssproperty --me-close-background-color - The background color of the close button. Default is transparent.
  *
  * @csspart base - The base wrapper of the modal.
  * @csspart panel - The panel wrapper of the modal.
@@ -238,6 +238,11 @@ template.innerHTML = /* html */`
  * @fires me-open - Dispatched when the modal is opened.
  * @fires me-close - Dispatched when the modal is closed.
  * @fires me-request-close - Dispatched when the modal is about to close.
+ *
+ * @method show - Opens the modal if it is closed, otherwise does nothing.
+ * @method hide - Closes the modal if it is open, otherwise does nothing.
+ *
+ * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
  */
 class ModalElement extends HTMLElement {
   /** @type {HTMLDialogElement} */
