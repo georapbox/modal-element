@@ -24,18 +24,6 @@ import(componentUrl).then(module => {
     });
   });
 
-  const handleEvents = evt => {
-    if (evt.type === 'me-request-close' && evt.detail.reason === 'close-button' && evt.detail.element.id === 'modal-9') {
-      evt.preventDefault();
-    }
-
-    console.log(`${evt.type} =>`, evt.detail);
-  };
-
-  document.addEventListener('me-open', handleEvents);
-  document.addEventListener('me-close', handleEvents);
-  document.addEventListener('me-request-close', handleEvents);
-
   // Interactive demo
   const attributesForm = document.getElementById('attributes-form');
   const reasonsForm = document.getElementById('reasons-form');
@@ -53,22 +41,33 @@ import(componentUrl).then(module => {
   });
 
   interactiveDemoModal.addEventListener('me-request-close', evt => {
-    reasonsForm.querySelectorAll('[name^="reason"]').forEach(el => {
-      if (el.checked && el.value === evt.detail.reason) {
+    reasonsForm.querySelectorAll('input[type="checkbox"]').forEach(el => {
+      if (el.checked && el.getAttribute('name') === evt.detail.reason) {
         evt.preventDefault();
       }
     });
   });
 
-  customStylingForm.addEventListener('change', evt => {
-    evt.preventDefault();
-
+  customStylingForm.addEventListener('change', () => {
     [...customStylingForm.elements].forEach(el => {
       if (el.type === 'checkbox') {
-        interactiveDemoModal.classList.toggle('custom-styling', el.checked);
+        interactiveDemoModal.classList.toggle(el.getAttribute('name'), el.checked);
       }
     });
   });
+
+  // Events
+  const handleEvents = evt => {
+    if (evt.type === 'me-request-close' && evt.detail.reason === 'close-button' && evt.detail.element.id === 'modal-9') {
+      evt.preventDefault();
+    }
+
+    console.log(`${evt.type} =>`, evt.detail);
+  };
+
+  document.addEventListener('me-open', handleEvents);
+  document.addEventListener('me-close', handleEvents);
+  document.addEventListener('me-request-close', handleEvents);
 }).catch(err => {
   console.error(err);
 });

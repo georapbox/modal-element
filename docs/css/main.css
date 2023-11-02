@@ -122,25 +122,25 @@ modal-element.custom-styling [slot="footer"] button {
 
 /* Customize animations */
 @media (prefers-reduced-motion: no-preference) {
-  modal-element.custom-animations:not([no-animations])::part(base) {
+  modal-element.custom-transition:not([no-animations])::part(base) {
     transition: transform 0.35s, opacity 0.35s, display 0.35s allow-discrete, overlay 0.35s allow-discrete;
   }
 
   /* IS-OPEN STATE */
-  modal-element.custom-animations:not([no-animations])[open]::part(base) {
+  modal-element.custom-transition:not([no-animations])[open]::part(base) {
     transform: translateY(0);
     opacity: 1;
   }
 
   /* EXIT STATE */
-  modal-element.custom-animations:not([no-animations])::part(base) {
+  modal-element.custom-transition:not([no-animations])::part(base) {
     transform: translateY(-2rem);
     opacity: 0;
   }
 
   /* BEFORE-OPEN STATE */
   @starting-style {
-    modal-element.custom-animations[open]:not([no-animations])::part(base) {
+    modal-element.custom-transition[open]:not([no-animations])::part(base) {
       transform: translateY(-2rem);
       opacity: 0;
     }

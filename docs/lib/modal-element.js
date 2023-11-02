@@ -232,8 +232,9 @@ let e=document.createElement("template");e.innerHTML=/* html */`
  * @fires me-close - Dispatched when the modal is closed.
  * @fires me-request-close - Dispatched when the modal is about to close.
  *
- * @method show - Opens the modal if it is closed, otherwise does nothing.
- * @method hide - Closes the modal if it is open, otherwise does nothing.
+ * @method defineCustomElement - Static method. Defines a custom element with the given name.
+ * @method show - Instance method. Opens the modal if it is closed, otherwise does nothing.
+ * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
  *
  * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
  */class t extends HTMLElement{/** @type {HTMLDialogElement} */#e;/** @type {HTMLSlotElement} */#t;/** @type {null | ReturnType<typeof setTimeout>} */#o;constructor(){super(),this.shadowRoot||(this.attachShadow({mode:"open"}),this.shadowRoot.appendChild(e.content.cloneNode(!0))),this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]')}static get observedAttributes(){return["open","no-header","no-animations","no-close-button"]}/**

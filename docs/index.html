@@ -39,7 +39,7 @@
     <li><a href="#example-5">Without animations</a></li>
     <li><a href="#example-6">Scrolling long content</a></li>
     <li><a href="#example-7">Custom styling</a></li>
-    <li><a href="#example-8">Custom transitions</a></li>
+    <li><a href="#example-8">Custom transition (enter/leave)</a></li>
     <li><a href="#example-9">Prevent modal from closing</a></li>
     <li><a href="#example-10">Interactive demo</a></li>
   </ol>
@@ -400,18 +400,19 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-8">Example 8 - Custom transitions</h3>
+  <h3 id="example-8">Example 8 - Custom transition (enter/leave)</h3>
   <p>
     You can customize the modal's enter/leave transition using CSS.
     Note, that browser support is limited to those that suport the
     <a href="https://caniuse.com/?search=%40starting" target="_blank" rel="noopener noreferrer"><code>@starting-style</code></a>
-    CSS at-rule.
+    CSS at-rule. Also, the <code>prefers-reduced-motion</code> media query is respected by default
+    and animations are disabled when the user has enabled the "reduce motion" option in their OS settings.
   </p>
 
   <div class="card">
     <button type="button" data-open="modal-8">Open Modal</button>
 
-    <modal-element id="modal-8" class="custom-animations">
+    <modal-element id="modal-8" class="custom-transition">
       <h2 slot="header">Modal title</h2>
       <p>This is a modal with custom transitions.</p>
     </modal-element>
@@ -573,16 +574,16 @@
           <legend>Prevent modal from closing</legend>
           <p>Play around with the different ways to prevent the modal from closing.</p>
           <p>
-            <input type="checkbox" id="reason-close-button" name="reason-close-button" value="close-button">
-            <label for="reason-close-button">By clicking the close button</label>
+            <input type="checkbox" id="close-button" name="close-button">
+            <label for="close-button">By clicking the close button</label>
           </p>
           <p>
-            <input type="checkbox" id="reason-backdrop-click" name="reason-backdrop-click" value="backdrop-click">
-            <label for="reason-backdrop-click">By clicking on the backdrop</label>
+            <input type="checkbox" id="backdrop-click" name="backdrop-click">
+            <label for="backdrop-click">By clicking on the backdrop</label>
           </p>
           <p>
-            <input type="checkbox" id="reason-escape-key" name="reason-escape-key" value="escape-key">
-            <label for="reason-escape-key">By pressing the <kbd>Esc</kbd> key</label>
+            <input type="checkbox" id="escape-key" name="escape-key">
+            <label for="escape-key">By pressing the <kbd>Esc</kbd> key</label>
           </p>
           <p>
             <small>For more info on events, check the <a href="https://github.com/georapbox/modal-element#events" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
@@ -596,6 +597,10 @@
           <p>
             <input type="checkbox" id="custom-styling" name="custom-styling" checked>
             <label for="custom-styling">Apply custom styling</label>
+          </p>
+          <p>
+            <input type="checkbox" id="custom-transition" name="custom-transition">
+            <label for="custom-transition">Apply custom transition (enter/leave)</label>
           </p>
           <p>
             <small>For more info on styling, check the <a href="https://github.com/georapbox/modal-element#style" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
