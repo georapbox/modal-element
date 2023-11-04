@@ -237,17 +237,17 @@ let e=document.createElement("template");e.innerHTML=/* html */`
  * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
  *
  * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
- */class t extends HTMLElement{/** @type {HTMLDialogElement} */#e;/** @type {HTMLSlotElement} */#t;/** @type {null | ReturnType<typeof setTimeout>} */#o;constructor(){super(),this.shadowRoot||(this.attachShadow({mode:"open"}),this.shadowRoot.appendChild(e.content.cloneNode(!0))),this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]')}static get observedAttributes(){return["open","no-header","no-animations","no-close-button"]}/**
+ */class t extends HTMLElement{/** @type {HTMLDialogElement | null} */#e=null;/** @type {HTMLSlotElement | null} */#t=null;/** @type {ReturnType<typeof setTimeout> | undefined} */#o=void 0;constructor(){if(super(),!this.shadowRoot){let t=this.attachShadow({mode:"open"});t.appendChild(e.content.cloneNode(!0))}this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button"]}/**
    * Lifecycle method that is called when attributes are changed, added, removed, or replaced.
    *
    * @param {string} name - The name of the attribute.
    * @param {string} oldValue - The old value of the attribute.
    * @param {string} newValue - The new value of the attribute.
-   */attributeChangedCallback(e,t,o){if("open"===e&&t!==o&&(this.open?(this.#e?.showModal(),document.body&&(document.body.style.overflowY="hidden"),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}}))):this.#e?.close()),"no-header"===e&&t!==o){/** @type {HTMLElement} */let e=this.#e?.querySelector(".dialog__header");e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e?.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {HTMLElement} */let e=this.#e?.querySelector(".dialog__close");e&&(e.hidden=this.noCloseButton)}}/**
+   */attributeChangedCallback(e,t,o){if(null!=this.#e){if("open"===e&&t!==o&&(this.open?(this.#e.showModal(),document.body&&(document.body.style.overflowY="hidden"),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}}))):this.#e.close()),"no-header"===e&&t!==o){/** @type {HTMLElement | null} */let e=this.#e.querySelector(".dialog__header");e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {HTMLElement | null} */let e=this.#e.querySelector(".dialog__close");e&&(e.hidden=this.noCloseButton)}}}/**
    * Lifecycle method that is called when the element is added to the DOM.
-   */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#e?.addEventListener("click",this.#a),this.#e?.addEventListener("close",this.#s),this.#e?.addEventListener("cancel",this.#l),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#n),this.#t?.addEventListener("slotchange",this.#r)}/**
+   */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#e?.addEventListener("click",this.#a),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#n),this.#t?.addEventListener("slotchange",this.#r)}/**
    * Lifecycle method that is called when the element is removed from the DOM.
-   */disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#a),this.#e?.removeEventListener("close",this.#s),this.#e?.removeEventListener("cancel",this.#l),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#n),this.#t?.removeEventListener("slotchange",this.#r)}/**
+   */disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#a),this.#e?.removeEventListener("close",this.#l),this.#e?.removeEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#n),this.#t?.removeEventListener("slotchange",this.#r)}/**
    * Deternimes if the modal is open or not.
    *
    * @type {boolean} - True if the modal is open, otherwise false. Default is false.
@@ -279,24 +279,26 @@ let e=document.createElement("template");e.innerHTML=/* html */`
    * @attribute no-close-button - Reflects the noCloseButton property.
    */get noCloseButton(){return this.hasAttribute("no-close-button")}set noCloseButton(e){e?this.setAttribute("no-close-button",""):this.removeAttribute("no-close-button")}/**
    * Applies a pulse effect on the dialog.
-   */#d(){this.#o||(this.#e?.classList.add("dialog--pulse"),this.#o=setTimeout(()=>{this.#e?.classList.remove("dialog--pulse"),clearTimeout(this.#o),this.#o=null},300))}/**
+   */#d(){this.#o||(this.#e?.classList.add("dialog--pulse"),this.#o=setTimeout(()=>{this.#e?.classList.remove("dialog--pulse"),clearTimeout(this.#o),this.#o=void 0},300))}/**
    * Handles the close event of the dialog.
-   */#s=()=>{// This is needed because the dialog element does not reset
+   */#l=()=>{// This is needed because the dialog element does not reset
 // the open property when the dialog is closed by the user.
-this.open=!1,document.body&&(document.body.style.overflowY=null),this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}}))};/**
+this.open=!1,document.body&&(document.body.style.overflowY=""),this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}}))};/**
    * Handles the cancel event of the dialog.
    * This event is fired when the user presses the escape key.
-   */#l=e=>{let t=this.#c("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#d())};/**
+   *
+   * @param {Event} evt - The cancel event.
+   */#s=e=>{let t=this.#c("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#d())};/**
    * Handles the click event of the close button.
    *
-   * @param {MouseEvent} evt - The click event.
+   * @param {Event} evt - The click event.
    */#n=e=>{let t=this.#c("close-button");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#d())};/**
    * Handles the click event of the dialog.
    *
    * @param {MouseEvent} evt - The click event.
    */#a=e=>{if(e.target!==e.currentTarget)return;let t=this.#c("backdrop-click");if(this.dispatchEvent(t),t.defaultPrevented||this.staticBackdrop){this.noAnimations||this.#d();return}this.#e?.close()};/**
    * Handles the slotchange event of the footer slot.
-   */#r=()=>{/** @type {HTMLElement} */let e=this.#e?.querySelector(".dialog__footer"),t=this.#t?.assignedNodes()?.length>0;e&&(e.hidden=!t)};/**
+   */#r=()=>{if(null==this.#e)return;/** @type {HTMLElement | null} */let e=this.#e.querySelector(".dialog__footer");if(!e)return;let t=this.#t?.assignedNodes(),o=!!t&&t.length>0;e.hidden=!o};/**
    * Creates a request close event.
    *
    * @param {'close-button' | 'escape-key' | 'backdrop-click'} reason - The reason that the modal is about to close.
@@ -307,8 +309,9 @@ this.open=!1,document.body&&(document.body.style.overflowY=null),this.dispatchEv
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {string} prop - The property to upgrade.
-   */#i(e){if(Object.prototype.hasOwnProperty.call(this,e)){let t=this[e];delete this[e],this[e]=t}}/**
+   * @param {keyof ModalElement} prop - The property to upgrade.
+   */#i(e){if(Object.prototype.hasOwnProperty.call(this,e)){let t=this[e];delete this[e],// @ts-ignore
+this[e]=t}}/**
    * Opens the modal if it is closed, otherwise does nothing.
    * Make sure that the custom element is defined before calling this method.
    *

@@ -66,6 +66,18 @@
   }
 }
 
+browser-window {
+  --bw-background: var(--background-alt);
+}
+
+browser-window::part(base) {
+  border-color: var(--border);
+}
+
+browser-window > button {
+  margin-block: 1rem;
+}
+
 modal-element:not(:defined) {
   display: none !important;
 }
