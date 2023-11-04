@@ -246,25 +246,27 @@ template.innerHTML = /* html */`
  * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
  */
 class ModalElement extends HTMLElement {
-  /** @type {HTMLDialogElement} */
-  #dialogEl;
+  /** @type {HTMLDialogElement | null} */
+  #dialogEl = null;
 
-  /** @type {HTMLSlotElement} */
-  #footerSlotEl;
+  /** @type {HTMLSlotElement | null} */
+  #footerSlotEl = null;
 
-  /** @type {null | ReturnType<typeof setTimeout>} */
-  #pulseAnimationTimeout;
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  #pulseAnimationTimeout = void 0;
 
   constructor() {
     super();
 
     if (!this.shadowRoot) {
-      this.attachShadow({ mode: 'open' });
-      this.shadowRoot.appendChild(template.content.cloneNode(true));
+      const shadowRoot = this.attachShadow({ mode: 'open' });
+      shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
-    this.#dialogEl = this.shadowRoot.querySelector('dialog');
-    this.#footerSlotEl = this.shadowRoot.querySelector('slot[name="footer"]');
+    if (this.shadowRoot) {
+      this.#dialogEl = this.shadowRoot.querySelector('dialog');
+      this.#footerSlotEl = this.shadowRoot.querySelector('slot[name="footer"]');
+    }
   }
 
   static get observedAttributes() {
@@ -279,9 +281,13 @@ class ModalElement extends HTMLElement {
    * @param {string} newValue - The new value of the attribute.
    */
   attributeChangedCallback(name, oldValue, newValue) {
+    if (this.#dialogEl == null) {
+      return;
+    }
+
     if (name === 'open' && oldValue !== newValue) {
       if (this.open) {
-        this.#dialogEl?.showModal();
+        this.#dialogEl.showModal();
 
         if (document.body) {
           document.body.style.overflowY = 'hidden';
@@ -293,13 +299,13 @@ class ModalElement extends HTMLElement {
           detail: { element: this }
         }));
       } else {
-        this.#dialogEl?.close();
+        this.#dialogEl.close();
       }
     }
 
     if (name === 'no-header' && oldValue !== newValue) {
-      /** @type {HTMLElement} */
-      const headerEl = this.#dialogEl?.querySelector('.dialog__header');
+      /** @type {HTMLElement | null} */
+      const headerEl = this.#dialogEl.querySelector('.dialog__header');
 
       if (headerEl) {
         headerEl.hidden = this.noHeader;
@@ -307,12 +313,12 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-animations' && oldValue !== newValue) {
-      this.#dialogEl?.classList.toggle('dialog--no-animations', this.noAnimations);
+      this.#dialogEl.classList.toggle('dialog--no-animations', this.noAnimations);
     }
 
     if (name === 'no-close-button' && oldValue !== newValue) {
-      /** @type {HTMLElement} */
-      const closeBtnEl = this.#dialogEl?.querySelector('.dialog__close');
+      /** @type {HTMLElement | null} */
+      const closeBtnEl = this.#dialogEl.querySelector('.dialog__close');
 
       if (closeBtnEl) {
         closeBtnEl.hidden = this.noCloseButton;
@@ -457,7 +463,7 @@ class ModalElement extends HTMLElement {
     this.#pulseAnimationTimeout = setTimeout(() => {
       this.#dialogEl?.classList.remove('dialog--pulse');
       clearTimeout(this.#pulseAnimationTimeout);
-      this.#pulseAnimationTimeout = null;
+      this.#pulseAnimationTimeout = void 0;
     }, PULSE_ANIMATION_DURATION);
   }
 
@@ -470,7 +476,7 @@ class ModalElement extends HTMLElement {
     this.open = false;
 
     if (document.body) {
-      document.body.style.overflowY = null;
+      document.body.style.overflowY = '';
     }
 
     this.dispatchEvent(new CustomEvent('me-close', {
@@ -483,6 +489,8 @@ class ModalElement extends HTMLElement {
   /**
    * Handles the cancel event of the dialog.
    * This event is fired when the user presses the escape key.
+   *
+   * @param {Event} evt - The cancel event.
    */
   #handleDialogCancel = evt => {
     const requestCloseEvent = this.#createRequestCloseEvent('escape-key');
@@ -498,7 +506,7 @@ class ModalElement extends HTMLElement {
   /**
    * Handles the click event of the close button.
    *
-   * @param {MouseEvent} evt - The click event.
+   * @param {Event} evt - The click event.
    */
   #handleCloseButtonClick = evt => {
     const requestCloseEvent = this.#createRequestCloseEvent('close-button');
@@ -537,13 +545,19 @@ class ModalElement extends HTMLElement {
    * Handles the slotchange event of the footer slot.
    */
   #handleFooterSlotChange = () => {
-    /** @type {HTMLElement} */
-    const footerEl = this.#dialogEl?.querySelector('.dialog__footer');
-    const hasFooterSlotNodes = this.#footerSlotEl?.assignedNodes()?.length > 0;
+    if (this.#dialogEl == null) {
+      return;
+    }
+
+    /** @type {HTMLElement | null} */
+    const footerEl = this.#dialogEl.querySelector('.dialog__footer');
 
     if (!footerEl) {
       return;
     }
+
+    const footerSlotNodes = this.#footerSlotEl?.assignedNodes();
+    const hasFooterSlotNodes = footerSlotNodes ? footerSlotNodes.length > 0 : false;
 
     footerEl.hidden = !hasFooterSlotNodes;
   };
@@ -572,12 +586,13 @@ class ModalElement extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {string} prop - The property to upgrade.
+   * @param {keyof ModalElement} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
     if (Object.prototype.hasOwnProperty.call(this, prop)) {
       const value = this[prop];
       delete this[prop];
+      // @ts-ignore
       this[prop] = value;
     }
   }
