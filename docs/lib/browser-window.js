@@ -150,7 +150,7 @@ class BrowserWindow extends HTMLElement {
             <div class="circle circle-green"></div>`
       }
       ${url
-        ? /* html */`<a href="${url}" class="title"><slot name="icon">${iconHtml}</slot><span class="title-text">${displayUrl}</span></a>`
+        ? /* html */`<a href="${url}" target="_blank" rel="noopener noreferrer" class="title"><slot name="icon">${iconHtml}</slot><span class="title-text">${displayUrl}</span></a>`
         : ""
       }
     </div>

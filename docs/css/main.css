@@ -68,6 +68,7 @@
 
 browser-window {
   --bw-background: var(--background-alt);
+  text-align: center;
 }
 
 browser-window::part(base) {
@@ -75,7 +76,7 @@ browser-window::part(base) {
 }
 
 browser-window > button {
-  margin-block: 1rem;
+  margin-block: 2rem;
 }
 
 modal-element:not(:defined) {

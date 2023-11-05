@@ -1,16 +1,5 @@
 let e=document.createElement("template");e.innerHTML=/* html */`
   <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    :host([hidden]),
-    [hidden] {
-      display: none !important;
-    }
-
     :host {
       --me-width: 32rem;
       --me-height: fit-content;
@@ -29,6 +18,18 @@ let e=document.createElement("template");e.innerHTML=/* html */`
       --me-close-border-radius: 0;
       --me-close-background-color: transparent;
       display: contents;
+      box-sizing: border-box;
+    }
+
+    :host *,
+    :host *:after,
+    :host *:before {
+      box-sizing: inherit;
+    }
+
+    :host([hidden]),
+    [hidden] {
+      display: none !important;
     }
 
     /* Dialog */
@@ -309,9 +310,8 @@ this.open=!1,document.body&&(document.body.style.overflowY=""),this.dispatchEven
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {keyof ModalElement} prop - The property to upgrade.
-   */#i(e){if(Object.prototype.hasOwnProperty.call(this,e)){let t=this[e];delete this[e],// @ts-ignore
-this[e]=t}}/**
+   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton'} prop - The property to upgrade.
+   */#i(e){if(Object.prototype.hasOwnProperty.call(this,e)){let t=this[e];delete this[e],this[e]=t}}/**
    * Opens the modal if it is closed, otherwise does nothing.
    * Make sure that the custom element is defined before calling this method.
    *
