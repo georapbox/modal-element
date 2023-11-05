@@ -5,17 +5,6 @@ const template = document.createElement('template');
 
 template.innerHTML = /* html */`
   <style>
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    :host([hidden]),
-    [hidden] {
-      display: none !important;
-    }
-
     :host {
       --me-width: 32rem;
       --me-height: fit-content;
@@ -34,6 +23,18 @@ template.innerHTML = /* html */`
       --me-close-border-radius: 0;
       --me-close-background-color: transparent;
       display: contents;
+      box-sizing: border-box;
+    }
+
+    :host *,
+    :host *:after,
+    :host *:before {
+      box-sizing: inherit;
+    }
+
+    :host([hidden]),
+    [hidden] {
+      display: none !important;
     }
 
     /* Dialog */
@@ -586,14 +587,16 @@ class ModalElement extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {keyof ModalElement} prop - The property to upgrade.
+   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton'} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
-    if (Object.prototype.hasOwnProperty.call(this, prop)) {
-      const value = this[prop];
-      delete this[prop];
-      // @ts-ignore
-      this[prop] = value;
+    /** @type {any} */
+    const instance = this;
+
+    if (Object.prototype.hasOwnProperty.call(instance, prop)) {
+      const value = instance[prop];
+      delete instance[prop];
+      instance[prop] = value;
     }
   }
 
