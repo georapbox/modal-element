@@ -64,6 +64,8 @@ modal-element {
   --me-header-spacing: 1.25rem;
   --me-body-spacing: 1.25rem;
   --me-footer-spacing: 1.25rem;
+  --me-backdrop-background: rgba(0, 0, 0, 0.7);
+  --me-backdrop-filter: blur(1px);
 }
 
 modal-element::part(header) {
@@ -130,6 +132,14 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `--me-header-background-color` | The header's background color. | `transparent` |
 | `--me-body-background-color` | The body's background color. | `transparent` |
 | `--me-footer-background-color` | The footer's background color. | `transparent` |
+| `--me-backdrop-background`<sup>1</sup> | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
+| `--me-backdrop-filter`<sup>1</sup> | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
+
+<sup>1</sup> At the time of writing, the `::backdrop` pseudo-element (which is used under the hood) does not inherit from originating element per the specification. This means that the backdrop's CSS custom properties cannot be inherited from the modal's CSS custom properties. Fortunately, this is a known issue and it is being worked on by browser vendors and the CSS working group. Currently, it's already fixed in Firefox Nightly 120+ and Chromium Canary 121+. For more details, check the browser reported bugs below:
+- [WHATWG bug report](https://github.com/whatwg/fullscreen/issues/124)
+- [Chromium bug report](https://bugs.chromium.org/p/chromium/issues/detail?id=827397)
+- [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1855668)
+- [Safari bug report](https://bugs.webkit.org/show_bug.cgi?id=263834)
 
 ### Events
 

@@ -36,15 +36,17 @@
     <li><a href="#example-2">Static backdrop</a></li>
     <li><a href="#example-3">Without header</a></li>
     <li><a href="#example-4">Without default close button</a></li>
-    <li><a href="#example-5">Without animations</a></li>
-    <li><a href="#example-6">Scrolling long content</a></li>
-    <li><a href="#example-7">Custom styling</a></li>
-    <li><a href="#example-8">Custom transition (enter/leave)</a></li>
-    <li><a href="#example-9">Prevent modal from closing</a></li>
-    <li><a href="#example-10">Interactive demo</a></li>
+    <li><a href="#example-5">Without footer</a></li>
+    <li><a href="#example-6">Without animations</a></li>
+    <li><a href="#example-7">Scrolling long content</a></li>
+    <li><a href="#example-8">Custom styling</a></li>
+    <li><a href="#example-9">Custom backdrop</a></li>
+    <li><a href="#example-10">Custom transition (enter/leave)</a></li>
+    <li><a href="#example-11">Prevent modal from closing</a></li>
+    <li><a href="#example-12">Interactive demo</a></li>
   </ol>
 
-  <h3 id="example-1">Example 1 - Default configuration</h3>
+  <h3 id="example-1"><a href="#example-1">#</a> Example 1 - Default configuration</h3>
   <p>
     This is a modal with the default configurations.
     It will close by clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key.
@@ -52,17 +54,17 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-1">Open Modal</button>
+      <button type="button" data-open="modal-default-config">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-1">
+    <modal-element id="modal-default-config">
       <h2 slot="header">Modal title</h2>
       <p>This is a modal with the default configuration.</p>
       <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-1">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-default-config">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary disabled>Source code</summary>
 
 <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
@@ -93,7 +95,7 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-2">Example 2 - Static backdrop</h3>
+  <h3 id="example-2"><a href="#example-2">#</a> Example 2 - Static backdrop</h3>
   <p>
     By adding the <code>static-backdrop</code> attribute, the modal will not close by clicking on the backdrop.
     The modal will still close by clicking the "X" button, or pressing the <kbd>Esc</kbd> key.
@@ -101,15 +103,16 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-2">Open Modal</button>
+      <button type="button" data-open="modal-static-backdrop">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-2" static-backdrop>
+    <modal-element id="modal-static-backdrop" static-backdrop>
       <h2 slot="header">Modal title</h2>
-      <p>This is a modal with static backdrop.</p>
+      <p>This is a modal with static backdrop. Clicking on the backdrop will not close the modal.</p>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-static-backdrop">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
@@ -117,14 +120,20 @@
 &lt;modal-element static-backdrop&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
   &lt;p&gt;This is a modal with static backdrop.&lt;/p&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
   const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
   const modalElement = document.querySelector('modal-element');
 
   openModalButton.addEventListener('click', () => {
     modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
   });
 &lt;/script&gt;
 </code></pre>
@@ -133,7 +142,7 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-3">Example 3 - Without header</h3>
+  <h3 id="example-3"><a href="#example-3">#</a> Example 3 - Without header</h3>
   <p>
     By adding the <code>no-header</code> attribute, the modal will not have a header.
     Note that this will also remove the default close button.
@@ -141,15 +150,15 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-3">Open Modal</button>
+      <button type="button" data-open="modal-without-header">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-3" no-header>
+    <modal-element id="modal-without-header" no-header>
       <h2 slot="header">Modal title</h2>
       <p>This is a modal without header.</p>
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-3">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-without-header">Close</button>
     </modal-element>
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
@@ -179,28 +188,28 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-4">Example 4 - Without default close button</h3>
+  <h3 id="example-4"><a href="#example-4">#</a> Example 4 - Without default close button</h3>
   <p>
     By adding the <code>no-close-button</code> attribute, the modal will not have a default close button.
   </p>
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-4">Open Modal</button>
+      <button type="button" data-open="modal-without-close-button">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-4" no-close-button>
+    <modal-element id="modal-without-close-button" no-close-button>
       <h2 slot="header">Modal title</h2>
       <p>This is a modal without default close button.</p>
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-4">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-without-close-button">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
-&lt;modal-element no-header&gt;
+&lt;modal-element no-close-button&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
   &lt;p&gt;This is a modal without default close button.&lt;/p&gt;
   &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
@@ -225,7 +234,46 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-5">Example 5 - Without animations</h3>
+  <h3 id="example-5"><a href="#example-5">#</a> Example 5 - Without footer</h3>
+  <p>
+    If you don't need a footer, you can omit it by not providing any content for the <code>footer</code> slot.
+  </p>
+
+  <div class="card">
+    <browser-window url="https://github.com/georapbox/modal-element" icon>
+      <button type="button" data-open="modal-without-footer">Open Modal</button>
+    </browser-window>
+
+    <modal-element id="modal-without-footer">
+      <h2 slot="header">Modal title</h2>
+      <p>This is a modal without footer.</p>
+    </modal-element>
+
+    <details>
+      <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element&gt;
+  &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
+  &lt;p&gt;This is a modal without footer.&lt;/p&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+    </details>
+  </div>
+
+  <a href="#" class="back-top">↑ Back to top</a>
+
+  <h3 id="example-6"><a href="#example-6">#</a> Example 6 - Without animations</h3>
   <p>
     By adding the <code>no-animations</code> attribute, the modal will not use animations on open and close.
     It also removes the backdrop click animation if the <code>static-backdrop</code> attribute is present.
@@ -233,16 +281,16 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-5">Open Modal</button>
+      <button type="button" data-open="modal-without-animations">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-5" no-animations static-backdrop>
+    <modal-element id="modal-without-animations" no-animations static-backdrop>
       <h2 slot="header">Modal title</h2>
       <p>This is a modal that does not use animations on open and close or backdrop click.</p>
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-5">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-without-animations">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
@@ -272,7 +320,7 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-6">Example 6 - Scrolling long content</h3>
+  <h3 id="example-7"><a href="#example-7">#</a> Example 7 - Scrolling long content</h3>
   <p>
     By design, the modal's height will not exceed that of the viewport.
     If the content is longer than the viewport, the body will scroll
@@ -281,19 +329,19 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-6">Open modal</button>
+      <button type="button" data-open="modal-long-content">Open modal</button>
     </browser-window>
 
-    <modal-element id="modal-6">
+    <modal-element id="modal-long-content">
       <h2 slot="header">Modal title</h2>
       <div style="min-height: 2500px;">
         <p>This is a modal with really long content. The header and footer will remain fixed, while the body will scroll.</p>
         <p>Scroll down and see for yourself! 👇</p>
       </div>
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-6">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-long-content">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;style&gt;
@@ -335,7 +383,7 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-7">Example 7 - Custom styling</h3>
+  <h3 id="example-8"><a href="#example-8">#</a> Example 8 - Custom styling</h3>
   <p>
     The modal can be styled and customized as you wish.
     The following example uses <a href="https://watercss.kognise.dev/" target="_blank" rel="noopener noreferrer">Water.css</a> for styling.
@@ -343,10 +391,10 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-7">Open Modal</button>
+      <button type="button" data-open="modal-custom-styling">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-7" class="custom-styling">
+    <modal-element id="modal-custom-styling" class="custom-styling">
       <h2 slot="header">Modal title</h2>
       <p>This is a modal with custom styling.</p>
       <p>
@@ -354,10 +402,10 @@
         <a href="https://github.com/georapbox/modal-element#css-parts" target="_blank" rel="noopener noreferrer">CSS Parts</a>
         or by overriding the default <a href="https://github.com/georapbox/modal-element#css-custom-properties" target="_blank" rel="noopener noreferrer">CSS Custom Properties</a>.
       </p>
-      <button slot="footer" type="submit" form="user-form" style="margin: 0;">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-custom-styling">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;style&gt;
@@ -370,6 +418,8 @@
     --me-header-background-color: var(--background-alt);
     --me-body-background-color: var(--background-body);
     --me-footer-background-color: var(--background-alt);
+    --me-backdrop-background: rgba(0, 0, 0, 0.7);
+    --me-backdrop-filter: blur(1px);
   }
 
   modal-element::part(header) {
@@ -382,6 +432,7 @@
 
   modal-element::part(close) {
     background-color: var(--button-base);
+    border: 1px solid var(--border);
     border-radius: 0.25rem;
     color: var(--text-bright);
     transition: background-color 0.2s ease;
@@ -397,15 +448,20 @@
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
   &lt;p&gt;This is a modal with custom styling.&lt;/p&gt;
-  &lt;button slot="footer" type="submit" form="user-form"&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
   const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
   const modalElement = document.querySelector('modal-element');
 
   openModalButton.addEventListener('click', () => {
     modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
   });
 &lt;/script&gt;
 </code></pre>
@@ -414,7 +470,56 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-8">Example 8 - Custom transition (enter/leave)</h3>
+  <h3 id="example-9"><a href="#example-9">#</a> Example 9 - Custom backdrop</h3>
+  <p>You can customize the backdrop using CSS Custom Properties.</p>
+
+  <div class="card">
+    <browser-window url="https://github.com/georapbox/modal-element" icon>
+      <button type="button" data-open="modal-custom-backdrop">Open Modal</button>
+    </browser-window>
+
+    <modal-element id="modal-custom-backdrop" class="custom-backdrop">
+      <h2 slot="header">It's me, Mario!</h2>
+      <p>...and I'm in a custom backdrop!</p>
+      <p>If you are wondering how I got here, I used the <code>--me-backdrop-background</code> CSS Custom Property.</p>
+      <p>If you don't see me though, it's probably because of this <a href="https://github.com/whatwg/fullscreen/issues/124" target="_blank" rel="noopener noreferrer">bug</a> but fortunately it's already being worked on.</p>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-custom-backdrop">Close</button>
+    </modal-element>
+
+    <details>
+      <summary>Source code</summary>
+      <pre><code>&lt;style&gt;
+  --me-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat center center / cover;
+&lt;/style&gt;
+
+&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element&gt;
+  &lt;h2 slot="header"&gt;It's me, Mario!&lt;/h2&gt;
+  &lt;p&gt;...and I'm in a custom backdrop!&lt;/p&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
+  });
+&lt;/script&gt;
+</code></pre>
+    </details>
+  </div>
+
+  <a href="#" class="back-top">↑ Back to top</a>
+
+  <h3 id="example-10"><a href="#example-10">#</a> Example 10 - Custom transition (enter/leave)</h3>
   <p>
     You can customize the modal's enter/leave transition using CSS.
     Note, that browser support is limited to those that suport the
@@ -425,15 +530,16 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-8">Open Modal</button>
+      <button type="button" data-open="modal-custom-transition">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-8" class="custom-transition">
+    <modal-element id="modal-custom-transition" class="custom-transition">
       <h2 slot="header">Modal title</h2>
       <p>This is a modal with custom transitions.</p>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-custom-transition">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;style&gt;
@@ -473,14 +579,20 @@
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Modal title&lt;/h2&gt;
   &lt;p&gt;This is a modal with custom transitions.&lt;/p&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
   const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
   const modalElement = document.querySelector('modal-element');
 
   openModalButton.addEventListener('click', () => {
     modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
   });
 &lt;/script&gt;
 </code></pre>
@@ -489,7 +601,7 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-9">Example 9 - Prevent modal from closing</h3>
+  <h3 id="example-11"><a href="#example-11">#</a> Example 11 - Prevent modal from closing</h3>
   <p>
     You can prevent the modal from closing by listening to the <code>me-request-close</code> event and
     calling <code>event.preventDefault()</code> in the event handler.
@@ -497,20 +609,20 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-9">Open Modal</button>
+      <button type="button" data-open="modal-prevent-close">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-9">
+    <modal-element id="modal-prevent-close">
       <h2 slot="header">Modal title</h2>
       <p>
         This modal will not close when clicking the "X" button,
         but it will close when clicking on the backdrop
         or pressing the <kbd>Esc</kbd> key.
       </p>
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-9">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-prevent-close">Close</button>
     </modal-element>
 
-    <details open>
+    <details>
       <summary>Source code</summary>
 
 <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
@@ -522,15 +634,20 @@
     but it will close when clicking on the backdrop
     or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
   &lt;/p&gt;
-  &lt;button slot="footer" type="button"&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
   const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
   const modalElement = document.querySelector('modal-element');
 
   openModalButton.addEventListener('click', () => {
     modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
   });
 
   modalElement.addEventListener('me-request-close', evt => {
@@ -545,7 +662,7 @@
 
   <a href="#" class="back-top">↑ Back to top</a>
 
-  <h3 id="example-10">Example 10 - Interactive demo</h3>
+  <h3 id="example-12"><a href="#example-12">#</a> Example 12 - Interactive demo</h3>
   <p>
     The following example is an interactive demo of the component.
     You can play around with the various options and see how they affect the modal.
@@ -553,15 +670,15 @@
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>
-      <button type="button" data-open="modal-10">Open Modal</button>
+      <button type="button" data-open="modal-interactive-demo">Open Modal</button>
     </browser-window>
 
-    <modal-element id="modal-10" class="custom-styling" style="--me-width: 40rem;">
+    <modal-element id="modal-interactive-demo" class="custom-styling" style="--me-width: 40rem;">
       <h2 slot="header">Interactive demo</h2>
 
-      <p>This is an interactive demo of the component.</p>
+      <p style="margin-bottom: 1rem;">This is an interactive demo of the component.</p>
 
-      <form id="attributes-form">
+      <form id="attributes-form" autocomplete="off">
         <fieldset>
           <legend>Attributes</legend>
           <p>
@@ -589,7 +706,7 @@
         </fieldset>
       </form>
 
-      <form id="reasons-form">
+      <form id="reasons-form" autocomplete="off">
         <fieldset>
           <legend>Prevent modal from closing</legend>
           <p>Play around with the different ways to prevent the modal from closing.</p>
@@ -611,7 +728,7 @@
         </fieldset>
       </form>
 
-      <form id="custom-styling-form">
+      <form id="custom-styling-form" autocomplete="off">
         <fieldset>
           <legend>Custom styling</legend>
           <p>
@@ -628,7 +745,7 @@
         </fieldset>
       </form>
 
-      <button slot="footer" type="button" style="margin: 0;" data-close="modal-10">Close</button>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-interactive-demo">Close</button>
     </modal-element>
   </div>
 
@@ -636,5 +753,16 @@
 
   <h2>License</h2>
   <p>Licensed under the <a href="https://georapbox.mit-license.org/@2023" target="_blank" rel="noreferrer noopener">The MIT License (MIT)</a></p>
+
+  <script>
+    document.querySelectorAll('browser-window > button').forEach(el => {
+      el.insertAdjacentHTML('afterbegin', /* html */`
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M3 3.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1.5 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z" />
+          <path d="M.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5H.5ZM1 5V2h14v3H1Zm0 1h14v8H1V6Z" />
+        </svg>
+      `);
+    });
+  </script>
 </body>
 </html>

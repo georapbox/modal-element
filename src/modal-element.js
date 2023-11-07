@@ -22,6 +22,9 @@ template.innerHTML = /* html */`
       --me-footer-background-color: transparent;
       --me-close-border-radius: 0;
       --me-close-background-color: transparent;
+      --me-backdrop-background: rgba(0, 0, 0, 0.5);
+      --me-backdrop-filter: none;
+
       display: contents;
       box-sizing: border-box;
     }
@@ -55,7 +58,8 @@ template.innerHTML = /* html */`
     }
 
     .dialog::backdrop {
-      background-color: rgba(0, 0, 0, 0.5);
+      background: var(--me-backdrop-background, rgba(0, 0, 0, 0.5));
+      backdrop-filter: var(--me-backdrop-filter, none);
       opacity: 0;
     }
 
@@ -228,6 +232,8 @@ template.innerHTML = /* html */`
  * @cssproperty --me-footer-background-color - The background color of the footer. Default is transparent.
  * @cssproperty --me-close-border-radius - The border radius of the close button. Default is 0.
  * @cssproperty --me-close-background-color - The background color of the close button. Default is transparent.
+ * @cssproperty --me-backdrop-background - The background shorthand property of the backdrop. Default is rgba(0, 0, 0, 0.5).
+ * @cssproperty --me-backdrop-filter - The backdrop filter property of the backdrop. Default is none.
  *
  * @csspart base - The base wrapper of the modal.
  * @csspart panel - The panel wrapper of the modal.

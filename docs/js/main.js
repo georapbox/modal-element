@@ -30,7 +30,7 @@ import(componentUrl).then(module => {
   const attributesForm = document.getElementById('attributes-form');
   const reasonsForm = document.getElementById('reasons-form');
   const customStylingForm = document.getElementById('custom-styling-form');
-  const interactiveDemoModal = document.getElementById('modal-10');
+  const interactiveDemoModal = document.getElementById('modal-interactive-demo');
 
   attributesForm.addEventListener('change', () => {
     [...attributesForm.elements].forEach(el => {
@@ -60,7 +60,7 @@ import(componentUrl).then(module => {
 
   // Events
   const handleEvents = evt => {
-    if (evt.type === 'me-request-close' && evt.detail.reason === 'close-button' && evt.detail.element.id === 'modal-9') {
+    if (evt.type === 'me-request-close' && evt.detail.reason === 'close-button' && evt.detail.element.id === 'modal-prevent-close') {
       evt.preventDefault();
     }
 

@@ -43,7 +43,9 @@
     "keyword-spacing": ["warn"],
     "object-curly-spacing": ["warn", "always"],
     "space-before-blocks": ["warn", "always"],
-    "spaced-comment": ["warn", "always"],
+    "spaced-comment": ["warn", "always", {
+      "exceptions": ["!"]
+    }],
     "space-before-function-paren": ["warn", {
       "anonymous": "always",
       "named": "never",
