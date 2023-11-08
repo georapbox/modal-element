@@ -50,8 +50,8 @@
 }
 
 .back-top {
-  display: flex;
-  justify-content: flex-end;
+  display: block;
+  text-align: right;
   font-size: 0.875rem;
 }
 
@@ -66,9 +66,9 @@
 }
 
 browser-window {
+  --bw-background: var(--background-alt);
   display: block;
   min-height: 162px;
-  --bw-background: var(--background-alt);
   text-align: center;
 }
 
