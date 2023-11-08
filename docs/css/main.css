@@ -55,6 +55,10 @@
   font-size: 0.875rem;
 }
 
+.table-of-contents {
+  columns: 300px 2;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --card-bg-color: #283647;
@@ -171,11 +175,9 @@ modal-element.custom-styling [slot="footer"] button {
 
 /* Custom backdrop */
 modal-element.custom-backdrop {
-  --me-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat center center / cover;
+  --me-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat bottom center / 90%;
 }
 
-@media screen and (max-width: 1023px) {
-  modal-element.custom-backdrop {
-    --me-backdrop-background: #0060ad url('./assets/super-mario-mobile.jpg') no-repeat center center / cover;
-  }
+modal-element.custom-backdrop::part(base) {
+  filter: opacity(0.9);
 }

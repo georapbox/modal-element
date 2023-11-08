@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="lib/highlight/highlight-github.css">
   <link rel="stylesheet" href="css/water.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="preload" href="./assets/super-mario.jpg" as="image" type="image/png">
   <script type="module" src="js/main.js"></script>
   <script src="lib/highlight/highlight.min.js" defer></script>
   <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
@@ -31,7 +32,7 @@
 
   <h2>Examples</h2>
 
-  <ol>
+  <ol class="table-of-contents">
     <li><a href="#example-1">Default configuration</a></li>
     <li><a href="#example-2">Static backdrop</a></li>
     <li><a href="#example-3">Without header</a></li>
@@ -489,7 +490,7 @@
     <details>
       <summary>Source code</summary>
       <pre><code>&lt;style&gt;
-  --me-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat center center / cover;
+  --me-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat bottom center / 90%;
 &lt;/style&gt;
 
 &lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
