@@ -1,5 +1,12 @@
 // @ts-check
 
+/**
+ * Represents a value that may be of type T, or null.
+ *
+ * @template T
+ * @typedef {T | null} Nullable
+ */
+
 const PULSE_ANIMATION_DURATION = 300;
 const template = document.createElement('template');
 
@@ -55,6 +62,13 @@ template.innerHTML = /* html */`
 
     .dialog[open] {
       display: flex;
+    }
+
+    :host([fullscreen]) .dialog {
+      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
+      height: 100%;
     }
 
     .dialog::backdrop {
@@ -205,12 +219,14 @@ template.innerHTML = /* html */`
  * @property {boolean} noHeader - Determines if the modal should have a header or not.
  * @property {boolean} noAnimations - Determines if the modal should have animations or not when opening and closing.
  * @property {boolean} noCloseButton - Determines if the modal should have a default close button or not.
+ * @property {boolean} fullscreen - Determines if the modal should be fullscreen or not.
  *
  * @attribute {boolean} open - Determines if the modal is open or not.
  * @attribute {boolean} static-backdrop - Determines if the modal should close when the backdrop is clicked.
  * @attribute {boolean} no-header - Determines if the modal should have a header or not.
  * @attribute {boolean} no-animations - Determines if the modal should have animations or not when opening and closing.
  * @attribute {boolean} no-close-button - Determines if the modal should have a default close button or not.
+ * @attribute {boolean} fullscreen - Determines if the modal should be fullscreen or not.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot header - The modal's header content, usually a title.
@@ -254,10 +270,10 @@ template.innerHTML = /* html */`
  * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
  */
 class ModalElement extends HTMLElement {
-  /** @type {HTMLDialogElement | null} */
+  /** @type {Nullable<HTMLDialogElement>} */
   #dialogEl = null;
 
-  /** @type {HTMLSlotElement | null} */
+  /** @type {Nullable<HTMLSlotElement>} */
   #footerSlotEl = null;
 
   /** @type {ReturnType<typeof setTimeout> | undefined} */
@@ -289,7 +305,7 @@ class ModalElement extends HTMLElement {
    * @param {string} newValue - The new value of the attribute.
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (this.#dialogEl == null) {
+    if (this.#dialogEl === null) {
       return;
     }
 
@@ -312,10 +328,10 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-header' && oldValue !== newValue) {
-      /** @type {HTMLElement | null} */
+      /** @type {Nullable<HTMLElement>} */
       const headerEl = this.#dialogEl.querySelector('.dialog__header');
 
-      if (headerEl) {
+      if (headerEl !== null) {
         headerEl.hidden = this.noHeader;
       }
     }
@@ -325,10 +341,10 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-close-button' && oldValue !== newValue) {
-      /** @type {HTMLElement | null} */
+      /** @type {Nullable<HTMLElement>} */
       const closeBtnEl = this.#dialogEl.querySelector('.dialog__close');
 
-      if (closeBtnEl) {
+      if (closeBtnEl !== null) {
         closeBtnEl.hidden = this.noCloseButton;
       }
     }
@@ -343,6 +359,7 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('noHeader');
     this.#upgradeProperty('noAnimations');
     this.#upgradeProperty('noCloseButton');
+    this.#upgradeProperty('fullscreen');
 
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
@@ -366,7 +383,7 @@ class ModalElement extends HTMLElement {
   /**
    * Deternimes if the modal is open or not.
    *
-   * @type {boolean} - True if the modal is open, otherwise false. Default is false.
+   * @type {boolean} - True if the modal is open, otherwise false.
    * @default false
    * @attribute open - Reflects the open property.
    */
@@ -385,7 +402,7 @@ class ModalElement extends HTMLElement {
   /**
    * Determines if the modal should close when the backdrop is clicked.
    *
-   * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false.
    * @default false
    * @attribute static-backdrop - Reflects the staticBackdrop property.
    */
@@ -404,7 +421,7 @@ class ModalElement extends HTMLElement {
   /**
    * Determines if the modal should have a header or not.
    *
-   * @type {boolean} - True if the modal should have a header, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should have a header, otherwise false.
    * @default false
    * @attribute no-header - Reflects the noHeader property.
    */
@@ -423,7 +440,7 @@ class ModalElement extends HTMLElement {
   /**
    * Determines if the modal should have animations or not when opening and closing.
    *
-   * @type {boolean} - True if the modal should have animations, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should have animations, otherwise false.
    * @default false
    * @attribute no-animations - Reflects the noAnimations property.
    */
@@ -442,7 +459,7 @@ class ModalElement extends HTMLElement {
   /**
    * Determines if the modal should have a default close button or not.
    *
-   * @type {boolean} - True if the modal should have a close button, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should have a close button, otherwise false.
    * @default false
    * @attribute no-close-button - Reflects the noCloseButton property.
    */
@@ -455,6 +472,25 @@ class ModalElement extends HTMLElement {
       this.setAttribute('no-close-button', '');
     } else {
       this.removeAttribute('no-close-button');
+    }
+  }
+
+  /**
+   * Determines if the modal should be fullscreen or not.
+   *
+   * @type {boolean} - True if the modal should be fullscreen, otherwise false.
+   * @default false
+   * @attribute fullscreen - Reflects the fullscreen property.
+   */
+  get fullscreen() {
+    return this.hasAttribute('fullscreen');
+  }
+
+  set fullscreen(value) {
+    if (value) {
+      this.setAttribute('fullscreen', '');
+    } else {
+      this.removeAttribute('fullscreen');
     }
   }
 
@@ -553,14 +589,14 @@ class ModalElement extends HTMLElement {
    * Handles the slotchange event of the footer slot.
    */
   #handleFooterSlotChange = () => {
-    if (this.#dialogEl == null) {
+    if (this.#dialogEl === null) {
       return;
     }
 
-    /** @type {HTMLElement | null} */
+    /** @type {Nullable<HTMLElement>} */
     const footerEl = this.#dialogEl.querySelector('.dialog__footer');
 
-    if (!footerEl) {
+    if (footerEl === null) {
       return;
     }
 
@@ -594,7 +630,7 @@ class ModalElement extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton'} prop - The property to upgrade.
+   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen'} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
     /** @type {any} */

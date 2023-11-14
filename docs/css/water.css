@@ -616,6 +616,10 @@ details> :last-child {
   margin-bottom: 0;
 }
 
+details summary {
+  transition: margin var(--animation-duration) ease-out;
+}
+
 details[open] summary {
   margin-bottom: 10px;
 }

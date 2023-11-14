@@ -105,6 +105,23 @@ describe('modal-element', () => {
       await elementUpdated(el);
       expect(el.hasAttribute('no-close-button')).to.equal(false);
     });
+
+    // fullscreen
+    it('reflects attribute "fullscreen" to property "fullscreen"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.setAttribute('fullscreen', '');
+      expect(el.fullscreen).to.equal(true);
+    });
+
+    it('reflects property "fullscreen" to attribute "fullscreen"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.fullscreen = true;
+      await elementUpdated(el);
+      expect(el.hasAttribute('fullscreen')).to.equal(true);
+      el.fullscreen = false;
+      await elementUpdated(el);
+      expect(el.hasAttribute('fullscreen')).to.equal(false);
+    });
   });
 
   describe('slots', () => {
