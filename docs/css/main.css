@@ -122,6 +122,13 @@ modal-element.custom-styling {
   --me-backdrop-filter: blur(1px);
 }
 
+modal-element.custom-styling[fullscreen] {
+  --me-border-style: none;
+  --me-border-radius: 0;
+  --me-backdrop-background: transparent;
+  --me-backdrop-filter: none;
+}
+
 modal-element.custom-styling::part(header) {
   border-bottom: 1px solid var(--border);
 }

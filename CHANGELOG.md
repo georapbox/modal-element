@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.1.0 (2023-11-14)
+
+- Add support for fullscreen modal using the `fullscreen` attribute.
+
 ## v1.0.1 (2023-11-10)
 
 - Fix a styling issue that caused the content to overflow the container especially on smaller viewports.

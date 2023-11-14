@@ -1,5 +1,12 @@
 // @ts-check
 
+/**
+ * Represents a value that may be of type T, or null.
+ *
+ * @template T
+ * @typedef {T | null} Nullable
+ */
+
 const PULSE_ANIMATION_DURATION = 300;
 const template = document.createElement('template');
 
@@ -263,10 +270,10 @@ template.innerHTML = /* html */`
  * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
  */
 class ModalElement extends HTMLElement {
-  /** @type {HTMLDialogElement | null} */
+  /** @type {Nullable<HTMLDialogElement>} */
   #dialogEl = null;
 
-  /** @type {HTMLSlotElement | null} */
+  /** @type {Nullable<HTMLSlotElement>} */
   #footerSlotEl = null;
 
   /** @type {ReturnType<typeof setTimeout> | undefined} */
@@ -298,7 +305,7 @@ class ModalElement extends HTMLElement {
    * @param {string} newValue - The new value of the attribute.
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (this.#dialogEl == null) {
+    if (this.#dialogEl === null) {
       return;
     }
 
@@ -321,10 +328,10 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-header' && oldValue !== newValue) {
-      /** @type {HTMLElement | null} */
+      /** @type {Nullable<HTMLElement>} */
       const headerEl = this.#dialogEl.querySelector('.dialog__header');
 
-      if (headerEl) {
+      if (headerEl !== null) {
         headerEl.hidden = this.noHeader;
       }
     }
@@ -334,10 +341,10 @@ class ModalElement extends HTMLElement {
     }
 
     if (name === 'no-close-button' && oldValue !== newValue) {
-      /** @type {HTMLElement | null} */
+      /** @type {Nullable<HTMLElement>} */
       const closeBtnEl = this.#dialogEl.querySelector('.dialog__close');
 
-      if (closeBtnEl) {
+      if (closeBtnEl !== null) {
         closeBtnEl.hidden = this.noCloseButton;
       }
     }
@@ -582,14 +589,14 @@ class ModalElement extends HTMLElement {
    * Handles the slotchange event of the footer slot.
    */
   #handleFooterSlotChange = () => {
-    if (this.#dialogEl == null) {
+    if (this.#dialogEl === null) {
       return;
     }
 
-    /** @type {HTMLElement | null} */
+    /** @type {Nullable<HTMLElement>} */
     const footerEl = this.#dialogEl.querySelector('.dialog__footer');
 
-    if (!footerEl) {
+    if (footerEl === null) {
       return;
     }
 

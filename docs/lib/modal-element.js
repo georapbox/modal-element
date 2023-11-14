@@ -1,4 +1,9 @@
-let e=document.createElement("template");e.innerHTML=/* html */`
+/**
+ * Represents a value that may be of type T, or null.
+ *
+ * @template T
+ * @typedef {T | null} Nullable
+ */let e=document.createElement("template");e.innerHTML=/* html */`
   <style>
     :host {
       --me-width: 32rem;
@@ -50,6 +55,13 @@ let e=document.createElement("template");e.innerHTML=/* html */`
 
     .dialog[open] {
       display: flex;
+    }
+
+    :host([fullscreen]) .dialog {
+      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
+      height: 100%;
     }
 
     .dialog::backdrop {
@@ -198,12 +210,14 @@ let e=document.createElement("template");e.innerHTML=/* html */`
  * @property {boolean} noHeader - Determines if the modal should have a header or not.
  * @property {boolean} noAnimations - Determines if the modal should have animations or not when opening and closing.
  * @property {boolean} noCloseButton - Determines if the modal should have a default close button or not.
+ * @property {boolean} fullscreen - Determines if the modal should be fullscreen or not.
  *
  * @attribute {boolean} open - Determines if the modal is open or not.
  * @attribute {boolean} static-backdrop - Determines if the modal should close when the backdrop is clicked.
  * @attribute {boolean} no-header - Determines if the modal should have a header or not.
  * @attribute {boolean} no-animations - Determines if the modal should have animations or not when opening and closing.
  * @attribute {boolean} no-close-button - Determines if the modal should have a default close button or not.
+ * @attribute {boolean} fullscreen - Determines if the modal should be fullscreen or not.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot header - The modal's header content, usually a title.
@@ -245,47 +259,53 @@ let e=document.createElement("template");e.innerHTML=/* html */`
  * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
  *
  * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
- */class t extends HTMLElement{/** @type {HTMLDialogElement | null} */#e=null;/** @type {HTMLSlotElement | null} */#t=null;/** @type {ReturnType<typeof setTimeout> | undefined} */#o=void 0;constructor(){if(super(),!this.shadowRoot){let t=this.attachShadow({mode:"open"});t.appendChild(e.content.cloneNode(!0))}this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button"]}/**
+ */class t extends HTMLElement{/** @type {Nullable<HTMLDialogElement>} */#e=null;/** @type {Nullable<HTMLSlotElement>} */#t=null;/** @type {ReturnType<typeof setTimeout> | undefined} */#o=void 0;constructor(){if(super(),!this.shadowRoot){let t=this.attachShadow({mode:"open"});t.appendChild(e.content.cloneNode(!0))}this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button"]}/**
    * Lifecycle method that is called when attributes are changed, added, removed, or replaced.
    *
    * @param {string} name - The name of the attribute.
    * @param {string} oldValue - The old value of the attribute.
    * @param {string} newValue - The new value of the attribute.
-   */attributeChangedCallback(e,t,o){if(null!=this.#e){if("open"===e&&t!==o&&(this.open?(this.#e.showModal(),document.body&&(document.body.style.overflowY="hidden"),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}}))):this.#e.close()),"no-header"===e&&t!==o){/** @type {HTMLElement | null} */let e=this.#e.querySelector(".dialog__header");e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {HTMLElement | null} */let e=this.#e.querySelector(".dialog__close");e&&(e.hidden=this.noCloseButton)}}}/**
+   */attributeChangedCallback(e,t,o){if(null!==this.#e){if("open"===e&&t!==o&&(this.open?(this.#e.showModal(),document.body&&(document.body.style.overflowY="hidden"),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}}))):this.#e.close()),"no-header"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__header");null!==e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__close");null!==e&&(e.hidden=this.noCloseButton)}}}/**
    * Lifecycle method that is called when the element is added to the DOM.
-   */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#e?.addEventListener("click",this.#a),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#n),this.#t?.addEventListener("slotchange",this.#r)}/**
+   */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#i("fullscreen"),this.#e?.addEventListener("click",this.#a),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#n),this.#t?.addEventListener("slotchange",this.#r)}/**
    * Lifecycle method that is called when the element is removed from the DOM.
    */disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#a),this.#e?.removeEventListener("close",this.#l),this.#e?.removeEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#n),this.#t?.removeEventListener("slotchange",this.#r)}/**
    * Deternimes if the modal is open or not.
    *
-   * @type {boolean} - True if the modal is open, otherwise false. Default is false.
+   * @type {boolean} - True if the modal is open, otherwise false.
    * @default false
    * @attribute open - Reflects the open property.
    */get open(){return this.hasAttribute("open")}set open(e){e?this.setAttribute("open",""):this.removeAttribute("open")}/**
    * Determines if the modal should close when the backdrop is clicked.
    *
-   * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false.
    * @default false
    * @attribute static-backdrop - Reflects the staticBackdrop property.
    */get staticBackdrop(){return this.hasAttribute("static-backdrop")}set staticBackdrop(e){e?this.setAttribute("static-backdrop",""):this.removeAttribute("static-backdrop")}/**
    * Determines if the modal should have a header or not.
    *
-   * @type {boolean} - True if the modal should have a header, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should have a header, otherwise false.
    * @default false
    * @attribute no-header - Reflects the noHeader property.
    */get noHeader(){return this.hasAttribute("no-header")}set noHeader(e){e?this.setAttribute("no-header",""):this.removeAttribute("no-header")}/**
    * Determines if the modal should have animations or not when opening and closing.
    *
-   * @type {boolean} - True if the modal should have animations, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should have animations, otherwise false.
    * @default false
    * @attribute no-animations - Reflects the noAnimations property.
    */get noAnimations(){return this.hasAttribute("no-animations")}set noAnimations(e){e?this.setAttribute("no-animations",""):this.removeAttribute("no-animations")}/**
    * Determines if the modal should have a default close button or not.
    *
-   * @type {boolean} - True if the modal should have a close button, otherwise false. Default is false.
+   * @type {boolean} - True if the modal should have a close button, otherwise false.
    * @default false
    * @attribute no-close-button - Reflects the noCloseButton property.
    */get noCloseButton(){return this.hasAttribute("no-close-button")}set noCloseButton(e){e?this.setAttribute("no-close-button",""):this.removeAttribute("no-close-button")}/**
+   * Determines if the modal should be fullscreen or not.
+   *
+   * @type {boolean} - True if the modal should be fullscreen, otherwise false.
+   * @default false
+   * @attribute fullscreen - Reflects the fullscreen property.
+   */get fullscreen(){return this.hasAttribute("fullscreen")}set fullscreen(e){e?this.setAttribute("fullscreen",""):this.removeAttribute("fullscreen")}/**
    * Applies a pulse effect on the dialog.
    */#d(){this.#o||(this.#e?.classList.add("dialog--pulse"),this.#o=setTimeout(()=>{this.#e?.classList.remove("dialog--pulse"),clearTimeout(this.#o),this.#o=void 0},300))}/**
    * Handles the close event of the dialog.
@@ -306,7 +326,7 @@ this.open=!1,document.body&&(document.body.style.overflowY=""),this.dispatchEven
    * @param {MouseEvent} evt - The click event.
    */#a=e=>{if(e.target!==e.currentTarget)return;let t=this.#c("backdrop-click");if(this.dispatchEvent(t),t.defaultPrevented||this.staticBackdrop){this.noAnimations||this.#d();return}this.#e?.close()};/**
    * Handles the slotchange event of the footer slot.
-   */#r=()=>{if(null==this.#e)return;/** @type {HTMLElement | null} */let e=this.#e.querySelector(".dialog__footer");if(!e)return;let t=this.#t?.assignedNodes(),o=!!t&&t.length>0;e.hidden=!o};/**
+   */#r=()=>{if(null===this.#e)return;/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__footer");if(null===e)return;let t=this.#t?.assignedNodes(),o=!!t&&t.length>0;e.hidden=!o};/**
    * Creates a request close event.
    *
    * @param {'close-button' | 'escape-key' | 'backdrop-click'} reason - The reason that the modal is about to close.
@@ -317,7 +337,7 @@ this.open=!1,document.body&&(document.body.style.overflowY=""),this.dispatchEven
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton'} prop - The property to upgrade.
+   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen'} prop - The property to upgrade.
    */#i(e){if(Object.prototype.hasOwnProperty.call(this,e)){let t=this[e];delete this[e],this[e]=t}}/**
    * Opens the modal if it is closed, otherwise does nothing.
    * Make sure that the custom element is defined before calling this method.
