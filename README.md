@@ -111,6 +111,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `base` | The componen'ts base wrapper. In this case this is the native `<dialog>` element. |
 | `panel` | The modal's panel element where the all the content is rendered. |
 | `header` | The modal's header element. It wraps the modal's title and close button. |
+| `title` | The modal's title wrapper element. |
 | `close` | The default close button rendered in the modal's header. |
 | `body` | The modal's body element, where all main content is rendered. |
 | `footer` | The modal's footer element. |

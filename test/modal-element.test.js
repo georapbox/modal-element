@@ -192,6 +192,12 @@ describe('modal-element', () => {
       expect(header.getAttribute('part')).to.equal('header');
     });
 
+    it('should have "title" CSS part', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      const title = el.shadowRoot.querySelector('.dialog__title');
+      expect(title.getAttribute('part')).to.equal('title');
+    });
+
     it('should have "body" CSS part', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       const body = el.shadowRoot.querySelector('.dialog__body');
