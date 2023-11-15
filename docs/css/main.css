@@ -188,3 +188,30 @@ modal-element.custom-backdrop {
 modal-element.custom-backdrop::part(base) {
   filter: opacity(0.9);
 }
+
+/* Truncate title */
+modal-element.truncate-title::part(title) {
+  min-width: 0; /* https://dfmcphee.com/flex-items-and-min-width-0 */
+}
+
+@supports not selector(:has(a, b)) {
+  modal-element.truncate-title [slot="header"] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  modal-element.truncate-title #truncate-action {
+    display: none !important;
+  }
+}
+
+modal-element.truncate-title:has(input[type="checkbox"]:checked) [slot="header"] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+modal-element.truncate-title #truncate-action {
+  margin-top: 1.5rem;
+}

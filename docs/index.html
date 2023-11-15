@@ -42,6 +42,7 @@
     <li><a href="#example-without-animations">Without animations</a></li>
     <li><a href="#example-long-content">Scrolling long content</a></li>
     <li><a href="#example-custom-styling">Custom styling</a></li>
+    <li><a href="#example-truncate-title">Truncate long title</a></li>
     <li><a href="#example-custom-backdrop">Custom backdrop</a></li>
     <li><a href="#example-custom-transition">Custom transition (enter/leave)</a></li>
     <li><a href="#example-prevent-close">Prevent modal from closing</a></li>
@@ -498,6 +499,67 @@
   });
 &lt;/script&gt;
 </code></pre>
+    </details>
+  </div>
+
+  <h3 id="example-truncate-title">Truncate long title</h3>
+  <p>
+    By default, the modal's title will not be truncated if it's too long.
+    You can override this behavior by using some CSS.
+  </p>
+
+  <div class="card">
+    <browser-window url="https://github.com/georapbox/modal-element" icon>
+      <button type="button" data-open="modal-truncate-title">Open Modal</button>
+    </browser-window>
+
+    <modal-element id="modal-truncate-title" class="truncate-title">
+      <h2 slot="header">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quis eveniet dicta saepe rem impedit odio quisquam ducimus eaque animi laborum quod, iusto autem, nobis cumque, voluptate repellat quo ab?</h2>
+      <p>This is a modal with a really long title.</p>
+      <div id="truncate-action">
+        <input type="checkbox" id="truncate-title" name="truncate-title" autocomplete="off" checked>
+        <label for="truncate-title">Truncate title</label>
+      </div>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-truncate-title">Close</button>
+    </modal-element>
+
+    <details>
+      <summary>Source code</summary>
+      <pre><code>&lt;style&gt;
+  modal-element::part(title) {
+    /* https://dfmcphee.com/flex-items-and-min-width-0 */
+    min-width: 0;
+  }
+
+  modal-element [slot="header"] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+&lt;/style&gt;
+
+&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element&gt;
+  &lt;h2 slot="header"&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quis eveniet dicta saepe rem impedit odio quisquam ducimus eaque animi laborum quod, iusto autem, nobis cumque, voluptate repellat quo ab?&lt;/h2&gt;
+  &lt;p&gt;This is a modal with a really long title.&lt;/p&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
+  });
+&lt;/script&gt;
+      </code></pre>
     </details>
   </div>
 
