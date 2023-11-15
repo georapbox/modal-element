@@ -181,7 +181,7 @@
   <dialog part="base" class="dialog">
     <div part="panel" class="dialog__panel" aria-labelledby="title">
       <header part="header" class="dialog__header">
-        <slot name="header" class="dialog__title" id="title"></slot>
+        <slot name="header" part="title" class="dialog__title" id="title"></slot>
 
         <form method="dialog">
           <button type="submit" part="close" class="dialog__close" aria-label="Close">
@@ -246,6 +246,7 @@
  * @csspart base - The base wrapper of the modal.
  * @csspart panel - The panel wrapper of the modal.
  * @csspart header - The header wrapper of the modal.
+ * @csspart title - The title wrapper of the modal.
  * @csspart body - The body wrapper of the modal.
  * @csspart footer - The footer wrapper of the modal.
  * @csspart close - The close button of the modal.
