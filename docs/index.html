@@ -36,6 +36,7 @@
     <li><a href="#example-default-config">Default configuration</a></li>
     <li><a href="#example-static-backdrop">Static backdrop</a></li>
     <li><a href="#example-without-header">Without header</a></li>
+    <li><a href="#example-without-title">Without title</a></li>
     <li><a href="#example-without-close-button">Without default close button</a></li>
     <li><a href="#example-fullscreen">Fullscreen modal</a></li>
     <li><a href="#example-without-footer">Without footer</a></li>
@@ -185,10 +186,48 @@
     </details>
   </div>
 
+  <h3 id="example-without-title">Without title</h3>
+  <p>If you don't need a title, you can omit it by not providing any content for the <code>header</code> slot.</p>
+
+  <div class="card">
+    <browser-window url="https://github.com/georapbox/modal-element" icon>
+      <button type="button" data-open="modal-without-title">Open Modal</button>
+    </browser-window>
+
+    <modal-element id="modal-without-title">
+      <p>This is a modal without title. It will still have a close button though.</p>
+      <button slot="footer" type="button" style="margin: 0;" data-close="modal-without-title">Close</button>
+    </modal-element>
+
+    <details>
+      <summary>Source code</summary>
+
+      <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element&gt;
+  &lt;p&gt;This is a modal without title. It will still have a close button though.&lt;/p&gt;
+  &lt;button slot="footer" type="button" id="close-modal-button"&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal-button');
+  const closeModalButton = document.getElementById('close-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    modalElement.open = false;
+  });
+&lt;/script&gt;
+</code></pre>
+    </details>
+  </div>
+
   <h3 id="example-without-close-button">Without default close button</h3>
-  <p>
-    By adding the <code>no-close-button</code> attribute, the modal will not have a default close button.
-  </p>
+  <p>By adding the <code>no-close-button</code> attribute, the modal will not have a default close button.</p>
 
   <div class="card">
     <browser-window url="https://github.com/georapbox/modal-element" icon>

@@ -95,7 +95,7 @@
       /* 0. BEFORE-OPEN STATE */
       @starting-style {
         .dialog[open] {
-          transform: scale(0.9);
+          transform: scale(0.95);
           opacity: 0;
         }
 
