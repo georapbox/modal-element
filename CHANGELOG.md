@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.2.1 (2023-11-20)
+
+- Minor fix to the scale animation when the modal is opened; the scale is now the same as when the modal is closed.
+
 ## v1.2.0 (2023-11-15)
 
 - Add `title` CSS Part to the modal's title wrapper element for styling purposes.

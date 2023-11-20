@@ -1,6 +1,6 @@
 {
   "name": "@georapbox/modal-element",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A custom element to create a modal, using the native dialog element under the hood.",
   "main": "dist/modal-element.js",
   "module": "dist/modal-element.js",
