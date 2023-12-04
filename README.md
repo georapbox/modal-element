@@ -48,36 +48,7 @@ import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
 
 ### Style
 
-By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS Parts](#css-parts) or by overriding the default [CSS Custom Properties](#css-custom-properties). A working example of styling the component can be found [here][example-custom-styling]. Below are demonstrated some available parts for styling.
-
-```css
-modal-element:not(:defined) {
-  display: none;
-}
-
-modal-element {
-  --me-width: 38rem;
-  --me-border-width: 0;
-  --me-border-radius: 0.375rem;
-  --me-background-color: #ffffff;
-  --me-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
-  --me-header-spacing: 1.25rem;
-  --me-body-spacing: 1.25rem;
-  --me-footer-spacing: 1.25rem;
-  --me-backdrop-background: rgba(0, 0, 0, 0.7);
-  --me-backdrop-filter: blur(1px);
-}
-
-modal-element::part(header) {
-  border-bottom: 1px solid #dddddd;
-}
-
-modal-element::part(footer) {
-  display: flex;
-  justify-content: flex-end;
-  border-top: 1px solid #dddddd;
-}
-```
+By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS Parts](#css-parts) or by overriding the default [CSS Custom Properties](#css-custom-properties). A working example of styling the component can be found [here][example-custom-styling].
 
 ## API
 
