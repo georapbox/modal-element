@@ -55,7 +55,7 @@ By default, the component comes with minimal styling to remain as less opinionat
 ### Properties
 | Name | Reflects | Type | Required | Default | Description |
 | ---- | -------- | ---- | -------- | ------- | ----------- |
-| `open` | ✓ | Boolean | - | `false` | Indicates whether the modal is open or not. |
+| `open` | ✓ | Boolean | - | `false` | Indicates whether the modal is open or not.<br><br>**NOTE:** If you create a modal-element programmatically via `document.createElement('modal-element')`, you need to append it to the DOM before setting this property to `true`. Otherwise, you will get an error like this: `Uncaught DOMException: Failed to execute 'showModal' on 'HTMLDialogElement': The element is not in a Document.` This is because the native [`showModal`](https://developer.mozilla.org/docs/Web/API/HTMLDialogElement/showModal) method of the `HTMLDialogElement` requires the element to be in the DOM before it can be called. |
 | `staticBackdrop`<br>*`static-backdrop`* | ✓ | Boolean | - | `false` | Indicates whether the modal should be closed when the user clicks outside the modal or not. |
 | `noHeader`<br>*`no-header`* | ✓ | Boolean | - | `false` | Indicates whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
 | `noAnimations`<br>*`no-animations`*<sup>1</sup> | ✓ | Boolean | - | `false` | Indicates whether the modal should have animations or not. Animations include the modal's entrance and exit animations, as well as the static backdrop's bounce effect when users clicks on it. |
