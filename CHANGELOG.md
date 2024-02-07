@@ -10,6 +10,9 @@
   }
   ```
 
+- Add `overscroll-behavior` to the modal's body to prevent scroll chaining on neighboring scrolling areas.
+- Update dev dependencies.
+
 ## v1.2.1 (2023-11-20)
 
 - Minor fix to the scale animation when the modal is opened; the scale is now the same as when the modal is closed.
