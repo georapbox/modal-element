@@ -7,9 +7,11 @@
 [license]: https://georapbox.mit-license.org/@2023
 [changelog]: https://github.com/georapbox/modal-element/blob/main/CHANGELOG.md
 
+[dialog-mdn]: https://developer.mozilla.org/docs/Web/HTML/Element/dialog
+
 # &lt;modal-element&gt;
 
-A custom element to create a modal, using the native [&lt;dialog&gt;](https://developer.mozilla.org/docs/Web/HTML/Element/dialog) element under the hood.
+A custom element to create a modal, using the native [&lt;dialog&gt;][dialog-mdn] element under the hood.
 
 [API documentation](#api) &bull; [Demo][demo]
 
@@ -39,6 +41,13 @@ import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
 ### Markup
 
 ```html
+<style>
+  /* Optional: Hide the document's overflow when the modal is open */
+  html:has(modal-element[open]) {
+    overflow: hidden;
+  }
+</style>
+
 <modal-element>
   <h1 slot="header">Modal Title</h1>
   <p>Modal content</p>
@@ -49,6 +58,14 @@ import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
 ### Style
 
 By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS Parts](#css-parts) or by overriding the default [CSS Custom Properties](#css-custom-properties). A working example of styling the component can be found [here][example-custom-styling].
+
+The component does not hide the document's overflow when the modal is open. This is by design to give you the flexibility to decide whether you want to hide the overflow or not and follows the native behavior of the [`<dialog>`][dialog-mdn] element. If you want to hide the overflow when the modal is open, you can add the following CSS to your stylesheet:
+
+```css
+html:has(modal-element[open]) {
+  overflow: hidden;
+}
+```
 
 ## API
 
