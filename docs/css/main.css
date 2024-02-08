@@ -63,7 +63,7 @@ html:has(modal-element[open]) {
   border-radius: var(--border-radius);
   border: 1px solid var(--border);
   padding: 1rem;
-  columns: 300px 2;
+  columns: 15.625rem 2;
 }
 
 .table-of-contents>li {
@@ -80,7 +80,7 @@ html:has(modal-element[open]) {
 browser-window {
   --bw-background: var(--background-alt);
   display: block;
-  min-height: 162px;
+  /* min-height: 162px; */
   text-align: center;
 }
 
