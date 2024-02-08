@@ -3,180 +3,181 @@
  *
  * @template T
  * @typedef {T | null} Nullable
- */let e=document.createElement("template");e.innerHTML=/* html */`
-  <style>
-    :host {
-      --me-width: 32rem;
-      --me-height: fit-content;
-      --me-border-color: initial;
-      --me-border-style: solid;
-      --me-border-width: initial;
-      --me-border-radius: 0;
-      --me-box-shadow: none;
-      --me-background-color: canvas;
-      --me-header-spacing: 1rem;
-      --me-body-spacing: 1rem;
-      --me-footer-spacing: 1rem;
-      --me-header-background-color: transparent;
-      --me-body-background-color: transparent;
-      --me-footer-background-color: transparent;
-      --me-close-border-radius: 0;
-      --me-close-background-color: transparent;
-      --me-backdrop-background: rgba(0, 0, 0, 0.5);
-      --me-backdrop-filter: none;
+ */let e=document.createElement("template"),t=/* css */`
+  :host {
+    --me-width: 32rem;
+    --me-height: fit-content;
+    --me-border-color: initial;
+    --me-border-style: solid;
+    --me-border-width: initial;
+    --me-border-radius: 0;
+    --me-box-shadow: none;
+    --me-background-color: canvas;
+    --me-header-spacing: 1rem;
+    --me-body-spacing: 1rem;
+    --me-footer-spacing: 1rem;
+    --me-header-background-color: transparent;
+    --me-body-background-color: transparent;
+    --me-footer-background-color: transparent;
+    --me-close-border-radius: 0;
+    --me-close-background-color: transparent;
+    --me-backdrop-background: rgba(0, 0, 0, 0.5);
+    --me-backdrop-filter: none;
 
-      display: contents;
-      box-sizing: border-box;
+    display: contents;
+    box-sizing: border-box;
+  }
+
+  :host *,
+  :host *:after,
+  :host *:before {
+    box-sizing: inherit;
+  }
+
+  :host([hidden]),
+  [hidden] {
+    display: none !important;
+  }
+
+  /* Dialog */
+  .dialog {
+    width: var(--me-width);
+    height: var(--me-height);
+    padding: 0;
+    border-color: var(--me-border-color);
+    border-style: var(--me-border-style);
+    border-width: var(--me-border-width);
+    border-radius: var(--me-border-radius);
+    box-shadow: var(--me-box-shadow);
+    background-color: var(--me-background-color);
+  }
+
+  .dialog[open] {
+    display: flex;
+  }
+
+  :host([fullscreen]) .dialog {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dialog::backdrop {
+    background: var(--me-backdrop-background, rgba(0, 0, 0, 0.5));
+    backdrop-filter: var(--me-backdrop-filter, none);
+    opacity: 0;
+  }
+
+  .dialog[open]::backdrop {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dialog:not(.dialog--no-animations),
+    .dialog:not(.dialog--no-animations)::backdrop {
+      transition: transform 0.3s, opacity 0.3s, display 0.3s allow-discrete, overlay 0.3s allow-discrete;
     }
 
-    :host *,
-    :host *:after,
-    :host *:before {
-      box-sizing: inherit;
-    }
-
-    :host([hidden]),
-    [hidden] {
-      display: none !important;
-    }
-
-    /* Dialog */
-    .dialog {
-      width: var(--me-width);
-      height: var(--me-height);
-      padding: 0;
-      border-color: var(--me-border-color);
-      border-style: var(--me-border-style);
-      border-width: var(--me-border-width);
-      border-radius: var(--me-border-radius);
-      box-shadow: var(--me-box-shadow);
-      background-color: var(--me-background-color);
-    }
-
+    /* 1. IS-OPEN STATE */
     .dialog[open] {
-      display: flex;
-    }
-
-    :host([fullscreen]) .dialog {
-      max-width: 100%;
-      max-height: 100%;
-      width: 100%;
-      height: 100%;
-    }
-
-    .dialog::backdrop {
-      background: var(--me-backdrop-background, rgba(0, 0, 0, 0.5));
-      backdrop-filter: var(--me-backdrop-filter, none);
-      opacity: 0;
-    }
-
-    .dialog[open]::backdrop {
+      transform: scale(1);
       opacity: 1;
     }
 
-    @media (prefers-reduced-motion: no-preference) {
-      .dialog:not(.dialog--no-animations),
-      .dialog:not(.dialog--no-animations)::backdrop {
-        transition: transform 0.3s, opacity 0.3s, display 0.3s allow-discrete, overlay 0.3s allow-discrete;
-      }
+    /* 2. EXIT STATE */
+    .dialog {
+      transform: scale(0.95);
+      opacity: 0;
+    }
 
-      /* 1. IS-OPEN STATE */
+    /* 0. BEFORE-OPEN STATE */
+    @starting-style {
       .dialog[open] {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      /* 2. EXIT STATE */
-      .dialog {
         transform: scale(0.95);
         opacity: 0;
       }
 
-      /* 0. BEFORE-OPEN STATE */
-      @starting-style {
-        .dialog[open] {
-          transform: scale(0.95);
-          opacity: 0;
-        }
-
-        .dialog[open]::backdrop {
-          opacity: 0;
-        }
-      }
-
-      .dialog--pulse:not(.dialog--no-animations) {
-        animation-name: pulse;
-        animation-duration: 300ms;
-        animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
-      }
-
-      @keyframes pulse {
-        0%   { transform: scale(1); }
-        50%  { transform: scale(1.02); }
-        100% { transform: scale(1); }
+      .dialog[open]::backdrop {
+        opacity: 0;
       }
     }
 
-    /* Dialog panel, header, body, footer */
-    .dialog__panel {
-      display: flex;
-      flex-direction: column;
-      flex: 1 1 auto;
-      width: 100%;
+    .dialog--pulse:not(.dialog--no-animations) {
+      animation-name: pulse;
+      animation-duration: 300ms;
+      animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
     }
 
-    .dialog__header {
-      display: flex;
-      align-items: center;
-      padding: var(--me-header-spacing);
-      column-gap: 0.5rem;
-      background-color: var(--me-header-background-color);
+    @keyframes pulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.02); }
+      100% { transform: scale(1); }
     }
+  }
 
-    :host([no-close-button]) .dialog__header {
-      column-gap: 0;
-    }
+  /* Dialog panel, header, body, footer */
+  .dialog__panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+  }
 
-    .dialog__title {
-      display: block;
-      flex: 1 1 auto;
-      padding: 0;
-      margin: 0;
-    }
+  .dialog__header {
+    display: flex;
+    align-items: center;
+    padding: var(--me-header-spacing);
+    column-gap: 0.5rem;
+    background-color: var(--me-header-background-color);
+  }
 
-    .dialog__body {
-      display: block;
-      flex: 1 1 auto;
-      padding: var(--me-body-spacing);
-      overflow: auto;
-      background-color: var(--me-body-background-color);
-    }
+  :host([no-close-button]) .dialog__header {
+    column-gap: 0;
+  }
 
-    .dialog__footer {
-      flex: 0 0 auto;
-      text-align: right;
+  .dialog__title {
+    display: block;
+    flex: 1 1 auto;
+    padding: 0;
+    margin: 0;
+  }
 
-      padding: var(--me-footer-spacing);
-      background-color: var(--me-footer-background-color);
-    }
+  .dialog__body {
+    display: block;
+    flex: 1 1 auto;
+    padding: var(--me-body-spacing);
+    overflow: auto;
+    background-color: var(--me-body-background-color);
+    overscroll-behavior: contain;
+  }
 
-    .dialog__close {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.4375rem;
-      border: none;
-      background-color: transparent;
-    }
+  .dialog__footer {
+    flex: 0 0 auto;
+    text-align: right;
 
-    .dialog__close:not(:disabled) {
-      cursor: pointer;
-    }
+    padding: var(--me-footer-spacing);
+    background-color: var(--me-footer-background-color);
+  }
 
-    .dialog__close:disabled {
-      cursor: not-allowed;
-    }
-  </style>
+  .dialog__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4375rem;
+    border: none;
+    background-color: transparent;
+  }
+
+  .dialog__close:not(:disabled) {
+    cursor: pointer;
+  }
+
+  .dialog__close:disabled {
+    cursor: not-allowed;
+  }
+`;e.innerHTML=/* html */`
+  <style>${t}</style>
 
   <dialog part="base" class="dialog">
     <div part="panel" class="dialog__panel" aria-labelledby="title">
@@ -260,13 +261,13 @@
  * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
  *
  * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
- */class t extends HTMLElement{/** @type {Nullable<HTMLDialogElement>} */#e=null;/** @type {Nullable<HTMLSlotElement>} */#t=null;/** @type {ReturnType<typeof setTimeout> | undefined} */#o=void 0;constructor(){if(super(),!this.shadowRoot){let t=this.attachShadow({mode:"open"});t.appendChild(e.content.cloneNode(!0))}this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button"]}/**
+ */class o extends HTMLElement{/** @type {Nullable<HTMLDialogElement>} */#e=null;/** @type {Nullable<HTMLSlotElement>} */#t=null;/** @type {ReturnType<typeof setTimeout> | undefined} */#o=void 0;constructor(){if(super(),!this.shadowRoot){let t=this.attachShadow({mode:"open"});t.appendChild(e.content.cloneNode(!0))}this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button"]}/**
    * Lifecycle method that is called when attributes are changed, added, removed, or replaced.
    *
    * @param {string} name - The name of the attribute.
    * @param {string} oldValue - The old value of the attribute.
    * @param {string} newValue - The new value of the attribute.
-   */attributeChangedCallback(e,t,o){if(null!==this.#e){if("open"===e&&t!==o&&(this.open?(this.#e.showModal(),document.body&&(document.body.style.overflowY="hidden"),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}}))):this.#e.close()),"no-header"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__header");null!==e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__close");null!==e&&(e.hidden=this.noCloseButton)}}}/**
+   */attributeChangedCallback(e,t,o){if(null!==this.#e){if("open"===e&&t!==o&&(this.open?(this.#e.showModal(),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}}))):this.#e.close()),"no-header"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__header");null!==e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__close");null!==e&&(e.hidden=this.noCloseButton)}}}/**
    * Lifecycle method that is called when the element is added to the DOM.
    */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#i("fullscreen"),this.#e?.addEventListener("click",this.#a),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#n),this.#t?.addEventListener("slotchange",this.#r)}/**
    * Lifecycle method that is called when the element is removed from the DOM.
@@ -312,7 +313,7 @@
    * Handles the close event of the dialog.
    */#l=()=>{// This is needed because the dialog element does not reset
 // the open property when the dialog is closed by the user.
-this.open=!1,document.body&&(document.body.style.overflowY=""),this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}}))};/**
+this.open=!1,this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}}))};/**
    * Handles the cancel event of the dialog.
    * This event is fired when the user presses the escape key.
    *
@@ -360,4 +361,4 @@ this.open=!1,document.body&&(document.body.style.overflowY=""),this.dispatchEven
    * @param {string} [elementName='modal-element']
    * @example
    * ModalElement.defineCustomElement('my-modal');
-   */static defineCustomElement(e="modal-element"){"undefined"==typeof window||window.customElements.get(e)||window.customElements.define(e,t)}}export{t as ModalElement};
+   */static defineCustomElement(e="modal-element"){"undefined"==typeof window||window.customElements.get(e)||window.customElements.define(e,o)}}export{o as ModalElement};
