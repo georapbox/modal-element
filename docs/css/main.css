@@ -9,6 +9,10 @@
   scroll-behavior: smooth;
 }
 
+html:has(modal-element[open]) {
+  overflow: hidden;
+}
+
 .noscript-banner {
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -55,7 +59,16 @@
 }
 
 .table-of-contents {
-  columns: 300px 2;
+  background-color: var(--background-alt);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  columns: 15.625rem 2;
+}
+
+.table-of-contents>li {
+  line-height: 1.6;
+  margin-inline-start: 1.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -67,7 +80,7 @@
 browser-window {
   --bw-background: var(--background-alt);
   display: block;
-  min-height: 162px;
+  /* min-height: 162px; */
   text-align: center;
 }
 
