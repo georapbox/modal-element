@@ -122,6 +122,23 @@ describe('modal-element', () => {
       await elementUpdated(el);
       expect(el.hasAttribute('fullscreen')).to.equal(false);
     });
+
+    // preserve-overflow
+    it('reflects attribute "preserve-overflow" to property "preserveOverflow"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.setAttribute('preserve-overflow', '');
+      expect(el.preserveOverflow).to.equal(true);
+    });
+
+    it('reflects property "preserveOverflow" to attribute "preserve-overflow"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.preserveOverflow = true;
+      await elementUpdated(el);
+      expect(el.hasAttribute('preserve-overflow')).to.equal(true);
+      el.preserveOverflow = false;
+      await elementUpdated(el);
+      expect(el.hasAttribute('preserve-overflow')).to.equal(false);
+    });
   });
 
   describe('slots', () => {
