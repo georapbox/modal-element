@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.4.0 (2024-02-14)
+
+- Revert the change made in v1.3.0 that did not remove the document's body overflow when the modal is open. See [#4](https://github.com/georapbox/modal-element/issues/4). The modal will now remove the scrollbars from the body when opened. This will be the default behavior but it can be overriden by using the `preserve-overflow` attribute in the cases that the user needs to keep the document's body scrollbars when the modal is open.
+
 ## v1.3.0 (2024-02-08)
 
 - Fixes issue [#2](https://github.com/georapbox/modal-element/issues/2). Prior to this version, the modal would remove scrollbars from the body when opened. This was done to prevent the body from scrolling when the modal is open. However, this might not always be the desired behavior and there was no option for the user to disable it. As of this version, the modal will no longer remove the scrollbars from the body when opened following the native `dialog` element's behavior. If you want to prevent the body from scrolling when the modal is open, you can do so by setting the `overflow` property of the body to `hidden` when the modal is open. This can be done in various ways but the simplest is by using the `:has()` pseudo-class. For example:
