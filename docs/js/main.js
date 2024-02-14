@@ -36,6 +36,10 @@ import(componentUrl).then(module => {
     [...attributesForm.elements].forEach(el => {
       if (el.type === 'checkbox') {
         el.checked ? interactiveDemoModal.setAttribute(el.name, '') : interactiveDemoModal.removeAttribute(el.name);
+
+        if (el.name === 'preserve-overflow') {
+          document.body.style.overflow = el.checked ? '' : 'hidden';
+        }
       } else if (el.type === 'input') {
         interactiveDemoModal.setAttribute(el.name, el.value);
       }
