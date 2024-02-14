@@ -217,19 +217,21 @@ template.innerHTML = /* html */`
  * @summary A custom element that renders a modal dialog.
  * @extends HTMLElement
  *
- * @property {boolean} open - Determines if the modal is open or not.
- * @property {boolean} staticBackdrop - Determines if the modal should close when the backdrop is clicked.
- * @property {boolean} noHeader - Determines if the modal should have a header or not.
- * @property {boolean} noAnimations - Determines if the modal should have animations or not when opening and closing.
- * @property {boolean} noCloseButton - Determines if the modal should have a default close button or not.
- * @property {boolean} fullscreen - Determines if the modal should be fullscreen or not.
+ * @property {boolean} open - Determines whether the modal is open or not.
+ * @property {boolean} staticBackdrop - Determines whether the modal should close when the backdrop is clicked.
+ * @property {boolean} noHeader - Determines whether the modal should have a header or not.
+ * @property {boolean} noAnimations - Determines whether the modal should have animations or not when opening and closing.
+ * @property {boolean} noCloseButton - Determines whether the modal should have a default close button or not.
+ * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
+ * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
  *
- * @attribute {boolean} open - Determines if the modal is open or not.
- * @attribute {boolean} static-backdrop - Determines if the modal should close when the backdrop is clicked.
- * @attribute {boolean} no-header - Determines if the modal should have a header or not.
- * @attribute {boolean} no-animations - Determines if the modal should have animations or not when opening and closing.
- * @attribute {boolean} no-close-button - Determines if the modal should have a default close button or not.
- * @attribute {boolean} fullscreen - Determines if the modal should be fullscreen or not.
+ * @attribute {boolean} open - Reflects the open property.
+ * @attribute {boolean} static-backdrop - Reflects the staticBackdrop property.
+ * @attribute {boolean} no-header - Reflects the noHeader property.
+ * @attribute {boolean} no-animations - Reflects the noAnimations property.
+ * @attribute {boolean} no-close-button - Reflects the noCloseButton property.
+ * @attribute {boolean} fullscreen - Reflects the fullscreen property.
+ * @attribute {boolean} preserve-overflow - Reflects the preserveOverflow property.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot header - The modal's header content, usually a title.
@@ -322,6 +324,10 @@ class ModalElement extends HTMLElement {
           composed: true,
           detail: { element: this }
         }));
+
+        if (document.body && !this.preserveOverflow) {
+          document.body.style.overflow = 'hidden';
+        }
       } else {
         this.#dialogEl.close();
       }
@@ -360,6 +366,7 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('noAnimations');
     this.#upgradeProperty('noCloseButton');
     this.#upgradeProperty('fullscreen');
+    this.#upgradeProperty('preserveOverflow');
 
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
@@ -392,15 +399,11 @@ class ModalElement extends HTMLElement {
   }
 
   set open(value) {
-    if (value) {
-      this.setAttribute('open', '');
-    } else {
-      this.removeAttribute('open');
-    }
+    this.toggleAttribute('open', !!value);
   }
 
   /**
-   * Determines if the modal should close when the backdrop is clicked.
+   * Determines whether the modal should close when the backdrop is clicked.
    *
    * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false.
    * @default false
@@ -411,15 +414,11 @@ class ModalElement extends HTMLElement {
   }
 
   set staticBackdrop(value) {
-    if (value) {
-      this.setAttribute('static-backdrop', '');
-    } else {
-      this.removeAttribute('static-backdrop');
-    }
+    this.toggleAttribute('static-backdrop', !!value);
   }
 
   /**
-   * Determines if the modal should have a header or not.
+   * Determines whether the modal should have a header or not.
    *
    * @type {boolean} - True if the modal should have a header, otherwise false.
    * @default false
@@ -430,15 +429,11 @@ class ModalElement extends HTMLElement {
   }
 
   set noHeader(value) {
-    if (value) {
-      this.setAttribute('no-header', '');
-    } else {
-      this.removeAttribute('no-header');
-    }
+    this.toggleAttribute('no-header', !!value);
   }
 
   /**
-   * Determines if the modal should have animations or not when opening and closing.
+   * Determines whether the modal should have animations or not when opening and closing.
    *
    * @type {boolean} - True if the modal should have animations, otherwise false.
    * @default false
@@ -449,15 +444,11 @@ class ModalElement extends HTMLElement {
   }
 
   set noAnimations(value) {
-    if (value) {
-      this.setAttribute('no-animations', '');
-    } else {
-      this.removeAttribute('no-animations');
-    }
+    this.toggleAttribute('no-animations', !!value);
   }
 
   /**
-   * Determines if the modal should have a default close button or not.
+   * Determines whether the modal should have a default close button or not.
    *
    * @type {boolean} - True if the modal should have a close button, otherwise false.
    * @default false
@@ -468,15 +459,11 @@ class ModalElement extends HTMLElement {
   }
 
   set noCloseButton(value) {
-    if (value) {
-      this.setAttribute('no-close-button', '');
-    } else {
-      this.removeAttribute('no-close-button');
-    }
+    this.toggleAttribute('no-close-button', !!value);
   }
 
   /**
-   * Determines if the modal should be fullscreen or not.
+   * Determines whether the modal should be fullscreen or not.
    *
    * @type {boolean} - True if the modal should be fullscreen, otherwise false.
    * @default false
@@ -487,11 +474,22 @@ class ModalElement extends HTMLElement {
   }
 
   set fullscreen(value) {
-    if (value) {
-      this.setAttribute('fullscreen', '');
-    } else {
-      this.removeAttribute('fullscreen');
-    }
+    this.toggleAttribute('fullscreen', !!value);
+  }
+
+  /**
+   * Determines whether the overflow of the body should be preserved when the modal is open.
+   *
+   * @type {boolean} - True if the overflow of the body should be preserved, otherwise false.
+   * @default false
+   * @attribute preserve-overflow - Reflects the preserveOverflow property.
+   */
+  get preserveOverflow() {
+    return this.hasAttribute('preserve-overflow');
+  }
+
+  set preserveOverflow(value) {
+    this.toggleAttribute('preserve-overflow', !!value);
   }
 
   /**
@@ -515,7 +513,7 @@ class ModalElement extends HTMLElement {
    * Handles the close event of the dialog.
    */
   #handleDialogClose = () => {
-    // This is needed because the dialog element does not reset
+    // This is required because the dialog element does not reset
     // the open property when the dialog is closed by the user.
     this.open = false;
 
@@ -524,6 +522,10 @@ class ModalElement extends HTMLElement {
       composed: true,
       detail: { element: this }
     }));
+
+    if (document.body && !this.preserveOverflow) {
+      document.body.style.overflow = '';
+    }
   };
 
   /**
@@ -626,7 +628,7 @@ class ModalElement extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen'} prop - The property to upgrade.
+   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow'} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
     /** @type {any} */

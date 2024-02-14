@@ -7,11 +7,9 @@
 [license]: https://georapbox.mit-license.org/@2023
 [changelog]: https://github.com/georapbox/modal-element/blob/main/CHANGELOG.md
 
-[dialog-mdn]: https://developer.mozilla.org/docs/Web/HTML/Element/dialog
-
 # &lt;modal-element&gt;
 
-A custom element to create a modal, using the native [&lt;dialog&gt;][dialog-mdn] element under the hood.
+A custom element to create a modal, using the native [&lt;dialog&gt;](https://developer.mozilla.org/docs/Web/HTML/Element/dialog) element under the hood.
 
 [API documentation](#api) &bull; [Demo][demo]
 
@@ -41,13 +39,6 @@ import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
 ### Markup
 
 ```html
-<style>
-  /* Optional: Hide the document's overflow when the modal is open */
-  html:has(modal-element[open]) {
-    overflow: hidden;
-  }
-</style>
-
 <modal-element>
   <h1 slot="header">Modal Title</h1>
   <p>Modal content</p>
@@ -59,25 +50,18 @@ import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
 
 By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS Parts](#css-parts) or by overriding the default [CSS Custom Properties](#css-custom-properties). A working example of styling the component can be found [here][example-custom-styling].
 
-The component does not hide the document's overflow when the modal is open. This is by design to give you the flexibility to decide whether you want to hide the overflow or not and follows the native behavior of the [`<dialog>`][dialog-mdn] element. If you want to hide the overflow when the modal is open, you can add the following CSS to your stylesheet:
-
-```css
-html:has(modal-element[open]) {
-  overflow: hidden;
-}
-```
-
 ## API
 
 ### Properties
 | Name | Reflects | Type | Required | Default | Description |
 | ---- | -------- | ---- | -------- | ------- | ----------- |
-| `open` | ✓ | Boolean | - | `false` | Indicates whether the modal is open or not.<br><br>**NOTE:** If you create a modal-element programmatically via `document.createElement('modal-element')`, you need to append it to the DOM before setting this property to `true`. Otherwise, you will get an error like this: `Uncaught DOMException: Failed to execute 'showModal' on 'HTMLDialogElement': The element is not in a Document.` This is because the native [`showModal`](https://developer.mozilla.org/docs/Web/API/HTMLDialogElement/showModal) method of the `HTMLDialogElement` requires the element to be in the DOM before it can be called. |
-| `staticBackdrop`<br>*`static-backdrop`* | ✓ | Boolean | - | `false` | Indicates whether the modal should be closed when the user clicks outside the modal or not. |
-| `noHeader`<br>*`no-header`* | ✓ | Boolean | - | `false` | Indicates whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
-| `noAnimations`<br>*`no-animations`*<sup>1</sup> | ✓ | Boolean | - | `false` | Indicates whether the modal should have animations or not. Animations include the modal's entrance and exit animations, as well as the static backdrop's bounce effect when users clicks on it. |
-| `noCloseButton`<br>*`no-close-button`* | ✓ | Boolean | - | `false` | Indicates whether the modal should have a default close button or not. If the modal has no close button, you probably need to provide an accessible way for users to dismiss the modal. |
-| `fullscreen` | ✓ | Boolean | - | `false` | Indicates whether the modal should be displayed in fullscreen or not. Note, the `--me-width` and `--me-height` CSS custom properties will be overriden if this property is set to `true`. Notice that the backdrop is not visible in fullscreen mode. If you still want a full-width modal with a backdrop, you can use `--me-width: 100%;` and `--me-height: 100%;` instead. |
+| `open` | ✓ | Boolean | - | `false` | Determines whether the modal is open or not.<br><br>**NOTE:** If you create a modal-element programmatically via `document.createElement('modal-element')`, you need to append it to the DOM before setting this property to `true`. Otherwise, you will get an error like this: `Uncaught DOMException: Failed to execute 'showModal' on 'HTMLDialogElement': The element is not in a Document.` This is because the native [`showModal`](https://developer.mozilla.org/docs/Web/API/HTMLDialogElement/showModal) method of the `HTMLDialogElement` requires the element to be in the DOM before it can be called. |
+| `staticBackdrop`<br>*`static-backdrop`* | ✓ | Boolean | - | `false` | Determines whether the modal should be closed when the user clicks outside the modal or not. |
+| `noHeader`<br>*`no-header`* | ✓ | Boolean | - | `false` | Determines whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
+| `noAnimations`<br>*`no-animations`*<sup>1</sup> | ✓ | Boolean | - | `false` | Determines whether the modal should have animations or not. Animations include the modal's entrance and exit animations, as well as the static backdrop's bounce effect when users clicks on it. |
+| `noCloseButton`<br>*`no-close-button`* | ✓ | Boolean | - | `false` | Determines whether the modal should have a default close button or not. If the modal has no close button, you probably need to provide an accessible way for users to dismiss the modal. |
+| `fullscreen` | ✓ | Boolean | - | `false` | Determines whether the modal should be displayed in fullscreen or not. Note, the `--me-width` and `--me-height` CSS custom properties will be overriden if this property is set to `true`. Notice that the backdrop is not visible in fullscreen mode. If you still want a full-width modal with a backdrop, you can use `--me-width: 100%;` and `--me-height: 100%;` instead. |
+| `preserveOverflow`<br>*`preserve-overflow`* | ✓ | Boolean | - | `false` | Determines whether the modal should preserve the document's overflow when the modal is open. If this property is set to `true`, the document's overflow will not be hidden when the modal is open. |
 
 All of the above properties reflect their values as HTML attributes to keep the element's DOM representation in sync with its JavaScript state.
 
