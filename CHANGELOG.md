@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.5.0 (2024-02-21)
+
+- Add automatic modal closure feature via `data-me-close` attribute on the modal's content. When there is a button or a link inside the modal's content with the `data-me-close` attribute, clicking on it will close the modal without the need to add a click event listener to the element. See issue [#6](https://github.com/georapbox/modal-element/issues/6).
+
 ## v1.4.0 (2024-02-14)
 
 - Revert the change made in v1.3.0 that did not remove the document's body overflow when the modal is open. See [#4](https://github.com/georapbox/modal-element/issues/4). The modal will now remove the scrollbars from the body when opened. This will be the default behavior but it can be overriden by using the `preserve-overflow` attribute in the cases that the user needs to keep the document's body scrollbars when the modal is open.
