@@ -16,16 +16,6 @@ import(componentUrl).then(module => {
     });
   });
 
-  document.querySelectorAll('[data-close^="modal"]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const modal = document.getElementById(btn.dataset.close);
-
-      if (modal) {
-        modal.open = false;
-      }
-    });
-  });
-
   // Interactive demo
   const attributesForm = document.getElementById('attributes-form');
   const reasonsForm = document.getElementById('reasons-form');

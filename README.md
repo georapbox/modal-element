@@ -133,6 +133,28 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 <sup>1</sup> These methods are only available after the component has been defined. To ensure the component is defined, you can use `whenDefined` method of the `CustomElementRegistry` interface, eg `customElements.whenDefined('modal-element').then(() => { /* call methods here */ });`
 
+## Closing mechanisms
+
+The modal provides some default ways for the end user to dismiss the modal. These are:
+
+- By clicking on the default close button in the modal's header.
+- By pressing the `Esc` key.
+- By clicking outside the modal if the `staticBackdrop` property is set to `false`.
+
+These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of version 1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-me-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element. Here is an example:
+
+```html
+<modal-element>
+  <h5 slot="header">Modal Title</h5>
+  <p>Modal content</p>
+  <button slot="footer" type="button" data-me-close>Close</button>
+</modal-element>
+```
+
+By just adding the `data-me-close` attribute to the button, the modal will be dismissed when the button is clicked.
+
+Please note though, that by clicking on the custom close button, the `me-request-close` event will not be emitted. This event is only triggered when the modal is about to be dismissed by the default closing mechanisms mentioned above.
+
 ## Changelog
 
 For API updates and breaking changes, check the [CHANGELOG][changelog].

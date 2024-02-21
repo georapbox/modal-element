@@ -25,119 +25,119 @@ describe('modal-element', () => {
     it('reflects attribute "open" to property "open"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
-      expect(el.open).to.equal(true);
+      expect(el.open).to.be.true;
     });
 
     it('reflects property "open" to attribute "open"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.open = true;
       await elementUpdated(el);
-      expect(el.hasAttribute('open')).to.equal(true);
+      expect(el.hasAttribute('open')).to.be.true;
       el.open = false;
       await elementUpdated(el);
-      expect(el.hasAttribute('open')).to.equal(false);
+      expect(el.hasAttribute('open')).to.be.false;
     });
 
     // static-backdrop
     it('reflects attribute "static-backdrop" to property "staticBackdrop"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('static-backdrop', '');
-      expect(el.staticBackdrop).to.equal(true);
+      expect(el.staticBackdrop).to.be.true;
     });
 
     it('reflects property "staticBackdrop" to attribute "static-backdrop"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.staticBackdrop = true;
       await elementUpdated(el);
-      expect(el.hasAttribute('static-backdrop')).to.equal(true);
+      expect(el.hasAttribute('static-backdrop')).to.be.true;
       el.staticBackdrop = false;
       await elementUpdated(el);
-      expect(el.hasAttribute('static-backdrop')).to.equal(false);
+      expect(el.hasAttribute('static-backdrop')).to.be.false;
     });
 
     // no-header
     it('reflects attribute "no-header" to property "noHeader"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('no-header', '');
-      expect(el.noHeader).to.equal(true);
+      expect(el.noHeader).to.be.true;
     });
 
     it('reflects property "noHeader" to attribute "no-header"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.noHeader = true;
       await elementUpdated(el);
-      expect(el.hasAttribute('no-header')).to.equal(true);
+      expect(el.hasAttribute('no-header')).to.be.true;
       el.noHeader = false;
       await elementUpdated(el);
-      expect(el.hasAttribute('no-header')).to.equal(false);
+      expect(el.hasAttribute('no-header')).to.be.false;
     });
 
     // no-animations
     it('reflects attribute "no-animations" to property "noAnimations"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('no-animations', '');
-      expect(el.noAnimations).to.equal(true);
+      expect(el.noAnimations).to.be.true;
     });
 
     it('reflects property "noAnimations" to attribute "no-animations"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.noAnimations = true;
       await elementUpdated(el);
-      expect(el.hasAttribute('no-animations')).to.equal(true);
+      expect(el.hasAttribute('no-animations')).to.be.true;
       el.noAnimations = false;
       await elementUpdated(el);
-      expect(el.hasAttribute('no-animations')).to.equal(false);
+      expect(el.hasAttribute('no-animations')).to.be.false;
     });
 
     // no-close-button
     it('reflects attribute "no-close-button" to property "noCloseButton"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('no-close-button', '');
-      expect(el.noCloseButton).to.equal(true);
+      expect(el.noCloseButton).to.be.true;
     });
 
     it('reflects property "noCloseButton" to attribute "no-close-button"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.noCloseButton = true;
       await elementUpdated(el);
-      expect(el.hasAttribute('no-close-button')).to.equal(true);
+      expect(el.hasAttribute('no-close-button')).to.be.true;
       el.noCloseButton = false;
       await elementUpdated(el);
-      expect(el.hasAttribute('no-close-button')).to.equal(false);
+      expect(el.hasAttribute('no-close-button')).to.be.false;
     });
 
     // fullscreen
     it('reflects attribute "fullscreen" to property "fullscreen"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('fullscreen', '');
-      expect(el.fullscreen).to.equal(true);
+      expect(el.fullscreen).to.be.true;
     });
 
     it('reflects property "fullscreen" to attribute "fullscreen"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.fullscreen = true;
       await elementUpdated(el);
-      expect(el.hasAttribute('fullscreen')).to.equal(true);
+      expect(el.hasAttribute('fullscreen')).to.be.true;
       el.fullscreen = false;
       await elementUpdated(el);
-      expect(el.hasAttribute('fullscreen')).to.equal(false);
+      expect(el.hasAttribute('fullscreen')).to.be.false;
     });
 
     // preserve-overflow
     it('reflects attribute "preserve-overflow" to property "preserveOverflow"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('preserve-overflow', '');
-      expect(el.preserveOverflow).to.equal(true);
+      expect(el.preserveOverflow).to.be.true;
     });
 
     it('reflects property "preserveOverflow" to attribute "preserve-overflow"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.preserveOverflow = true;
       await elementUpdated(el);
-      expect(el.hasAttribute('preserve-overflow')).to.equal(true);
+      expect(el.hasAttribute('preserve-overflow')).to.be.true;
       el.preserveOverflow = false;
       await elementUpdated(el);
-      expect(el.hasAttribute('preserve-overflow')).to.equal(false);
+      expect(el.hasAttribute('preserve-overflow')).to.be.false;
     });
   });
 
@@ -289,7 +289,7 @@ describe('modal-element', () => {
       aTimeout(100);
       el.show();
       await elementUpdated(el);
-      expect(el.open).to.equal(true);
+      expect(el.open).to.be.true;
     });
 
     it ('should close modal when calling "hide()" method', async () => {
@@ -299,7 +299,7 @@ describe('modal-element', () => {
       aTimeout(100);
       el.hide();
       await elementUpdated(el);
-      expect(el.open).to.equal(false);
+      expect(el.open).to.be.false;
     });
   });
 
@@ -312,7 +312,7 @@ describe('modal-element', () => {
       expect(dialog.getAttribute('open')).to.equal('');
       el.removeAttribute('open');
       await elementUpdated(el);
-      expect(dialog.hasAttribute('open')).to.equal(false);
+      expect(dialog.hasAttribute('open')).to.be.false;
     });
 
     it('should hide the header when "no-header" attribute is set', async () => {
@@ -342,7 +342,7 @@ describe('modal-element', () => {
       closeButton.click();
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'close-button' });
-      expect(el.open).to.equal(true);
+      expect(el.open).to.be.true;
     });
 
     it('prevents closing the dilaog when using preventDefault on "me-request-close" event while pressing the Esc key', async () => {
@@ -353,7 +353,7 @@ describe('modal-element', () => {
       await sendKeys({ press: 'Escape' });
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'escape-key' });
-      expect(el.open).to.equal(true);
+      expect(el.open).to.be.true;
     });
 
     it('prevents closing the dilaog when using preventDefault on "me-request-close" event while clicking on the ::backdrop', async () => {
@@ -365,7 +365,7 @@ describe('modal-element', () => {
       backdrop.click();
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'backdrop-click' });
-      expect(el.open).to.equal(true);
+      expect(el.open).to.be.true;
     });
 
     it('should close the dialog when clicking the close button', async () => {
@@ -374,7 +374,7 @@ describe('modal-element', () => {
       const closeButton = el.shadowRoot.querySelector('.dialog__close');
       closeButton.click();
       await elementUpdated(el);
-      expect(el.open).to.equal(false);
+      expect(el.open).to.be.false;
     });
 
     it('should close the dialog when pressing the Esc key', async () => {
@@ -382,7 +382,7 @@ describe('modal-element', () => {
       el.setAttribute('open', '');
       await sendKeys({ press: 'Escape' });
       await elementUpdated(el);
-      expect(el.open).to.equal(false);
+      expect(el.open).to.be.false;
     });
 
     it('should close the dialog when clicking on the ::backdrop', async () => {
@@ -391,7 +391,7 @@ describe('modal-element', () => {
       const backdrop = el.shadowRoot.querySelector('.dialog');
       backdrop.click();
       await elementUpdated(el);
-      expect(el.open).to.equal(false);
+      expect(el.open).to.be.false;
     });
 
     it('should not close the dialog when clicking on the ::backdrop if "static-backdrop" attribute is set', async () => {
@@ -400,7 +400,18 @@ describe('modal-element', () => {
       const backdrop = el.shadowRoot.querySelector('.dialog');
       backdrop.click();
       await elementUpdated(el);
-      expect(el.open).to.equal(true);
+      expect(el.open).to.be.true;
+    });
+
+    it('should close the dialog when clicking on a button with `data-me-close` attribute', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.setAttribute('open', '');
+      const button = document.createElement('button');
+      button.setAttribute('data-me-close', '');
+      el.appendChild(button);
+      button.click();
+      await elementUpdated(el);
+      expect(el.open).to.be.false;
     });
   });
 });

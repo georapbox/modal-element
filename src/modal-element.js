@@ -567,20 +567,25 @@ class ModalElement extends HTMLElement {
    * @param {MouseEvent} evt - The click event.
    */
   #handleDialogClick = evt => {
-    if (evt.target !== evt.currentTarget) {
-      return;
+    const target = evt.target;
+    const currentTarget = evt.currentTarget;
+
+    if (target instanceof HTMLElement && target.closest('[data-me-close]') !== null) {
+      this.#dialogEl?.close();
     }
 
-    const requestCloseEvent = this.#createRequestCloseEvent('backdrop-click');
+    if (target === currentTarget) {
+      const requestCloseEvent = this.#createRequestCloseEvent('backdrop-click');
 
-    this.dispatchEvent(requestCloseEvent);
+      this.dispatchEvent(requestCloseEvent);
 
-    if (requestCloseEvent.defaultPrevented || this.staticBackdrop) {
-      !this.noAnimations && this.#applyPulseEffectOnDialog();
-      return;
+      if (requestCloseEvent.defaultPrevented || this.staticBackdrop) {
+        !this.noAnimations && this.#applyPulseEffectOnDialog();
+        return;
+      }
+
+      this.#dialogEl?.close();
     }
-
-    this.#dialogEl?.close();
   };
 
   /**

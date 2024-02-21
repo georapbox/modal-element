@@ -271,9 +271,9 @@
    * @param {string} newValue - The new value of the attribute.
    */attributeChangedCallback(e,t,o){if(null!==this.#e){if("open"===e&&t!==o&&(this.open?(this.#e.showModal(),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="hidden")):this.#e.close()),"no-header"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__header");null!==e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__close");null!==e&&(e.hidden=this.noCloseButton)}}}/**
    * Lifecycle method that is called when the element is added to the DOM.
-   */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#i("fullscreen"),this.#i("preserveOverflow"),this.#e?.addEventListener("click",this.#a),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#r),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#s),this.#t?.addEventListener("slotchange",this.#n)}/**
+   */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#i("fullscreen"),this.#i("preserveOverflow"),this.#e?.addEventListener("click",this.#a),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#r),this.#t?.addEventListener("slotchange",this.#n)}/**
    * Lifecycle method that is called when the element is removed from the DOM.
-   */disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#a),this.#e?.removeEventListener("close",this.#l),this.#e?.removeEventListener("cancel",this.#r),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#s),this.#t?.removeEventListener("slotchange",this.#n)}/**
+   */disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#a),this.#e?.removeEventListener("close",this.#l),this.#e?.removeEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#r),this.#t?.removeEventListener("slotchange",this.#n)}/**
    * Deternimes if the modal is open or not.
    *
    * @type {boolean} - True if the modal is open, otherwise false.
@@ -326,15 +326,15 @@ this.open=!1,this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:
    * This event is fired when the user presses the escape key.
    *
    * @param {Event} evt - The cancel event.
-   */#r=e=>{let t=this.#c("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#d())};/**
+   */#s=e=>{let t=this.#c("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#d())};/**
    * Handles the click event of the close button.
    *
    * @param {Event} evt - The click event.
-   */#s=e=>{let t=this.#c("close-button");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#d())};/**
+   */#r=e=>{let t=this.#c("close-button");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#d())};/**
    * Handles the click event of the dialog.
    *
    * @param {MouseEvent} evt - The click event.
-   */#a=e=>{if(e.target!==e.currentTarget)return;let t=this.#c("backdrop-click");if(this.dispatchEvent(t),t.defaultPrevented||this.staticBackdrop){this.noAnimations||this.#d();return}this.#e?.close()};/**
+   */#a=e=>{let t=e.target,o=e.currentTarget;if(t instanceof HTMLElement&&null!==t.closest("[data-me-close]")&&this.#e?.close(),t===o){let e=this.#c("backdrop-click");if(this.dispatchEvent(e),e.defaultPrevented||this.staticBackdrop){this.noAnimations||this.#d();return}this.#e?.close()}};/**
    * Handles the slotchange event of the footer slot.
    */#n=()=>{if(null===this.#e)return;/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__footer");if(null===e)return;let t=this.#t?.assignedNodes(),o=!!t&&t.length>0;e.hidden=!o};/**
    * Creates a request close event.
