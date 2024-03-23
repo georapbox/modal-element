@@ -48,6 +48,8 @@ const styles = /* css */`
 
   /* Dialog */
   .dialog {
+    --dialog-placement-margin: calc((2em + 6px) / 2);
+
     width: var(--me-width);
     height: var(--me-height);
     padding: 0;
@@ -80,6 +82,48 @@ const styles = /* css */`
     opacity: 1;
   }
 
+  /* Dialog placement */
+  :host(:not([fullscreen])[placement="top-start"]) .dialog {
+    margin-block-start: var(--dialog-placement-margin);
+    margin-inline-start: var(--dialog-placement-margin);
+  }
+
+  :host(:not([fullscreen])[placement="top-center"]) .dialog {
+    margin-block-start: var(--dialog-placement-margin);
+  }
+
+  :host(:not([fullscreen])[placement="top-end"]) .dialog {
+    margin-block-start: var(--dialog-placement-margin);
+    margin-inline-end: var(--dialog-placement-margin);
+  }
+
+  :host(:not([fullscreen])[placement="center-start"]) .dialog {
+    margin-inline-start: var(--dialog-placement-margin);
+  }
+
+  :host(:not([fullscreen])[placement="center"]) .dialog {
+    margin: auto;
+  }
+
+  :host(:not([fullscreen])[placement="center-end"]) .dialog {
+    margin-inline-end: var(--dialog-placement-margin);
+  }
+
+  :host(:not([fullscreen])[placement="bottom-start"]) .dialog {
+    margin-block-end: var(--dialog-placement-margin);
+    margin-inline-start: var(--dialog-placement-margin);
+  }
+
+  :host(:not([fullscreen])[placement="bottom-center"]) .dialog {
+    margin-block-end: var(--dialog-placement-margin);
+  }
+
+  :host(:not([fullscreen])[placement="bottom-end"]) .dialog {
+    margin-block-end: var(--dialog-placement-margin);
+    margin-inline-end: var(--dialog-placement-margin);
+  }
+
+  /* Dialog animations */
   @media (prefers-reduced-motion: no-preference) {
     .dialog:not(.dialog--no-animations),
     .dialog:not(.dialog--no-animations)::backdrop {
@@ -161,7 +205,7 @@ const styles = /* css */`
 
   .dialog__footer {
     flex: 0 0 auto;
-    text-align: right;
+    text-align: end;
 
     padding: var(--me-footer-spacing);
     background-color: var(--me-footer-background-color);
@@ -215,6 +259,9 @@ template.innerHTML = /* html */`
 
 /**
  * @summary A custom element that renders a modal dialog.
+ * @documentation https://github.com/georapbox/modal-element
+ *
+ * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
  * @extends HTMLElement
  *
  * @property {boolean} open - Determines whether the modal is open or not.
@@ -224,6 +271,7 @@ template.innerHTML = /* html */`
  * @property {boolean} noCloseButton - Determines whether the modal should have a default close button or not.
  * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
  * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
+ * @property {string} placement - Determines the placement of the modal.
  *
  * @attribute {boolean} open - Reflects the open property.
  * @attribute {boolean} static-backdrop - Reflects the staticBackdrop property.
@@ -232,6 +280,7 @@ template.innerHTML = /* html */`
  * @attribute {boolean} no-close-button - Reflects the noCloseButton property.
  * @attribute {boolean} fullscreen - Reflects the fullscreen property.
  * @attribute {boolean} preserve-overflow - Reflects the preserveOverflow property.
+ * @attribute {string} placement - Reflects the placement property.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot header - The modal's header content, usually a title.
@@ -272,8 +321,6 @@ template.innerHTML = /* html */`
  * @method defineCustomElement - Static method. Defines a custom element with the given name.
  * @method show - Instance method. Opens the modal if it is closed, otherwise does nothing.
  * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
- *
- * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
  */
 class ModalElement extends HTMLElement {
   /** @type {Nullable<HTMLDialogElement>} */
@@ -367,6 +414,7 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('noCloseButton');
     this.#upgradeProperty('fullscreen');
     this.#upgradeProperty('preserveOverflow');
+    this.#upgradeProperty('placement');
 
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
@@ -490,6 +538,22 @@ class ModalElement extends HTMLElement {
 
   set preserveOverflow(value) {
     this.toggleAttribute('preserve-overflow', !!value);
+  }
+
+  /**
+   * Determines the placement of the modal.
+   * Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'.
+   *
+   * @type {string}
+   * @default 'center'
+   * @attribute placement - Reflects the placement property.
+   */
+  get placement() {
+    return this.getAttribute('placement') || 'center';
+  }
+
+  set placement(value) {
+    this.setAttribute('placement', value != null ? value.toString() : value);
   }
 
   /**
@@ -633,7 +697,7 @@ class ModalElement extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow'} prop - The property to upgrade.
+   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow' | 'placement'} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
     /** @type {any} */
