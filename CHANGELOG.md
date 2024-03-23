@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.6.0 (2024-03-23)
+
+- Add `placement` attribute to allow the user to specify the placement of the modal on the screen.
+- Update dev dependencies.
+
 ## v1.5.0 (2024-02-21)
 
 - Add automatic modal closure feature via `data-me-close` attribute on the modal's content. When there is a button or a link inside the modal's content with the `data-me-close` attribute, clicking on it will close the modal without the need to add a click event listener to the element. See issue [#6](https://github.com/georapbox/modal-element/issues/6).
