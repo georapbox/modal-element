@@ -16,6 +16,17 @@ import(componentUrl).then(module => {
     });
   });
 
+  // Placement demo
+  const placementForm = document.forms['modal-placement-form'];
+
+  placementForm.addEventListener('change', evt => {
+    const modal = document.getElementById('modal-placement');
+
+    if (evt.target.name === 'placement') {
+      modal.setAttribute('placement', evt.target.value);
+    }
+  });
+
   // Interactive demo
   const attributesForm = document.getElementById('attributes-form');
   const reasonsForm = document.getElementById('reasons-form');
