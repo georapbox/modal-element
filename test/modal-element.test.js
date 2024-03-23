@@ -139,6 +139,20 @@ describe('modal-element', () => {
       await elementUpdated(el);
       expect(el.hasAttribute('preserve-overflow')).to.be.false;
     });
+
+    // placement
+    it('reflects attribute "placement" to property "placement"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.setAttribute('placement', 'top-start');
+      expect(el.placement).to.equal('top-start');
+    });
+
+    it('reflects property "placement" to attribute "placement"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.placement = 'top-start';
+      await elementUpdated(el);
+      expect(el.getAttribute('placement')).to.equal('top-start');
+    });
   });
 
   describe('slots', () => {

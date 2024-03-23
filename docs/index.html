@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="lib/highlight/highlight-github.css">
   <link rel="stylesheet" href="css/water.css">
   <link rel="stylesheet" href="css/main.css">
-  <link rel="preload" href="./assets/super-mario.jpg" as="image" type="image/png">
   <script type="module" src="js/main.js"></script>
   <script src="lib/highlight/highlight.min.js" defer></script>
   <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
@@ -54,6 +53,7 @@
         <li><a href="#example-prevent-close">Prevent modal from closing</a></li>
         <li><a href="#example-nested-modals">Nested modals</a></li>
         <li><a href="#example-preserve-overflow">Preserve body overflow</a></li>
+        <li><a href="#example-placement">Modal placement</a></li>
         <li><a href="#example-interactive-demo">Interactive demo</a></li>
       </ol>
     </details>
@@ -141,7 +141,7 @@
     </div>
 
     <h3 id="example-without-header">Without header</h3>
-    <p>By adding the <code>no-header</code> attribute, the modal will not have a header. Note that this will also remove the default close button.</p>
+    <p>By adding the <code>no-header</code> attribute, the modal will not have a header. Note that this will also remove the default close button, therefore you need to provide a way to close the modal.</p>
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
@@ -151,7 +151,7 @@
       <modal-element id="modal-without-header" no-header>
         <h2 slot="header">Without header</h2>
         <p>This is a modal without header.</p>
-        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
+        <p><small>Close the modal by either clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
         <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
       </modal-element>
       <details>
@@ -224,7 +224,7 @@
       <modal-element id="modal-without-close-button" no-close-button>
         <h2 slot="header">Without close button</h2>
         <p>This is a modal without default close button.</p>
-        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
+        <p><small>Close the modal by either clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
         <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
       </modal-element>
 
@@ -840,6 +840,84 @@
 
   openModalButton.addEventListener('click', () => {
     modalElement.open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+      </details>
+    </div>
+
+    <h3 id="example-placement">Modal placement</h3>
+    <p>
+      By default, the modal is centered on the screen both vertically and horizontally.
+      You can change the placement of the modal by using the <code>placement</code> attribute.
+    </p>
+
+    <div class="card">
+      <browser-window url="https://github.com/georapbox/modal-element" icon>
+        <button type="button" data-open="modal-placement" disabled>Open Modal</button>
+      </browser-window>
+
+      <modal-element id="modal-placement" placement="top-center">
+        <h2 slot="header">Modal placement</h2>
+
+        <form name="modal-placement-form" style="margin-block-end: 1rem;">
+          <label for="placement-select" style="margin-block-end: 1rem;">Change the placement of the modal by selecting an option from the dropdown below.</label>
+          <select name="placement" id="placement-select" style="width: 100%;">
+            <option value="top-start">Top Start</option>
+            <option value="top-center" selected>Top Center</option>
+            <option value="top-end">Top End</option>
+            <option value="center-start">Center Start</option>
+            <option value="center">Center</option>
+            <option value="center-end">Center End</option>
+            <option value="bottom-start">Bottom Start</option>
+            <option value="bottom-center">Bottom Center</option>
+            <option value="bottom-end">Bottom End</option>
+          </select>
+        </form>
+
+        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
+
+        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+      </modal-element>
+
+      <details>
+        <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element placement="top-center"&gt;
+  &lt;h2 slot="header"&gt;Modal placement&lt;/h2&gt;
+
+  &lt;form name="modal-placement-form"&gt;
+    &lt;label for="placement-select"&gt;Modal placement&lt;/label&gt;
+
+    &lt;select name="placement" id="placement-select"&gt;
+      &lt;option value="top-start"&gt;Top Start&lt;/option&gt;
+      &lt;option value="top-center" selected&gt;Top Center&lt;/option&gt;
+      &lt;option value="top-end"&gt;Top End&lt;/option&gt;
+      &lt;option value="center-start"&gt;Center Start&lt;/option&gt;
+      &lt;option value="center"&gt;Center&lt;/option&gt;
+      &lt;option value="center-end"&gt;Center End&lt;/option&gt;
+      &lt;option value="bottom-start"&gt;Bottom Start&lt;/option&gt;
+      &lt;option value="bottom-center"&gt;Bottom Center&lt;/option&gt;
+      &lt;option value="bottom-end"&gt;Bottom End&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/form&gt;
+
+  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal-button');
+  const modalElement = document.querySelector('modal-element');
+  const placementForm = document.forms['modal-placement-form'];
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+
+  placementForm.addEventListener('change', evt => {
+    modalElement.setAttribute('placement', evt.target.value);
   });
 &lt;/script&gt;
 </code></pre>
