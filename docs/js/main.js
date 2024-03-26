@@ -24,6 +24,7 @@ import(componentUrl).then(module => {
 
     if (evt.target.name === 'placement') {
       modal.setAttribute('placement', evt.target.value);
+      modal.querySelector('code').textContent = `placement="${evt.target.value}"`;
     }
   });
 

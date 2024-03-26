@@ -855,28 +855,68 @@
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
         <button type="button" data-open="modal-placement" disabled>Open Modal</button>
+
+        <form name="modal-placement-form">
+          <fieldset>
+            <legend>Placement</legend>
+
+            <p>Change the placement of the modal by selecting one of the options below.</p>
+
+            <div>
+              <div>
+                <div>
+                  <input type="radio" name="placement" id="placement-top-start" value="top-start" checked>
+                  <label for="placement-top-start">Top Start</label>
+                </div>
+                <div>
+                  <input type="radio" name="placement" id="placement-top-center" value="top-center">
+                  <label for="placement-top-center">Top Center</label>
+                </div>
+                <div>
+                  <input type="radio" name="placement" id="placement-top-end" value="top-end">
+                  <label for="placement-top-end">Top End</label>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <input type="radio" name="placement" id="placement-center-start" value="center-start">
+                  <label for="placement-center-start">Center Start</label>
+                </div>
+                <div>
+                  <input type="radio" name="placement" id="placement-center" value="center">
+                  <label for="placement-center">Center</label>
+                </div>
+                <div>
+                  <input type="radio" name="placement" id="placement-center-end" value="center-end">
+                  <label for="placement-center-end">Center End</label>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <input type="radio" name="placement" id="placement-bottom-start" value="bottom-start">
+                  <label for="placement-bottom-start">Bottom Start</label>
+                </div>
+                <div>
+                  <input type="radio" name="placement" id="placement-bottom-center" value="bottom-center">
+                  <label for="placement-bottom-center">Bottom Center</label>
+                </div>
+                <div>
+                  <input type="radio" name="placement" id="placement-bottom-end" value="bottom-end">
+                  <label for="placement-bottom-end">Bottom End</label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </form>
       </browser-window>
 
-      <modal-element id="modal-placement" placement="top-center">
+      <modal-element placement="top-start" id="modal-placement">
         <h2 slot="header">Modal placement</h2>
-
-        <form name="modal-placement-form" style="margin-block-end: 1rem;">
-          <label for="placement-select" style="margin-block-end: 1rem;">Change the placement of the modal by selecting an option from the dropdown below.</label>
-          <select name="placement" id="placement-select" style="width: 100%;">
-            <option value="top-start">Top Start</option>
-            <option value="top-center" selected>Top Center</option>
-            <option value="top-end">Top End</option>
-            <option value="center-start">Center Start</option>
-            <option value="center">Center</option>
-            <option value="center-end">Center End</option>
-            <option value="bottom-start">Bottom Start</option>
-            <option value="bottom-center">Bottom Center</option>
-            <option value="bottom-end">Bottom End</option>
-          </select>
-        </form>
-
+        <p>This is a modal with custom placement.</p>
+        <p><code>placement="center"</code></p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-
         <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
       </modal-element>
 
@@ -885,27 +925,27 @@
 
 <pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
 
-&lt;modal-element placement="top-center"&gt;
+&lt;modal-element placement="top-start"&gt;
   &lt;h2 slot="header"&gt;Modal placement&lt;/h2&gt;
-
-  &lt;form name="modal-placement-form"&gt;
-    &lt;label for="placement-select"&gt;Modal placement&lt;/label&gt;
-
-    &lt;select name="placement" id="placement-select"&gt;
-      &lt;option value="top-start"&gt;Top Start&lt;/option&gt;
-      &lt;option value="top-center" selected&gt;Top Center&lt;/option&gt;
-      &lt;option value="top-end"&gt;Top End&lt;/option&gt;
-      &lt;option value="center-start"&gt;Center Start&lt;/option&gt;
-      &lt;option value="center"&gt;Center&lt;/option&gt;
-      &lt;option value="center-end"&gt;Center End&lt;/option&gt;
-      &lt;option value="bottom-start"&gt;Bottom Start&lt;/option&gt;
-      &lt;option value="bottom-center"&gt;Bottom Center&lt;/option&gt;
-      &lt;option value="bottom-end"&gt;Bottom End&lt;/option&gt;
-    &lt;/select&gt;
-  &lt;/form&gt;
-
+  &lt;p&gt;This is a modal with custom placement.&lt;/p&gt;
   &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
+
+&lt;form name="modal-placement-form"&gt;
+  &lt;label for="placement-select"&gt;Placement&lt;/label&gt;
+  &lt;select name="placement" id="placement-select"&gt;
+    &lt;option value="top-start"&gt;Top Start&lt;/option&gt;
+    &lt;option value="top-center"&gt;Top Center&lt;/option&gt;
+    &lt;option value="top-end"&gt;Top End&lt;/option&gt;
+    &lt;option value="center-start"&gt;Center Start&lt;/option&gt;
+    &lt;option value="center"&gt;Center&lt;/option&gt;
+    &lt;option value="center-end"&gt;Center End&lt;/option&gt;
+    &lt;option value="bottom-start"&gt;Bottom Start&lt;/option&gt;
+    &lt;option value="bottom-center"&gt;Bottom Center&lt;/option&gt;
+    &lt;option value="bottom-end"&gt;Bottom End&lt;/option&gt;
+  &lt;/select&gt;
+
+&lt;/form&gt;
 
 &lt;script&gt;
   const openModalButton = document.getElementById('open-modal-button');

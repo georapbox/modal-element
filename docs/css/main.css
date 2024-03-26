@@ -112,12 +112,33 @@ modal-element button {
 }
 
 #modal-placement {
-  --me-width: 25rem;
+  --me-width: 22rem;
+}
+
+form[name="modal-placement-form"] {
+  text-align: start;
+}
+
+form[name="modal-placement-form"] > fieldset > p {
+  margin-top: 0;
+}
+
+
+form[name="modal-placement-form"] > fieldset > div {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 32rem;
 }
 
 @media screen and (max-width: 576px) {
   #modal-placement {
     --me-width: 15rem;
+  }
+
+  form[name="modal-placement-form"] > fieldset > div {
+    flex-direction: column;
   }
 }
 
