@@ -51,9 +51,9 @@
         <li><a href="#example-custom-backdrop">Custom backdrop</a></li>
         <li><a href="#example-custom-transition">Custom transition (enter/leave)</a></li>
         <li><a href="#example-prevent-close">Prevent modal from closing</a></li>
-        <li><a href="#example-nested-modals">Nested modals</a></li>
-        <li><a href="#example-preserve-overflow">Preserve body overflow</a></li>
         <li><a href="#example-placement">Modal placement</a></li>
+        <li><a href="#example-preserve-overflow">Preserve body overflow</a></li>
+        <li><a href="#example-nested-modals">Nested modals</a></li>
         <li><a href="#example-interactive-demo">Interactive demo</a></li>
       </ol>
     </details>
@@ -738,114 +738,6 @@
       </details>
     </div>
 
-    <h3 id="example-nested-modals">Nested modals</h3>
-    <p>
-      This example demonstrates how to open a modal on top of another modal.
-      Keep in mind though that this is considered a <em><strong>bad practice</strong></em> in terms of user experience and should be avoided if possible.
-    </p>
-
-    <div class="card">
-      <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-nested-modals-1" disabled>Open Modal</button>
-      </browser-window>
-
-      <modal-element id="modal-nested-modals-1">
-        <h2 slot="header">First modal</h2>
-        <p>This is a modal from which you can open another modal.</p>
-        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <div slot="footer">
-          <button type="button" data-open="modal-nested-modals-2" style="margin: 0;">Open second modal</button>
-          <button type="button" style="margin: 0;" data-me-close>Close</button>
-        </div>
-      </modal-element>
-
-      <modal-element id="modal-nested-modals-2" preserve-overflow>
-        <h2 slot="header">Second modal</h2>
-        <p>This is a modal that was opened on top of another modal.</p>
-        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
-      </modal-element>
-
-      <details>
-        <summary>Source code</summary>
-
-<pre><code>&lt;button type="button" id="open-first-modal-button"&gt;Open Modal&lt;/button&gt;
-
-&lt;modal-element id="first-modal"&gt;
-  &lt;h2 slot="header"&gt;First modal&lt;/h2&gt;
-  &lt;p&gt;This is a modal from which you can open another modal.&lt;/p&gt;
-  &lt;div slot="footer"&gt;
-    &lt;button type="button" id="open-second-modal-button"&gt;Open another modal&lt;/button&gt;
-    &lt;button type="button" data-me-close&gt;Close&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/modal-element&gt;
-
-&lt;modal-element id="second-modal" preserve-overflow&gt;
-  &lt;h2 slot="header"&gt;Second modal&lt;/h2&gt;
-  &lt;p&gt;This is a modal that was opened on top of another modal.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
-&lt;/modal-element&gt;
-
-&lt;script&gt;
-  const openFirstModalButton = document.getElementById('open-first-modal-button');
-  const openSecondModalButton = document.getElementById('open-second-modal-button');
-  const firstModalElement = document.getElementById('first-modal');
-  const secondModalElement = document.getElementById('second-modal');
-
-  openFirstModalButton.addEventListener('click', () => {
-    firstModalElement.open = true;
-  });
-
-  openSecondModalButton.addEventListener('click', () => {
-    secondModalElement.open = true;
-  });
-&lt;/script&gt;
-</code></pre>
-      </details>
-    </div>
-
-    <h3 id="example-preserve-overflow">Preserve body overflow</h3>
-    <p>
-      By default, the modal will set the <code>overflow</code> property of the document's body to <code>hidden</code> when the modal is open.
-      This is to prevent the body from scrolling when the modal is open.
-      If you want to preserve the body overflow, you can add the <code>preserve-overflow</code> attribute to the modal.
-    </p>
-
-    <div class="card">
-      <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-preserve-overflow" disabled>Open Modal</button>
-      </browser-window>
-
-      <modal-element id="modal-preserve-overflow" preserve-overflow>
-        <h2 slot="header">Preserve body overflow</h2>
-        <p>This is a modal that preserves the body overflow. Try scrolling the document while the modal is open.</p>
-        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
-      </modal-element>
-
-      <details>
-        <summary>Source code</summary>
-
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
-
-&lt;modal-element preserve-overflow&gt;
-  &lt;h2 slot="header"&gt;Preserve body overflow&lt;/h2&gt;
-  &lt;p&gt;This is a modal that preserves the body overflow. Try scrolling the document while the modal is open.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
-&lt;/modal-element&gt;
-
-&lt;script&gt;
-  const openModalButton = document.getElementById('open-modal-button');
-  const modalElement = document.querySelector('modal-element');
-
-  openModalButton.addEventListener('click', () => {
-    modalElement.open = true;
-  });
-&lt;/script&gt;
-</code></pre>
-      </details>
-    </div>
-
     <h3 id="example-placement">Modal placement</h3>
     <p>
       By default, the modal is centered on the screen both vertically and horizontally.
@@ -958,6 +850,114 @@
 
   placementForm.addEventListener('change', evt => {
     modalElement.setAttribute('placement', evt.target.value);
+  });
+&lt;/script&gt;
+</code></pre>
+      </details>
+    </div>
+
+    <h3 id="example-preserve-overflow">Preserve body overflow</h3>
+    <p>
+      By default, the modal will set the <code>overflow</code> property of the document's body to <code>hidden</code> when the modal is open.
+      This is to prevent the body from scrolling when the modal is open.
+      If you want to preserve the body overflow, you can add the <code>preserve-overflow</code> attribute to the modal.
+    </p>
+
+    <div class="card">
+      <browser-window url="https://github.com/georapbox/modal-element" icon>
+        <button type="button" data-open="modal-preserve-overflow" disabled>Open Modal</button>
+      </browser-window>
+
+      <modal-element id="modal-preserve-overflow" preserve-overflow>
+        <h2 slot="header">Preserve body overflow</h2>
+        <p>This is a modal that preserves the body overflow. Try scrolling the document while the modal is open.</p>
+        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
+        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+      </modal-element>
+
+      <details>
+        <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element preserve-overflow&gt;
+  &lt;h2 slot="header"&gt;Preserve body overflow&lt;/h2&gt;
+  &lt;p&gt;This is a modal that preserves the body overflow. Try scrolling the document while the modal is open.&lt;/p&gt;
+  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openModalButton = document.getElementById('open-modal-button');
+  const modalElement = document.querySelector('modal-element');
+
+  openModalButton.addEventListener('click', () => {
+    modalElement.open = true;
+  });
+&lt;/script&gt;
+</code></pre>
+      </details>
+    </div>
+
+    <h3 id="example-nested-modals">Nested modals</h3>
+    <p>
+      This example demonstrates how to open a modal on top of another modal.
+      Keep in mind though that this is considered a <em><strong>bad practice</strong></em> in terms of user experience and should be avoided if possible.
+    </p>
+
+    <div class="card">
+      <browser-window url="https://github.com/georapbox/modal-element" icon>
+        <button type="button" data-open="modal-nested-modals-1" disabled>Open Modal</button>
+      </browser-window>
+
+      <modal-element id="modal-nested-modals-1">
+        <h2 slot="header">First modal</h2>
+        <p>This is a modal from which you can open another modal.</p>
+        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
+        <div slot="footer">
+          <button type="button" data-open="modal-nested-modals-2" style="margin: 0;">Open second modal</button>
+          <button type="button" style="margin: 0;" data-me-close>Close</button>
+        </div>
+      </modal-element>
+
+      <modal-element id="modal-nested-modals-2" placement="top-center" preserve-overflow>
+        <h2 slot="header">Second modal</h2>
+        <p>This is a modal that was opened on top of another modal.</p>
+        <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
+        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+      </modal-element>
+
+      <details>
+        <summary>Source code</summary>
+
+<pre><code>&lt;button type="button" id="open-first-modal-button"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element id="first-modal"&gt;
+  &lt;h2 slot="header"&gt;First modal&lt;/h2&gt;
+  &lt;p&gt;This is a modal from which you can open another modal.&lt;/p&gt;
+  &lt;div slot="footer"&gt;
+    &lt;button type="button" id="open-second-modal-button"&gt;Open another modal&lt;/button&gt;
+    &lt;button type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/modal-element&gt;
+
+&lt;modal-element id="second-modal" placement="top-center" preserve-overflow&gt;
+  &lt;h2 slot="header"&gt;Second modal&lt;/h2&gt;
+  &lt;p&gt;This is a modal that was opened on top of another modal.&lt;/p&gt;
+  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+
+&lt;script&gt;
+  const openFirstModalButton = document.getElementById('open-first-modal-button');
+  const openSecondModalButton = document.getElementById('open-second-modal-button');
+  const firstModalElement = document.getElementById('first-modal');
+  const secondModalElement = document.getElementById('second-modal');
+
+  openFirstModalButton.addEventListener('click', () => {
+    firstModalElement.open = true;
+  });
+
+  openSecondModalButton.addEventListener('click', () => {
+    secondModalElement.open = true;
   });
 &lt;/script&gt;
 </code></pre>
