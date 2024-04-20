@@ -272,7 +272,7 @@ template.innerHTML = /* html */`
  * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
  * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
  * @property {string} placement - Determines the placement of the modal.
- * @property {string} closeLabel - The label of the default close button.
+ * @property {string} closeLabel - The label of the default close button, used as the aria-label attribute of the close button.
  *
  * @attribute {boolean} open - Reflects the open property.
  * @attribute {boolean} static-backdrop - Reflects the staticBackdrop property.
@@ -570,8 +570,7 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * The label of the default close button.
-   * It is used as the aria-label attribute of the close button.
+   * The label of the default close button, used as the aria-label attribute of the close button.
    * If user provides text content for the close button using the `close` slot, this property is ignored and the aria-label attribute is removed.
    *
    * @type {string}

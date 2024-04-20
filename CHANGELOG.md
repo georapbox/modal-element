@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.6.1 (2024-04-22)
+
+- Fix issue [#9](https://github.com/georapbox/modal-element/issues/9).
+
 ## v1.6.0 (2024-03-23)
 
 - Add `placement` attribute to allow the user to specify the placement of the modal on the screen.
