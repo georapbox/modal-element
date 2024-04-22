@@ -42,8 +42,6 @@ import(componentUrl).then(module => {
         if (el.name === 'preserve-overflow') {
           document.body.style.overflow = el.checked ? '' : 'hidden';
         }
-      } else if (el.type === 'input') {
-        interactiveDemoModal.setAttribute(el.name, el.value);
       }
     });
   });

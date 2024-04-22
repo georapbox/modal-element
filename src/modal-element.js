@@ -240,7 +240,7 @@ template.innerHTML = /* html */`
         <form method="dialog">
           <button type="submit" part="close" class="dialog__close" aria-label="Close">
             <slot name="close">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
               </svg>
             </slot>
@@ -272,6 +272,7 @@ template.innerHTML = /* html */`
  * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
  * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
  * @property {string} placement - Determines the placement of the modal.
+ * @property {string} closeLabel - The label of the default close button, used as the aria-label attribute of the close button.
  *
  * @attribute {boolean} open - Reflects the open property.
  * @attribute {boolean} static-backdrop - Reflects the staticBackdrop property.
@@ -281,6 +282,7 @@ template.innerHTML = /* html */`
  * @attribute {boolean} fullscreen - Reflects the fullscreen property.
  * @attribute {boolean} preserve-overflow - Reflects the preserveOverflow property.
  * @attribute {string} placement - Reflects the placement property.
+ * @attribute {string} close-label - Reflects the closeLabel property.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot header - The modal's header content, usually a title.
@@ -329,6 +331,9 @@ class ModalElement extends HTMLElement {
   /** @type {Nullable<HTMLSlotElement>} */
   #footerSlotEl = null;
 
+  /** @type {Nullable<HTMLSlotElement>} */
+  #closeSlotEl = null;
+
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   #pulseAnimationTimeout = void 0;
 
@@ -343,11 +348,12 @@ class ModalElement extends HTMLElement {
     if (this.shadowRoot) {
       this.#dialogEl = this.shadowRoot.querySelector('dialog');
       this.#footerSlotEl = this.shadowRoot.querySelector('slot[name="footer"]');
+      this.#closeSlotEl = this.shadowRoot.querySelector('slot[name="close"]');
     }
   }
 
   static get observedAttributes() {
-    return ['open', 'no-header', 'no-animations', 'no-close-button'];
+    return ['open', 'no-header', 'no-animations', 'no-close-button', 'close-label'];
   }
 
   /**
@@ -401,6 +407,10 @@ class ModalElement extends HTMLElement {
         closeBtnEl.hidden = this.noCloseButton;
       }
     }
+
+    if (name === 'close-label' && oldValue !== newValue) {
+      this.#updateCloseLabel();
+    }
   }
 
   /**
@@ -415,12 +425,14 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('fullscreen');
     this.#upgradeProperty('preserveOverflow');
     this.#upgradeProperty('placement');
+    this.#upgradeProperty('closeLabel');
 
     this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
     this.#dialogEl?.addEventListener('cancel', this.#handleDialogCancel);
     this.#dialogEl?.querySelector('form[method="dialog"]')?.addEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.addEventListener('slotchange', this.#handleFooterSlotChange);
+    this.#closeSlotEl?.addEventListener('slotchange', this.#handleCloseSlotChange);
   }
 
   /**
@@ -433,6 +445,7 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.removeEventListener('cancel', this.#handleDialogCancel);
     this.#dialogEl?.querySelector('form[method="dialog"]')?.removeEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
+    this.#closeSlotEl?.removeEventListener('slotchange', this.#handleCloseSlotChange);
   }
 
   /**
@@ -557,6 +570,48 @@ class ModalElement extends HTMLElement {
   }
 
   /**
+   * The label of the default close button, used as the aria-label attribute of the close button.
+   * If user provides text content for the close button using the `close` slot, this property is ignored and the aria-label attribute is removed.
+   *
+   * @type {string}
+   * @default 'Close'
+   * @attribute close-label - Reflects the closeLabel property.
+   */
+  get closeLabel() {
+    return this.getAttribute('close-label') || 'Close';
+  }
+
+  set closeLabel(value) {
+    this.setAttribute('close-label', value != null ? value.toString() : value);
+  }
+
+  /**
+   * Updates the aria-label attribute of the close button.
+   * If the slot for the close button has text content, the aria-label attribute is removed to allow the text content to be used as the label.
+   * Otherwise, the aria-label attribute is set to the `closeLabel` property.
+   *
+   * @returns
+   */
+  #updateCloseLabel() {
+    if (this.#dialogEl === null) {
+      return;
+    }
+
+    const closeButtonEl = this.#dialogEl.querySelector('.dialog__close');
+
+    if (closeButtonEl === null) {
+      return;
+    }
+
+    const assignedElements = this.#closeSlotEl?.assignedElements() || [];
+    const hasTextContent = assignedElements?.some(el => el.textContent?.replace(/\s/g, '') !== '');
+
+    hasTextContent
+      ? closeButtonEl.removeAttribute('aria-label')
+      : closeButtonEl.setAttribute('aria-label', this.closeLabel);
+  }
+
+  /**
    * Applies a pulse effect on the dialog.
    */
   #applyPulseEffectOnDialog() {
@@ -674,6 +729,13 @@ class ModalElement extends HTMLElement {
   };
 
   /**
+   * Handles the slotchange event of the close slot.
+   */
+  #handleCloseSlotChange = () => {
+    this.#updateCloseLabel();
+  };
+
+  /**
    * Creates a request close event.
    *
    * @param {'close-button' | 'escape-key' | 'backdrop-click'} reason - The reason that the modal is about to close.
@@ -697,7 +759,7 @@ class ModalElement extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow' | 'placement'} prop - The property to upgrade.
+   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow' | 'placement' | 'closeLabel'} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
     /** @type {any} */

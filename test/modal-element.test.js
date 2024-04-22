@@ -10,13 +10,59 @@ describe('modal-element', () => {
   });
 
   describe('accessibility', () => {
-    it('passes accessibility test', async () => {
+    it('passes accessibility tests', async () => {
       const el = await fixture(html`
         <modal-element></modal-element>
       `);
       el.setAttribute('open', '');
       await elementUpdated(el);
       await expect(el).to.be.accessible();
+    });
+
+    it('close button has a default aria-label attribute', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      const closeButton = el.shadowRoot.querySelector('.dialog__close');
+      expect(closeButton).to.have.attribute('aria-label', 'Close');
+    });
+
+    it('close button has a custom aria-label attribute', async () => {
+      const el = await fixture(html`<modal-element close-label="Close me"></modal-element>`);
+      const closeButton = el.shadowRoot.querySelector('.dialog__close');
+      expect(closeButton).to.have.attribute('aria-label', 'Close me');
+    });
+
+    it('close button does not have aria-label attribute if user provides text content for the button', async () => {
+      const el = await fixture(html`<modal-element><span slot="close">Close me</span></modal-element>`);
+      const closeButton = el.shadowRoot.querySelector('.dialog__close');
+      expect(closeButton).to.not.have.attribute('aria-label');
+    });
+
+    it('close button has default aria-label attribute if user provides non-text content for the button', async () => {
+      const el = await fixture(html`
+        <modal-element>
+          <span slot="close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            </svg>
+          </span>
+        </modal-element>
+      `);
+      const closeButton = el.shadowRoot.querySelector('.dialog__close');
+      expect(closeButton).to.have.attribute('aria-label', 'Close');
+    });
+
+    it('close button has custom aria-label attribute if user provides non-text content for the button and close-label attribute', async () => {
+      const el = await fixture(html`
+        <modal-element close-label="Close me">
+          <span slot="close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            </svg>
+          </span>
+        </modal-element>
+      `);
+      const closeButton = el.shadowRoot.querySelector('.dialog__close');
+      expect(closeButton).to.have.attribute('aria-label', 'Close me');
     });
   });
 
@@ -152,6 +198,20 @@ describe('modal-element', () => {
       el.placement = 'top-start';
       await elementUpdated(el);
       expect(el.getAttribute('placement')).to.equal('top-start');
+    });
+
+    // close-label
+    it('reflects attribute "close-label" to property "closeLabel"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.setAttribute('close-label', 'Close me');
+      expect(el.closeLabel).to.equal('Close me');
+    });
+
+    it('reflects property "closeLabel" to attribute "close-label"', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      el.closeLabel = 'Close me';
+      await elementUpdated(el);
+      expect(el.getAttribute('close-label')).to.equal('Close me');
     });
   });
 
