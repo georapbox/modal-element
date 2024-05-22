@@ -3,6 +3,10 @@
  *
  * @template T
  * @typedef {T | null} Nullable
+ *//**
+ * Available values for the request close reason.
+ *
+ * @typedef {'close-button' | 'escape-key' | 'backdrop-click' | 'external-invoker'} CloseRequestReason
  */let e=document.createElement("template"),t=/* css */`
   :host {
     --me-width: 32rem;
@@ -154,8 +158,8 @@
     }
 
     @keyframes pulse {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.02); }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
       100% { transform: scale(1); }
     }
   }
@@ -403,14 +407,16 @@ this.open=!1,this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:
    * Handles the click event of the dialog.
    *
    * @param {MouseEvent} evt - The click event.
-   */#n=e=>{let t=e.target,o=e.currentTarget;if(t instanceof HTMLElement&&null!==t.closest("[data-me-close]")&&this.#e?.close(),t===o){let e=this.#m("backdrop-click");if(this.dispatchEvent(e),e.defaultPrevented||this.staticBackdrop){this.noAnimations||this.#g();return}this.#e?.close()}};/**
+   */#n=e=>{let t=e.target,o=e.currentTarget;// Close the dialog when the backdrop is clicked.
+if(t===o){let e=this.#m("backdrop-click");this.dispatchEvent(e),e.defaultPrevented||this.staticBackdrop?this.noAnimations||this.#g():this.hide()}// Close the dialog when external invoker is clicked.
+if(t instanceof HTMLElement&&null!==t.closest("[data-me-close]")){let e=this.#m("external-invoker");this.dispatchEvent(e),e.defaultPrevented?this.noAnimations||this.#g():this.hide()}};/**
    * Handles the slotchange event of the footer slot.
    */#c=()=>{if(null===this.#e)return;/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__footer");if(null===e)return;let t=this.#t?.assignedNodes(),o=!!t&&t.length>0;e.hidden=!o};/**
    * Handles the slotchange event of the close slot.
    */#h=()=>{this.#a()};/**
    * Creates a request close event.
    *
-   * @param {'close-button' | 'escape-key' | 'backdrop-click'} reason - The reason that the modal is about to close.
+   * @param {CloseRequestReason} reason - The reason that the modal is about to close.
    */#m(e){return new CustomEvent("me-request-close",{bubbles:!0,composed:!0,cancelable:!0,detail:{reason:e,element:this}})}/**
    * This is to safe guard against cases where, for instance, a framework may have added the element to the page and set a
    * value on one of its properties, but lazy loaded its definition. Without this guard, the upgraded element would miss that
