@@ -142,6 +142,15 @@ form[name="modal-placement-form"] > fieldset > div {
   }
 }
 
+form p:has(input[type="checkbox"] + label) {
+  display: flex;
+  gap: 0.25rem;
+}
+
+form input[type="checkbox"] {
+  min-width: 16px;
+}
+
 /* Custom styling on modal-element */
 modal-element.custom-styling {
   --me-width: 35rem;

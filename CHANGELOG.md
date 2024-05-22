@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.7.0 (2024-05-22)
+
+- Add support to prevent the modal from closing when clicking on CTAs inside the modal that have the `data-me-close` attribute. Fixes issue [#11](https://github.com/georapbox/modal-element/issues/11).
+
 ## v1.6.1 (2024-04-22)
 
 - Fix issue [#9](https://github.com/georapbox/modal-element/issues/9).

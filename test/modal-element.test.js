@@ -355,6 +355,16 @@ describe('modal-element', () => {
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'backdrop-click' });
     });
+
+    it('should fire "me-request-close" event when clicking on an external invoker', async () => {
+      const el = await fixture(html`<modal-element><button data-me-close>Close</button></modal-element>`);
+      el.setAttribute('open', '');
+      const listener = oneEvent(el, 'me-request-close');
+      const invoker = el.querySelector('[data-me-close]');
+      invoker.click();
+      const { detail } = await listener;
+      expect(detail).to.deep.equal({ element: el, reason: 'external-invoker' });
+    });
   });
 
   describe('methods', () => {
