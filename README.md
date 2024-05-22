@@ -123,7 +123,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | ---- | ----------- | ------------ |
 | `me-open` | Emitted when the modal opens. | `{ element: HTMLElement }` |
 | `me-close` | Emitted when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | `{ element: HTMLElement }` |
-| `me-request-close` | Emitted when the modal is about to be dismissed. This event is cancellable, hence you can prevent the modal from being dismissed by calling `event.preventDefault()`. This can be useful when you want to prevent users from dismissing the modal until they have completed a certain task, eg submitting a form. In the `event.detail` object you can find the `reason` why the modal is about to be dismissed. You can use the `reason` to determine whether the modal should be dismissed or not as demonstrated in this [example][example-prevent-close]. Note, that this event is not emitted if the modal is dismissed by an external event, eg by calling the `hide` method or by setting the `open` property to `false` manually. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' }` |
+| `me-request-close` | Emitted when the modal is about to be dismissed. This event is cancellable, hence you can prevent the modal from being dismissed by calling `event.preventDefault()`. This can be useful when you want to prevent users from dismissing the modal until they have completed a certain task, eg submitting a form. In the `event.detail` object you can find the `reason` why the modal is about to be dismissed. You can use the `reason` to determine whether the modal should be dismissed or not as demonstrated in this [example][example-prevent-close]. Note, that this event is not emitted if the modal is dismissed by an external event, eg by calling the `hide` method or by setting the `open` property to `false` manually. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
 
 ### Methods
 
@@ -143,7 +143,11 @@ The modal provides some default ways for the end user to dismiss the modal. Thes
 - By pressing the `Esc` key.
 - By clicking outside the modal if the `staticBackdrop` property is set to `false`.
 
-These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of version 1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-me-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element. Here is an example:
+These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of v1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-me-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element.
+
+Hopefully, in the future we are going to have more declarative ways to handle these kinds of scenarions natively with [Invokers](https://open-ui.org/components/invokers.explainer/), but for now, this is a simple way to achieve the same result.
+
+Here is an example:
 
 ```html
 <modal-element>
@@ -155,7 +159,7 @@ These default mechanisms are enough for most use cases. However, sometimes devel
 
 By just adding the `data-me-close` attribute to the button, the modal will be dismissed when the button is clicked.
 
-Please note though, that by clicking on the custom close button, the `me-request-close` event will not be emitted. This event is only triggered when the modal is about to be dismissed by the default closing mechanisms mentioned above.
+**Note:** As of v1.7.0, by clicking on the custom close button, the `me-request-close` event will also be emitted with the `reason` set to `'external-invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
 
 ## Changelog
 

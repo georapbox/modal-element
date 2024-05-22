@@ -7,7 +7,13 @@
  * @typedef {T | null} Nullable
  */
 
-const PULSE_ANIMATION_DURATION = 300;
+/**
+ * Available values for the request close reason.
+ *
+ * @typedef {'close-button' | 'escape-key' | 'backdrop-click' | 'external-invoker'} CloseRequestReason
+ */
+
+const PULSE_ANIMATION_DURATION = 300; // milliseconds
 const template = document.createElement('template');
 
 const styles = /* css */`
@@ -161,8 +167,8 @@ const styles = /* css */`
     }
 
     @keyframes pulse {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.02); }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
       100% { transform: scale(1); }
     }
   }
@@ -689,10 +695,7 @@ class ModalElement extends HTMLElement {
     const target = evt.target;
     const currentTarget = evt.currentTarget;
 
-    if (target instanceof HTMLElement && target.closest('[data-me-close]') !== null) {
-      this.#dialogEl?.close();
-    }
-
+    // Close the dialog when the backdrop is clicked.
     if (target === currentTarget) {
       const requestCloseEvent = this.#createRequestCloseEvent('backdrop-click');
 
@@ -700,10 +703,22 @@ class ModalElement extends HTMLElement {
 
       if (requestCloseEvent.defaultPrevented || this.staticBackdrop) {
         !this.noAnimations && this.#applyPulseEffectOnDialog();
-        return;
+      } else {
+        this.hide();
       }
+    }
 
-      this.#dialogEl?.close();
+    // Close the dialog when external invoker is clicked.
+    if (target instanceof HTMLElement && target.closest('[data-me-close]') !== null) {
+      const requestCloseEvent = this.#createRequestCloseEvent('external-invoker');
+
+      this.dispatchEvent(requestCloseEvent);
+
+      if (requestCloseEvent.defaultPrevented) {
+        !this.noAnimations && this.#applyPulseEffectOnDialog();
+      } else {
+        this.hide();
+      }
     }
   };
 
@@ -738,7 +753,7 @@ class ModalElement extends HTMLElement {
   /**
    * Creates a request close event.
    *
-   * @param {'close-button' | 'escape-key' | 'backdrop-click'} reason - The reason that the modal is about to close.
+   * @param {CloseRequestReason} reason - The reason that the modal is about to close.
    */
   #createRequestCloseEvent(reason) {
     return new CustomEvent('me-request-close', {
