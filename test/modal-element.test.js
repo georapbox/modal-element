@@ -11,9 +11,7 @@ describe('modal-element', () => {
 
   describe('accessibility', () => {
     it('passes accessibility tests', async () => {
-      const el = await fixture(html`
-        <modal-element></modal-element>
-      `);
+      const el = await fixture(html` <modal-element></modal-element> `);
       el.setAttribute('open', '');
       await elementUpdated(el);
       await expect(el).to.be.accessible();
@@ -41,8 +39,17 @@ describe('modal-element', () => {
       const el = await fixture(html`
         <modal-element>
           <span slot="close">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+              />
             </svg>
           </span>
         </modal-element>
@@ -55,8 +62,17 @@ describe('modal-element', () => {
       const el = await fixture(html`
         <modal-element close-label="Close me">
           <span slot="close">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+            >
+              <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+              />
             </svg>
           </span>
         </modal-element>
@@ -368,7 +384,7 @@ describe('modal-element', () => {
   });
 
   describe('methods', () => {
-    it ('should open modal when calling "show()" method', async () => {
+    it('should open modal when calling "show()" method', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       aTimeout(100);
       el.show();
@@ -376,7 +392,7 @@ describe('modal-element', () => {
       expect(el.open).to.be.true;
     });
 
-    it ('should close modal when calling "hide()" method', async () => {
+    it('should close modal when calling "hide()" method', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
       await elementUpdated(el);
@@ -421,7 +437,7 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
       const listener = oneEvent(el, 'me-request-close');
-      el.addEventListener('me-request-close', (event) => event.preventDefault());
+      el.addEventListener('me-request-close', event => event.preventDefault());
       const closeButton = el.shadowRoot.querySelector('.dialog__close');
       closeButton.click();
       const { detail } = await listener;
@@ -433,7 +449,7 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
       const listener = oneEvent(el, 'me-request-close');
-      el.addEventListener('me-request-close', (event) => event.preventDefault());
+      el.addEventListener('me-request-close', event => event.preventDefault());
       await sendKeys({ press: 'Escape' });
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'escape-key' });
@@ -444,7 +460,7 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
       const listener = oneEvent(el, 'me-request-close');
-      el.addEventListener('me-request-close', (event) => event.preventDefault());
+      el.addEventListener('me-request-close', event => event.preventDefault());
       const backdrop = el.shadowRoot.querySelector('.dialog');
       backdrop.click();
       const { detail } = await listener;

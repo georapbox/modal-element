@@ -16,7 +16,7 @@
 const PULSE_ANIMATION_DURATION = 300; // milliseconds
 const template = document.createElement('template');
 
-const styles = /* css */`
+const styles = /* css */ `
   :host {
     --me-width: 32rem;
     --me-height: fit-content;
@@ -235,7 +235,7 @@ const styles = /* css */`
   }
 `;
 
-template.innerHTML = /* html */`
+template.innerHTML = /* html */ `
   <style>${styles}</style>
 
   <dialog part="base" class="dialog">
@@ -378,11 +378,13 @@ class ModalElement extends HTMLElement {
       if (this.open) {
         this.#dialogEl.showModal();
 
-        this.dispatchEvent(new CustomEvent('me-open', {
-          bubbles: true,
-          composed: true,
-          detail: { element: this }
-        }));
+        this.dispatchEvent(
+          new CustomEvent('me-open', {
+            bubbles: true,
+            composed: true,
+            detail: { element: this }
+          })
+        );
 
         if (document.body && !this.preserveOverflow) {
           document.body.style.overflow = 'hidden';
@@ -642,11 +644,13 @@ class ModalElement extends HTMLElement {
     // the open property when the dialog is closed by the user.
     this.open = false;
 
-    this.dispatchEvent(new CustomEvent('me-close', {
-      bubbles: true,
-      composed: true,
-      detail: { element: this }
-    }));
+    this.dispatchEvent(
+      new CustomEvent('me-close', {
+        bubbles: true,
+        composed: true,
+        detail: { element: this }
+      })
+    );
 
     if (document.body && !this.preserveOverflow) {
       document.body.style.overflow = '';

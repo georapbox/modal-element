@@ -1,13 +1,13 @@
-/**
- * Represents a value that may be of type T, or null.
+/*!
+ * @georapbox/modal-element
+ * A custom element to create a modal, using the native dialog element under the hood.
  *
- * @template T
- * @typedef {T | null} Nullable
- *//**
- * Available values for the request close reason.
- *
- * @typedef {'close-button' | 'escape-key' | 'backdrop-click' | 'external-invoker'} CloseRequestReason
- */let e=document.createElement("template"),t=/* css */`
+ * @version 1.7.1
+ * @homepage https://github.com/georapbox/modal-element#readme
+ * @author George Raptis <georapbox@gmail.com>
+ * @license MIT
+ */
+var a=document.createElement("template"),r=`
   :host {
     --me-width: 32rem;
     --me-height: fit-content;
@@ -224,8 +224,8 @@
   .dialog__close:disabled {
     cursor: not-allowed;
   }
-`;e.innerHTML=/* html */`
-  <style>${t}</style>
+`;a.innerHTML=`
+  <style>${r}</style>
 
   <dialog part="base" class="dialog">
     <div part="panel" class="dialog__panel" aria-labelledby="title">
@@ -250,200 +250,4 @@
       </footer>
     </div>
   </dialog>
-`;/**
- * @summary A custom element that renders a modal dialog.
- * @documentation https://github.com/georapbox/modal-element
- *
- * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
- * @extends HTMLElement
- *
- * @property {boolean} open - Determines whether the modal is open or not.
- * @property {boolean} staticBackdrop - Determines whether the modal should close when the backdrop is clicked.
- * @property {boolean} noHeader - Determines whether the modal should have a header or not.
- * @property {boolean} noAnimations - Determines whether the modal should have animations or not when opening and closing.
- * @property {boolean} noCloseButton - Determines whether the modal should have a default close button or not.
- * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
- * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
- * @property {string} placement - Determines the placement of the modal.
- * @property {string} closeLabel - The label of the default close button, used as the aria-label attribute of the close button.
- *
- * @attribute {boolean} open - Reflects the open property.
- * @attribute {boolean} static-backdrop - Reflects the staticBackdrop property.
- * @attribute {boolean} no-header - Reflects the noHeader property.
- * @attribute {boolean} no-animations - Reflects the noAnimations property.
- * @attribute {boolean} no-close-button - Reflects the noCloseButton property.
- * @attribute {boolean} fullscreen - Reflects the fullscreen property.
- * @attribute {boolean} preserve-overflow - Reflects the preserveOverflow property.
- * @attribute {string} placement - Reflects the placement property.
- * @attribute {string} close-label - Reflects the closeLabel property.
- *
- * @slot - The modal's main content (default/unnamed slot).
- * @slot header - The modal's header content, usually a title.
- * @slot footer - The modals' footer content. Usually used for buttons or other actions.
- * @slot close - The content of the close button that appears in the modal's header.
- *
- * @cssproperty --me-width - The width of the modal. Default is 32rem.
- * @cssproperty --me-height - The height of the modal. Default is fit-content.
- * @cssproperty --me-border-color - The border color of the modal. Default is initial.
- * @cssproperty --me-border-style - The border style of the modal. Default is solid.
- * @cssproperty --me-border-width - The border width of the modal. Default is initial.
- * @cssproperty --me-border-radius - The border radius of the modal. Default is 0.
- * @cssproperty --me-box-shadow - The box shadow of the modal. Default is none.
- * @cssproperty --me-background-color - The background color of the modal. Default is canvas.
- * @cssproperty --me-header-spacing - The spacing of the header. Default is 1rem.
- * @cssproperty --me-body-spacing - The spacing of the body. Default is 1rem.
- * @cssproperty --me-footer-spacing - The spacing of the footer. Default is 1rem.
- * @cssproperty --me-header-background-color - The background color of the header. Default is transparent.
- * @cssproperty --me-body-background-color - The background color of the body. Default is transparent.
- * @cssproperty --me-footer-background-color - The background color of the footer. Default is transparent.
- * @cssproperty --me-close-border-radius - The border radius of the close button. Default is 0.
- * @cssproperty --me-close-background-color - The background color of the close button. Default is transparent.
- * @cssproperty --me-backdrop-background - The background shorthand property of the backdrop. Default is rgba(0, 0, 0, 0.5).
- * @cssproperty --me-backdrop-filter - The backdrop filter property of the backdrop. Default is none.
- *
- * @csspart base - The base wrapper of the modal.
- * @csspart panel - The panel wrapper of the modal.
- * @csspart header - The header wrapper of the modal.
- * @csspart title - The title wrapper of the modal.
- * @csspart body - The body wrapper of the modal.
- * @csspart footer - The footer wrapper of the modal.
- * @csspart close - The close button of the modal.
- *
- * @fires me-open - Dispatched when the modal is opened.
- * @fires me-close - Dispatched when the modal is closed.
- * @fires me-request-close - Dispatched when the modal is about to close.
- *
- * @method defineCustomElement - Static method. Defines a custom element with the given name.
- * @method show - Instance method. Opens the modal if it is closed, otherwise does nothing.
- * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
- */class o extends HTMLElement{/** @type {Nullable<HTMLDialogElement>} */#e=null;/** @type {Nullable<HTMLSlotElement>} */#t=null;/** @type {Nullable<HTMLSlotElement>} */#o=null;/** @type {ReturnType<typeof setTimeout> | undefined} */#l=void 0;constructor(){if(super(),!this.shadowRoot){let t=this.attachShadow({mode:"open"});t.appendChild(e.content.cloneNode(!0))}this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#t=this.shadowRoot.querySelector('slot[name="footer"]'),this.#o=this.shadowRoot.querySelector('slot[name="close"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button","close-label"]}/**
-   * Lifecycle method that is called when attributes are changed, added, removed, or replaced.
-   *
-   * @param {string} name - The name of the attribute.
-   * @param {string} oldValue - The old value of the attribute.
-   * @param {string} newValue - The new value of the attribute.
-   */attributeChangedCallback(e,t,o){if(null!==this.#e){if("open"===e&&t!==o&&(this.open?(this.#e.showModal(),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="hidden")):this.#e.close()),"no-header"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__header");null!==e&&(e.hidden=this.noHeader)}if("no-animations"===e&&t!==o&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),"no-close-button"===e&&t!==o){/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__close");null!==e&&(e.hidden=this.noCloseButton)}"close-label"===e&&t!==o&&this.#a()}}/**
-   * Lifecycle method that is called when the element is added to the DOM.
-   */connectedCallback(){this.#i("open"),this.#i("staticBackdrop"),this.#i("noHeader"),this.#i("noAnimations"),this.#i("noCloseButton"),this.#i("fullscreen"),this.#i("preserveOverflow"),this.#i("placement"),this.#i("closeLabel"),this.#e?.addEventListener("click",this.#n),this.#e?.addEventListener("close",this.#r),this.#e?.addEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#d),this.#t?.addEventListener("slotchange",this.#c),this.#o?.addEventListener("slotchange",this.#h)}/**
-   * Lifecycle method that is called when the element is removed from the DOM.
-   */disconnectedCallback(){this.#l&&clearTimeout(this.#l),this.#e?.addEventListener("click",this.#n),this.#e?.removeEventListener("close",this.#r),this.#e?.removeEventListener("cancel",this.#s),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#d),this.#t?.removeEventListener("slotchange",this.#c),this.#o?.removeEventListener("slotchange",this.#h)}/**
-   * Deternimes if the modal is open or not.
-   *
-   * @type {boolean} - True if the modal is open, otherwise false.
-   * @default false
-   * @attribute open - Reflects the open property.
-   */get open(){return this.hasAttribute("open")}set open(e){this.toggleAttribute("open",!!e)}/**
-   * Determines whether the modal should close when the backdrop is clicked.
-   *
-   * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false.
-   * @default false
-   * @attribute static-backdrop - Reflects the staticBackdrop property.
-   */get staticBackdrop(){return this.hasAttribute("static-backdrop")}set staticBackdrop(e){this.toggleAttribute("static-backdrop",!!e)}/**
-   * Determines whether the modal should have a header or not.
-   *
-   * @type {boolean} - True if the modal should have a header, otherwise false.
-   * @default false
-   * @attribute no-header - Reflects the noHeader property.
-   */get noHeader(){return this.hasAttribute("no-header")}set noHeader(e){this.toggleAttribute("no-header",!!e)}/**
-   * Determines whether the modal should have animations or not when opening and closing.
-   *
-   * @type {boolean} - True if the modal should have animations, otherwise false.
-   * @default false
-   * @attribute no-animations - Reflects the noAnimations property.
-   */get noAnimations(){return this.hasAttribute("no-animations")}set noAnimations(e){this.toggleAttribute("no-animations",!!e)}/**
-   * Determines whether the modal should have a default close button or not.
-   *
-   * @type {boolean} - True if the modal should have a close button, otherwise false.
-   * @default false
-   * @attribute no-close-button - Reflects the noCloseButton property.
-   */get noCloseButton(){return this.hasAttribute("no-close-button")}set noCloseButton(e){this.toggleAttribute("no-close-button",!!e)}/**
-   * Determines whether the modal should be fullscreen or not.
-   *
-   * @type {boolean} - True if the modal should be fullscreen, otherwise false.
-   * @default false
-   * @attribute fullscreen - Reflects the fullscreen property.
-   */get fullscreen(){return this.hasAttribute("fullscreen")}set fullscreen(e){this.toggleAttribute("fullscreen",!!e)}/**
-   * Determines whether the overflow of the body should be preserved when the modal is open.
-   *
-   * @type {boolean} - True if the overflow of the body should be preserved, otherwise false.
-   * @default false
-   * @attribute preserve-overflow - Reflects the preserveOverflow property.
-   */get preserveOverflow(){return this.hasAttribute("preserve-overflow")}set preserveOverflow(e){this.toggleAttribute("preserve-overflow",!!e)}/**
-   * Determines the placement of the modal.
-   * Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'.
-   *
-   * @type {string}
-   * @default 'center'
-   * @attribute placement - Reflects the placement property.
-   */get placement(){return this.getAttribute("placement")||"center"}set placement(e){this.setAttribute("placement",null!=e?e.toString():e)}/**
-   * The label of the default close button, used as the aria-label attribute of the close button.
-   * If user provides text content for the close button using the `close` slot, this property is ignored and the aria-label attribute is removed.
-   *
-   * @type {string}
-   * @default 'Close'
-   * @attribute close-label - Reflects the closeLabel property.
-   */get closeLabel(){return this.getAttribute("close-label")||"Close"}set closeLabel(e){this.setAttribute("close-label",null!=e?e.toString():e)}/**
-   * Updates the aria-label attribute of the close button.
-   * If the slot for the close button has text content, the aria-label attribute is removed to allow the text content to be used as the label.
-   * Otherwise, the aria-label attribute is set to the `closeLabel` property.
-   *
-   * @returns
-   */#a(){if(null===this.#e)return;let e=this.#e.querySelector(".dialog__close");if(null===e)return;let t=this.#o?.assignedElements()||[],o=t?.some(e=>e.textContent?.replace(/\s/g,"")!=="");o?e.removeAttribute("aria-label"):e.setAttribute("aria-label",this.closeLabel)}/**
-   * Applies a pulse effect on the dialog.
-   */#g(){this.#l||(this.#e?.classList.add("dialog--pulse"),this.#l=setTimeout(()=>{this.#e?.classList.remove("dialog--pulse"),clearTimeout(this.#l),this.#l=void 0},300))}/**
-   * Handles the close event of the dialog.
-   */#r=()=>{// This is required because the dialog element does not reset
-// the open property when the dialog is closed by the user.
-this.open=!1,this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="")};/**
-   * Handles the cancel event of the dialog.
-   * This event is fired when the user presses the escape key.
-   *
-   * @param {Event} evt - The cancel event.
-   */#s=e=>{let t=this.#m("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#g())};/**
-   * Handles the click event of the close button.
-   *
-   * @param {Event} evt - The click event.
-   */#d=e=>{let t=this.#m("close-button");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),this.noAnimations||this.#g())};/**
-   * Handles the click event of the dialog.
-   *
-   * @param {MouseEvent} evt - The click event.
-   */#n=e=>{let t=e.target,o=e.currentTarget;// Close the dialog when the backdrop is clicked.
-if(t===o){let e=this.#m("backdrop-click");this.dispatchEvent(e),e.defaultPrevented||this.staticBackdrop?this.noAnimations||this.#g():this.hide()}// Close the dialog when external invoker is clicked.
-if(t instanceof HTMLElement&&null!==t.closest("[data-me-close]")){let e=this.#m("external-invoker");this.dispatchEvent(e),e.defaultPrevented?this.noAnimations||this.#g():this.hide()}};/**
-   * Handles the slotchange event of the footer slot.
-   */#c=()=>{if(null===this.#e)return;/** @type {Nullable<HTMLElement>} */let e=this.#e.querySelector(".dialog__footer");if(null===e)return;let t=this.#t?.assignedNodes(),o=!!t&&t.length>0;e.hidden=!o};/**
-   * Handles the slotchange event of the close slot.
-   */#h=()=>{this.#a()};/**
-   * Creates a request close event.
-   *
-   * @param {CloseRequestReason} reason - The reason that the modal is about to close.
-   */#m(e){return new CustomEvent("me-request-close",{bubbles:!0,composed:!0,cancelable:!0,detail:{reason:e,element:this}})}/**
-   * This is to safe guard against cases where, for instance, a framework may have added the element to the page and set a
-   * value on one of its properties, but lazy loaded its definition. Without this guard, the upgraded element would miss that
-   * property and the instance property would prevent the class property setter from ever being called.
-   *
-   * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
-   *
-   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow' | 'placement' | 'closeLabel'} prop - The property to upgrade.
-   */#i(e){if(Object.prototype.hasOwnProperty.call(this,e)){let t=this[e];delete this[e],this[e]=t}}/**
-   * Opens the modal if it is closed, otherwise does nothing.
-   * Make sure that the custom element is defined before calling this method.
-   *
-   * @example
-   * const modal = document.querySelector('modal-element');
-   * modal.show();
-   */show(){this.open||(this.open=!0)}/**
-   * Closes the modal if it is open, otherwise does nothing.
-   * Make sure that the custom element is defined before calling this method.
-   *
-   * @example
-   * const modal = document.querySelector('modal-element');
-   * modal.hide();
-   */hide(){this.open&&(this.open=!1)}/**
-   * Defines a custom element with the given name.
-   * The name must contain a dash (-).
-   *
-   * @param {string} [elementName='modal-element']
-   * @example
-   * ModalElement.defineCustomElement('my-modal');
-   */static defineCustomElement(e="modal-element"){"undefined"==typeof window||window.customElements.get(e)||window.customElements.define(e,o)}}export{o as ModalElement};
+`;var n=class s extends HTMLElement{#e=null;#i=null;#n=null;#o=void 0;constructor(){super(),this.shadowRoot||this.attachShadow({mode:"open"}).appendChild(a.content.cloneNode(!0)),this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#i=this.shadowRoot.querySelector('slot[name="footer"]'),this.#n=this.shadowRoot.querySelector('slot[name="close"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button","close-label"]}attributeChangedCallback(e,t,i){if(this.#e!==null){if(e==="open"&&t!==i&&(this.open?(this.#e.showModal(),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="hidden")):this.#e.close()),e==="no-header"&&t!==i){let o=this.#e.querySelector(".dialog__header");o!==null&&(o.hidden=this.noHeader)}if(e==="no-animations"&&t!==i&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),e==="no-close-button"&&t!==i){let o=this.#e.querySelector(".dialog__close");o!==null&&(o.hidden=this.noCloseButton)}e==="close-label"&&t!==i&&this.#r()}}connectedCallback(){this.#t("open"),this.#t("staticBackdrop"),this.#t("noHeader"),this.#t("noAnimations"),this.#t("noCloseButton"),this.#t("fullscreen"),this.#t("preserveOverflow"),this.#t("placement"),this.#t("closeLabel"),this.#e?.addEventListener("click",this.#h),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#d),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#c),this.#i?.addEventListener("slotchange",this.#g),this.#n?.addEventListener("slotchange",this.#m)}disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#h),this.#e?.removeEventListener("close",this.#l),this.#e?.removeEventListener("cancel",this.#d),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#c),this.#i?.removeEventListener("slotchange",this.#g),this.#n?.removeEventListener("slotchange",this.#m)}get open(){return this.hasAttribute("open")}set open(e){this.toggleAttribute("open",!!e)}get staticBackdrop(){return this.hasAttribute("static-backdrop")}set staticBackdrop(e){this.toggleAttribute("static-backdrop",!!e)}get noHeader(){return this.hasAttribute("no-header")}set noHeader(e){this.toggleAttribute("no-header",!!e)}get noAnimations(){return this.hasAttribute("no-animations")}set noAnimations(e){this.toggleAttribute("no-animations",!!e)}get noCloseButton(){return this.hasAttribute("no-close-button")}set noCloseButton(e){this.toggleAttribute("no-close-button",!!e)}get fullscreen(){return this.hasAttribute("fullscreen")}set fullscreen(e){this.toggleAttribute("fullscreen",!!e)}get preserveOverflow(){return this.hasAttribute("preserve-overflow")}set preserveOverflow(e){this.toggleAttribute("preserve-overflow",!!e)}get placement(){return this.getAttribute("placement")||"center"}set placement(e){this.setAttribute("placement",e!=null?e.toString():e)}get closeLabel(){return this.getAttribute("close-label")||"Close"}set closeLabel(e){this.setAttribute("close-label",e!=null?e.toString():e)}#r(){if(this.#e===null)return;let e=this.#e.querySelector(".dialog__close");if(e===null)return;(this.#n?.assignedElements()||[])?.some(o=>o.textContent?.replace(/\s/g,"")!=="")?e.removeAttribute("aria-label"):e.setAttribute("aria-label",this.closeLabel)}#a(){this.#o||(this.#e?.classList.add("dialog--pulse"),this.#o=setTimeout(()=>{this.#e?.classList.remove("dialog--pulse"),clearTimeout(this.#o),this.#o=void 0},300))}#l=()=>{this.open=!1,this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="")};#d=e=>{let t=this.#s("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),!this.noAnimations&&this.#a())};#c=e=>{let t=this.#s("close-button");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),!this.noAnimations&&this.#a())};#h=e=>{let t=e.target,i=e.currentTarget;if(t===i){let o=this.#s("backdrop-click");this.dispatchEvent(o),o.defaultPrevented||this.staticBackdrop?!this.noAnimations&&this.#a():this.hide()}if(t instanceof HTMLElement&&t.closest("[data-me-close]")!==null){let o=this.#s("external-invoker");this.dispatchEvent(o),o.defaultPrevented?!this.noAnimations&&this.#a():this.hide()}};#g=()=>{if(this.#e===null)return;let e=this.#e.querySelector(".dialog__footer");if(e===null)return;let t=this.#i?.assignedNodes(),i=t?t.length>0:!1;e.hidden=!i};#m=()=>{this.#r()};#s(e){return new CustomEvent("me-request-close",{bubbles:!0,composed:!0,cancelable:!0,detail:{reason:e,element:this}})}#t(e){let t=this;if(Object.prototype.hasOwnProperty.call(t,e)){let i=t[e];delete t[e],t[e]=i}}show(){this.open||(this.open=!0)}hide(){this.open&&(this.open=!1)}static defineCustomElement(e="modal-element"){typeof window<"u"&&!window.customElements.get(e)&&window.customElements.define(e,s)}};export{n as ModalElement};

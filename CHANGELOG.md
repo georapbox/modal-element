@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.7.1 (2024-08-22)
+
+- Replace parcel with esbuild for bundling.
+- Update ESLint to use flat configuration.
+- Use Prettier for code formatting.
+- Update dev dependencies.
+
 ## v1.7.0 (2024-05-22)
 
 - Add support to prevent the modal from closing when clicking on CTAs inside the modal that have the `data-me-close` attribute. Fixes issue [#11](https://github.com/georapbox/modal-element/issues/11).
