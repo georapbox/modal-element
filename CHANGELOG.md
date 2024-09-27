@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.8.0 (2024-09-27)
+
+- Add CSS part to the default icon of the close button in header, to allow for custom styling.
+- Add `--me-color`, `--me-header-color`, `--me-body-color` and `--me-footer-color` CSS custom properties to allow for customizing the foreground color of the the modal and its parts (header, body and footer) separately.
+- Add CSS custom properties to allow for customizing the modal's default close button.
+- Update dev dependencies.
+
 ## v1.7.1 (2024-08-22)
 
 - Replace parcel with esbuild for bundling.

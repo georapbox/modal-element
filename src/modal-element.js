@@ -26,14 +26,26 @@ const styles = /* css */ `
     --me-border-radius: 0;
     --me-box-shadow: none;
     --me-background-color: canvas;
+    --me-color: canvastext;
+
     --me-header-spacing: 1rem;
-    --me-body-spacing: 1rem;
     --me-footer-spacing: 1rem;
     --me-header-background-color: transparent;
+    --me-header-color: initial;
+
+    --me-body-spacing: 1rem;
     --me-body-background-color: transparent;
+    --me-body-color: initial;
     --me-footer-background-color: transparent;
+    --me-footer-color: initial;
+
+    --me-close-padding: 0.4375rem;
+    --me-close-border: none;
     --me-close-border-radius: 0;
     --me-close-background-color: transparent;
+    --me-close-color: inherit;
+    --me-close-font-size: 1rem;
+
     --me-backdrop-background: rgba(0, 0, 0, 0.5);
     --me-backdrop-filter: none;
 
@@ -65,6 +77,7 @@ const styles = /* css */ `
     border-radius: var(--me-border-radius);
     box-shadow: var(--me-box-shadow);
     background-color: var(--me-background-color);
+    color: var(--me-color);
   }
 
   .dialog[open] {
@@ -187,6 +200,7 @@ const styles = /* css */ `
     padding: var(--me-header-spacing);
     column-gap: 0.5rem;
     background-color: var(--me-header-background-color);
+    color: var(--me-header-color);
   }
 
   :host([no-close-button]) .dialog__header {
@@ -206,24 +220,28 @@ const styles = /* css */ `
     padding: var(--me-body-spacing);
     overflow: auto;
     background-color: var(--me-body-background-color);
+    color: var(--me-body-color);
     overscroll-behavior: contain;
   }
 
   .dialog__footer {
     flex: 0 0 auto;
     text-align: end;
-
     padding: var(--me-footer-spacing);
     background-color: var(--me-footer-background-color);
+    color: var(--me-footer-color);
   }
 
   .dialog__close {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.4375rem;
-    border: none;
-    background-color: transparent;
+    padding: var(--me-close-padding);
+    border: var(--me-close-border);
+    border-radius: var(--me-close-border-radius);
+    background-color: var(--me-close-background-color);
+    color: var(--me-close-color);
+    font-size: var(--me-close-font-size);
   }
 
   .dialog__close:not(:disabled) {
@@ -246,7 +264,7 @@ template.innerHTML = /* html */ `
         <form method="dialog">
           <button type="submit" part="close" class="dialog__close" aria-label="Close">
             <slot name="close">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <svg part="close-icon" xmlns="http://www.w3.org/2000/svg" width="1.125em" height="1.125em" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
               </svg>
             </slot>
@@ -295,32 +313,41 @@ template.innerHTML = /* html */ `
  * @slot footer - The modals' footer content. Usually used for buttons or other actions.
  * @slot close - The content of the close button that appears in the modal's header.
  *
- * @cssproperty --me-width - The width of the modal. Default is 32rem.
- * @cssproperty --me-height - The height of the modal. Default is fit-content.
- * @cssproperty --me-border-color - The border color of the modal. Default is initial.
- * @cssproperty --me-border-style - The border style of the modal. Default is solid.
- * @cssproperty --me-border-width - The border width of the modal. Default is initial.
- * @cssproperty --me-border-radius - The border radius of the modal. Default is 0.
- * @cssproperty --me-box-shadow - The box shadow of the modal. Default is none.
- * @cssproperty --me-background-color - The background color of the modal. Default is canvas.
- * @cssproperty --me-header-spacing - The spacing of the header. Default is 1rem.
- * @cssproperty --me-body-spacing - The spacing of the body. Default is 1rem.
- * @cssproperty --me-footer-spacing - The spacing of the footer. Default is 1rem.
- * @cssproperty --me-header-background-color - The background color of the header. Default is transparent.
- * @cssproperty --me-body-background-color - The background color of the body. Default is transparent.
- * @cssproperty --me-footer-background-color - The background color of the footer. Default is transparent.
- * @cssproperty --me-close-border-radius - The border radius of the close button. Default is 0.
- * @cssproperty --me-close-background-color - The background color of the close button. Default is transparent.
- * @cssproperty --me-backdrop-background - The background shorthand property of the backdrop. Default is rgba(0, 0, 0, 0.5).
- * @cssproperty --me-backdrop-filter - The backdrop filter property of the backdrop. Default is none.
+ * @cssproperty --me-width - The width of the modal.
+ * @cssproperty --me-height - The height of the modal.
+ * @cssproperty --me-border-color - The border color of the modal.
+ * @cssproperty --me-border-style - The border style of the modal.
+ * @cssproperty --me-border-width - The border width of the modal.
+ * @cssproperty --me-border-radius - The border radius of the modal.
+ * @cssproperty --me-box-shadow - The box shadow of the modal.
+ * @cssproperty --me-background-color - The background color of the modal.
+ * @cssproperty --me-color - The foreground color of the modal.
+ * @cssproperty --me-header-spacing - The spacing of the header.
+ * @cssproperty --me-header-background-color - The background color of the header.
+ * @cssproperty --me-header-color - The foreground color of the header.
+ * @cssproperty --me-body-spacing - The spacing of the body.
+ * @cssproperty --me-body-background-color - The background color of the body.
+ * @cssproperty --me-body-color - The foreground color of the body.
+ * @cssproperty --me-footer-spacing - The spacing of the footer.
+ * @cssproperty --me-footer-background-color - The background color of the footer.
+ * @cssproperty --me-footer-color - The foreground color of the footer.
+ * @cssproperty --me-close-padding - The padding of the close button.
+ * @cssproperty --me-close-border - The border shorthand property of the close button.
+ * @cssproperty --me-close-border-radius - The border radius shorthand property of the close button.
+ * @cssproperty --me-close-background-color - The background color of the close button.
+ * @cssproperty --me-close-color - The foreground color of the close button.
+ * @cssproperty --me-close-font-size - The font size of the close button.
+ * @cssproperty --me-backdrop-background - The background shorthand property of the backdrop.
+ * @cssproperty --me-backdrop-filter - The backdrop filter property of the backdrop.
  *
  * @csspart base - The base wrapper of the modal.
  * @csspart panel - The panel wrapper of the modal.
  * @csspart header - The header wrapper of the modal.
  * @csspart title - The title wrapper of the modal.
+ * @csspart close - The default close button rendered in the modal's header.
+ * @csspart close-icon - The close icon of the default close button.
  * @csspart body - The body wrapper of the modal.
  * @csspart footer - The footer wrapper of the modal.
- * @csspart close - The close button of the modal.
  *
  * @fires me-open - Dispatched when the modal is opened.
  * @fires me-close - Dispatched when the modal is closed.
