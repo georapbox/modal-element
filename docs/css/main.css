@@ -97,6 +97,7 @@ modal-element [slot="header"] {
   margin: 0;
   font-weight: normal;
   font-size: 1.25rem;
+  color: inherit;
 }
 
 modal-element p {

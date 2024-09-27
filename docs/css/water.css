@@ -611,7 +611,7 @@ details[open] {
   padding: 10px;
 }
 
-details> :last-child {
+details > :last-child {
   margin-bottom: 0;
 }
 

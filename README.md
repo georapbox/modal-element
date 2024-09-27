@@ -87,6 +87,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `header` | The modal's header element. It wraps the modal's title and close button. |
 | `title` | The modal's title wrapper element. |
 | `close` | The default close button rendered in the modal's header. |
+| `close-icon` | The default close button's icon. |
 | `body` | The modal's body element, where all main content is rendered. |
 | `footer` | The modal's footer element. |
 
@@ -102,12 +103,22 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `--me-border-radius` | The modal's border radius. | `0` |
 | `--me-box-shadow` | The modal's box shadow. | `none` |
 | `--me-background-color` | The modal's background color. | `canvas` |
+| `--me-color` | The modal's foreground color. | `canvastext` |
 | `--me-header-spacing` | The amount of spacing (padding) to use for the header element. | `1rem` |
-| `--me-body-spacing` | The amount of spacing (padding) to use for the body element. | `1rem` |
-| `--me-footer-spacing` | The amount of spacing (padding) to use for the footer element. | `1rem` |
 | `--me-header-background-color` | The header's background color. | `transparent` |
+| `--me-header-color` | The header's foreground color. | `initial` |
+| `--me-body-spacing` | The amount of spacing (padding) to use for the body element. | `1rem` |
 | `--me-body-background-color` | The body's background color. | `transparent` |
+| `--me-body-color` | The body's foreground color. | `initial` |
+| `--me-footer-spacing` | The amount of spacing (padding) to use for the footer element. | `1rem` |
 | `--me-footer-background-color` | The footer's background color. | `transparent` |
+| `--me-footer-color` | The footer's foreground color. | `initial` |
+| `--me-close-padding` | The padding of the default close button. | `0.4375rem` |
+| `--me-close-border` | The border shorthand property of the default close button. | `none` |
+| `--me-close-border-radius` | The border radius shorthand property of the default close button. | `0` |
+| `--me-close-background-color` | The background color of the default close button. | `transparent` |
+| `--me-close-color` | The foreground color of the default close button. | `inherit` |
+| `--me-close-font-size` | The font size of the default close button. | `1rem` |
 | `--me-backdrop-background`<sup>1</sup> | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
 | `--me-backdrop-filter`<sup>1</sup> | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
 
