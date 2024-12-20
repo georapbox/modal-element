@@ -468,6 +468,7 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.querySelector('form[method="dialog"]')?.addEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.addEventListener('slotchange', this.#handleFooterSlotChange);
     this.#closeSlotEl?.addEventListener('slotchange', this.#handleCloseSlotChange);
+    this.addEventListener('command', this.#handleCommandEvent);
   }
 
   /**
@@ -481,6 +482,7 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.querySelector('form[method="dialog"]')?.removeEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
     this.#closeSlotEl?.removeEventListener('slotchange', this.#handleCloseSlotChange);
+    this.removeEventListener('command', this.#handleCommandEvent);
   }
 
   /**
@@ -741,6 +743,29 @@ class ModalElement extends HTMLElement {
 
     // Close the dialog when external invoker is clicked.
     if (target instanceof HTMLElement && target.closest('[data-me-close]') !== null) {
+      const requestCloseEvent = this.#createRequestCloseEvent('external-invoker');
+
+      this.dispatchEvent(requestCloseEvent);
+
+      if (requestCloseEvent.defaultPrevented) {
+        !this.noAnimations && this.#applyPulseEffectOnDialog();
+      } else {
+        this.hide();
+      }
+    }
+  };
+
+  /**
+   * Handles the command event.
+   *
+   * @param {*} evt - The command event.
+   */
+  #handleCommandEvent = evt => {
+    if (evt.command === '--me-open' && !this.open) {
+      this.show();
+    }
+
+    if (evt.command === '--me-close' && this.open) {
       const requestCloseEvent = this.#createRequestCloseEvent('external-invoker');
 
       this.dispatchEvent(requestCloseEvent);

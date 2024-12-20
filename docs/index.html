@@ -54,6 +54,7 @@
         <li><a href="#example-placement">Modal placement</a></li>
         <li><a href="#example-preserve-overflow">Preserve body overflow</a></li>
         <li><a href="#example-nested-modals">Nested modals</a></li>
+        <li><a href="#example-invoker-commands">Invoker commands</a></li>
         <li><a href="#example-interactive-demo">Interactive demo</a></li>
       </ol>
     </details>
@@ -968,6 +969,47 @@
       </details>
     </div>
 
+    <h3 id="example-invoker-commands">Invoker commands</h3>
+    <p>
+      With invoker commands you can open and close the modal in a declarative way using
+      <code>command</code> and <code>commandfor</code> attributes on a button element.
+    </p>
+
+    <div id="no-command-support" class="alert alert-danger" hidden>
+      Your browser does not support the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Invoker_Commands_API" target="_blank" rel="noopener noreferrer">Invoker Commands API</a>.
+      Please check the <a href="https://caniuse.com/?search=HTML%20element%3A%20button%3A%20command%20HTML%20element%3A%20button%3A%20command" target="_blank" rel="noopener noreferrer">supported browsers</a>.
+    </div>
+
+    <div class="card">
+      <browser-window url="https://github.com/georapbox/modal-element" icon>
+        <p>The following button opens the modal using the <code>--me-open</code> command.</p>
+        <button type="button" commandfor="modal-invoker-commands" command="--me-open" disabled>Open Modal</button>
+      </browser-window>
+
+      <modal-element id="modal-invoker-commands">
+        <h2 slot="header">Using invoker commands</h2>
+        <p>This is a modal that can be controlled using invoker commands.</p>
+        <p>
+          You can close the modal by clicking the button below.
+          This button uses the <code>--me-close</code> command.
+        </p>
+        <button slot="footer" type="button" style="margin: 0;" commandfor="modal-invoker-commands" command="--me-close">Close</button>
+      </modal-element>
+
+      <details>
+        <summary>Source code</summary>
+
+<pre><code class="language-xml">&lt;button type="button" commandfor="my-modal" command="--me-open"&gt;Open Modal&lt;/button&gt;
+
+&lt;modal-element id="my-modal"&gt;
+  &lt;h2 slot="header"&gt;Using invoker commands&lt;/h2&gt;
+  &lt;p&gt;This is a modal that can be controlled using invoker commands.&lt;/p&gt;
+  &lt;button slot="footer" type="button" commandfor="my-modal" command="--me-close"&gt;Close&lt;/button&gt;
+&lt;/modal-element&gt;
+</code></pre>
+      </details>
+    </div>
+
     <h3 id="example-interactive-demo">Interactive demo</h3>
     <p>
       The following example is an interactive demo of the component.
@@ -1072,7 +1114,7 @@
   </main>
 
   <script>
-    document.querySelectorAll('button[data-open]').forEach(el => el.removeAttribute('disabled'));
+    document.querySelectorAll('button[data-open], button[command]').forEach(el => el.removeAttribute('disabled'));
 
     document.querySelectorAll('h3[id^="example-"]').forEach((el, index) => {
       el.insertAdjacentHTML('afterbegin', `<a href="#${el.getAttribute('id')}">#</a> Example ${index + 1} - `);
@@ -1090,6 +1132,10 @@
         </svg>
       `);
     });
+
+    if (!Object.prototype.hasOwnProperty.call(HTMLButtonElement.prototype, 'command')) {
+      document.getElementById('no-command-support')?.removeAttribute('hidden');
+    }
   </script>
 </body>
 </html>
