@@ -156,7 +156,7 @@ The modal provides some default ways for the end user to dismiss the modal. Thes
 
 These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of v1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-me-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element.
 
-Hopefully, in the future we are going to have more declarative ways to handle these kinds of scenarions natively with [Invokers](https://open-ui.org/components/invokers.explainer/), but for now, this is a simple way to achieve the same result.
+Hopefully, in the future we are going to have more declarative ways to handle these kinds of scenarions natively with [Invoker Commands](https://open-ui.org/components/invokers.explainer/), but for now, this is a simple way to achieve the same result.
 
 Here is an example:
 
@@ -171,6 +171,28 @@ Here is an example:
 By just adding the `data-me-close` attribute to the button, the modal will be dismissed when the button is clicked.
 
 **Note:** As of v1.7.0, by clicking on the custom close button, the `me-request-close` event will also be emitted with the `reason` set to `'external-invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
+
+## Invoker Commands (Experimental)
+
+> [!NOTE]
+> This is an experimental feature based on the [Invoker Commands API](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API). The API is still in the early stages and might change in the future. Check [browser compatibility](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API#browser_compatibility) before using it in production.
+
+As of v1.9.0 the modal supports Invoker Commands to provide a more declarative way to handle user interactions. The modal provides the following commands:
+
+- `--me-open` command to open the modal
+- `--me-close` command to close the modal
+
+Here is an example, demonstrating how to use the API to open and close the modal.
+
+```html
+<button type="button" commandfor="my-modal" command="--me-open">Open Modal</button>
+
+<modal-element id="my-modal">
+  <h5 slot="header">Modal Title</h5>
+  <p>Modal content</p>
+  <button slot="footer" type="button" commandfor="my-modal" command="--me-close">Close</button>
+</modal-element>
+```
 
 ## Changelog
 
