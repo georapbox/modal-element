@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## v1.9.0 (2024-12-XX)
+## v1.9.0 (2025-04-XX)
 
 - Add support for experimental [Invoker Commands API](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API).
+- Update dev dependencies.
 
 ## v1.8.0 (2024-09-27)
 
