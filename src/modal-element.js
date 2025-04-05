@@ -13,6 +13,12 @@
  * @typedef {'close-button' | 'escape-key' | 'backdrop-click' | 'external-invoker'} CloseRequestReason
  */
 
+/**
+ * Represents a command event.
+ *
+ * @typedef {Event & { command: string }} CommandEvent
+ */
+
 const PULSE_ANIMATION_DURATION = 300; // milliseconds
 const template = document.createElement('template');
 
@@ -468,7 +474,7 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.querySelector('form[method="dialog"]')?.addEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.addEventListener('slotchange', this.#handleFooterSlotChange);
     this.#closeSlotEl?.addEventListener('slotchange', this.#handleCloseSlotChange);
-    this.addEventListener('command', this.#handleCommandEvent);
+    this.addEventListener('command', /** @type {EventListener} */ (this.#handleCommandEvent));
   }
 
   /**
@@ -482,7 +488,7 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.querySelector('form[method="dialog"]')?.removeEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
     this.#closeSlotEl?.removeEventListener('slotchange', this.#handleCloseSlotChange);
-    this.removeEventListener('command', this.#handleCommandEvent);
+    this.removeEventListener('command', /** @type {EventListener} */ (this.#handleCommandEvent));
   }
 
   /**
@@ -626,8 +632,6 @@ class ModalElement extends HTMLElement {
    * Updates the aria-label attribute of the close button.
    * If the slot for the close button has text content, the aria-label attribute is removed to allow the text content to be used as the label.
    * Otherwise, the aria-label attribute is set to the `closeLabel` property.
-   *
-   * @returns
    */
   #updateCloseLabel() {
     if (this.#dialogEl === null) {
@@ -758,7 +762,7 @@ class ModalElement extends HTMLElement {
   /**
    * Handles the command event.
    *
-   * @param {*} evt - The command event.
+   * @param {CommandEvent} evt - The command event.
    */
   #handleCommandEvent = evt => {
     if (evt.command === '--me-open' && !this.open) {
