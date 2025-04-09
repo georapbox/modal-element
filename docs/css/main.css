@@ -7,7 +7,13 @@
 :root {
   --body-max-width: 900px;
   --card-bg-color: #ffffff;
+  --alert-danger-bg-color: #f8d7da;
+  --alert-danger-color: #721c24;
   scroll-behavior: smooth;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 .noscript-banner {
@@ -64,9 +70,26 @@
   line-height: 1.7;
 }
 
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.alert-danger {
+  background-color: var(--alert-danger-bg-color);
+  color: var(--alert-danger-color);
+}
+
+.alert-danger a {
+  color: var(--alert-danger-color);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --card-bg-color: #283647;
+    --alert-danger-bg-color: #721c24;
+    --alert-danger-color: #f8d7da;
   }
 }
 
