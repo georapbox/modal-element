@@ -2,12 +2,12 @@
  * @georapbox/modal-element
  * A custom element to create a modal, using the native dialog element under the hood.
  *
- * @version 1.8.0
+ * @version 1.9.0
  * @homepage https://github.com/georapbox/modal-element#readme
  * @author George Raptis <georapbox@gmail.com>
  * @license MIT
  */
-var n=document.createElement("template"),r=`
+var a=document.createElement("template"),r=`
   :host {
     --me-width: 32rem;
     --me-height: fit-content;
@@ -141,25 +141,25 @@ var n=document.createElement("template"),r=`
     }
 
     /* 1. IS-OPEN STATE */
-    .dialog[open] {
+    .dialog[open]:not(.dialog--no-animations) {
       transform: scale(1);
       opacity: 1;
     }
 
     /* 2. EXIT STATE */
-    .dialog {
+    .dialog:not(.dialog--no-animations) {
       transform: scale(0.95);
       opacity: 0;
     }
 
     /* 0. BEFORE-OPEN STATE */
     @starting-style {
-      .dialog[open] {
+      .dialog[open]:not(.dialog--no-animations) {
         transform: scale(0.95);
         opacity: 0;
       }
 
-      .dialog[open]::backdrop {
+      .dialog[open]:not(.dialog--no-animations)::backdrop {
         opacity: 0;
       }
     }
@@ -242,7 +242,7 @@ var n=document.createElement("template"),r=`
   .dialog__close:disabled {
     cursor: not-allowed;
   }
-`;n.innerHTML=`
+`;a.innerHTML=`
   <style>${r}</style>
 
   <dialog part="base" class="dialog">
@@ -268,5 +268,5 @@ var n=document.createElement("template"),r=`
       </footer>
     </div>
   </dialog>
-`;var a=class s extends HTMLElement{#e=null;#i=null;#a=null;#o=void 0;constructor(){super(),this.shadowRoot||this.attachShadow({mode:"open"}).appendChild(n.content.cloneNode(!0)),this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#i=this.shadowRoot.querySelector('slot[name="footer"]'),this.#a=this.shadowRoot.querySelector('slot[name="close"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button","close-label"]}attributeChangedCallback(e,t,i){if(this.#e!==null){if(e==="open"&&t!==i&&(this.open?(this.#e.showModal(),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="hidden")):this.#e.close()),e==="no-header"&&t!==i){let o=this.#e.querySelector(".dialog__header");o!==null&&(o.hidden=this.noHeader)}if(e==="no-animations"&&t!==i&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),e==="no-close-button"&&t!==i){let o=this.#e.querySelector(".dialog__close");o!==null&&(o.hidden=this.noCloseButton)}e==="close-label"&&t!==i&&this.#r()}}connectedCallback(){this.#t("open"),this.#t("staticBackdrop"),this.#t("noHeader"),this.#t("noAnimations"),this.#t("noCloseButton"),this.#t("fullscreen"),this.#t("preserveOverflow"),this.#t("placement"),this.#t("closeLabel"),this.#e?.addEventListener("click",this.#h),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#d),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#c),this.#i?.addEventListener("slotchange",this.#m),this.#a?.addEventListener("slotchange",this.#g)}disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#h),this.#e?.removeEventListener("close",this.#l),this.#e?.removeEventListener("cancel",this.#d),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#c),this.#i?.removeEventListener("slotchange",this.#m),this.#a?.removeEventListener("slotchange",this.#g)}get open(){return this.hasAttribute("open")}set open(e){this.toggleAttribute("open",!!e)}get staticBackdrop(){return this.hasAttribute("static-backdrop")}set staticBackdrop(e){this.toggleAttribute("static-backdrop",!!e)}get noHeader(){return this.hasAttribute("no-header")}set noHeader(e){this.toggleAttribute("no-header",!!e)}get noAnimations(){return this.hasAttribute("no-animations")}set noAnimations(e){this.toggleAttribute("no-animations",!!e)}get noCloseButton(){return this.hasAttribute("no-close-button")}set noCloseButton(e){this.toggleAttribute("no-close-button",!!e)}get fullscreen(){return this.hasAttribute("fullscreen")}set fullscreen(e){this.toggleAttribute("fullscreen",!!e)}get preserveOverflow(){return this.hasAttribute("preserve-overflow")}set preserveOverflow(e){this.toggleAttribute("preserve-overflow",!!e)}get placement(){return this.getAttribute("placement")||"center"}set placement(e){this.setAttribute("placement",e!=null?e.toString():e)}get closeLabel(){return this.getAttribute("close-label")||"Close"}set closeLabel(e){this.setAttribute("close-label",e!=null?e.toString():e)}#r(){if(this.#e===null)return;let e=this.#e.querySelector(".dialog__close");if(e===null)return;(this.#a?.assignedElements()||[])?.some(o=>o.textContent?.replace(/\s/g,"")!=="")?e.removeAttribute("aria-label"):e.setAttribute("aria-label",this.closeLabel)}#n(){this.#o||(this.#e?.classList.add("dialog--pulse"),this.#o=setTimeout(()=>{this.#e?.classList.remove("dialog--pulse"),clearTimeout(this.#o),this.#o=void 0},300))}#l=()=>{this.open=!1,this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="")};#d=e=>{let t=this.#s("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),!this.noAnimations&&this.#n())};#c=e=>{let t=this.#s("close-button");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),!this.noAnimations&&this.#n())};#h=e=>{let t=e.target,i=e.currentTarget;if(t===i){let o=this.#s("backdrop-click");this.dispatchEvent(o),o.defaultPrevented||this.staticBackdrop?!this.noAnimations&&this.#n():this.hide()}if(t instanceof HTMLElement&&t.closest("[data-me-close]")!==null){let o=this.#s("external-invoker");this.dispatchEvent(o),o.defaultPrevented?!this.noAnimations&&this.#n():this.hide()}};#m=()=>{if(this.#e===null)return;let e=this.#e.querySelector(".dialog__footer");if(e===null)return;let t=this.#i?.assignedNodes(),i=t?t.length>0:!1;e.hidden=!i};#g=()=>{this.#r()};#s(e){return new CustomEvent("me-request-close",{bubbles:!0,composed:!0,cancelable:!0,detail:{reason:e,element:this}})}#t(e){let t=this;if(Object.prototype.hasOwnProperty.call(t,e)){let i=t[e];delete t[e],t[e]=i}}show(){this.open||(this.open=!0)}hide(){this.open&&(this.open=!1)}static defineCustomElement(e="modal-element"){typeof window<"u"&&!window.customElements.get(e)&&window.customElements.define(e,s)}};export{a as ModalElement};
+`;var n=class s extends HTMLElement{#e=null;#a=null;#s=null;#o=void 0;constructor(){super(),this.shadowRoot||this.attachShadow({mode:"open"}).appendChild(a.content.cloneNode(!0)),this.shadowRoot&&(this.#e=this.shadowRoot.querySelector("dialog"),this.#a=this.shadowRoot.querySelector('slot[name="footer"]'),this.#s=this.shadowRoot.querySelector('slot[name="close"]'))}static get observedAttributes(){return["open","no-header","no-animations","no-close-button","close-label"]}attributeChangedCallback(e,t,i){if(this.#e!==null){if(e==="open"&&t!==i&&(this.open?(this.#e.showModal(),this.dispatchEvent(new CustomEvent("me-open",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="hidden")):this.#e.close()),e==="no-header"&&t!==i){let o=this.#e.querySelector(".dialog__header");o!==null&&(o.hidden=this.noHeader)}if(e==="no-animations"&&t!==i&&this.#e.classList.toggle("dialog--no-animations",this.noAnimations),e==="no-close-button"&&t!==i){let o=this.#e.querySelector(".dialog__close");o!==null&&(o.hidden=this.noCloseButton)}e==="close-label"&&t!==i&&this.#r()}}connectedCallback(){this.#t("open"),this.#t("staticBackdrop"),this.#t("noHeader"),this.#t("noAnimations"),this.#t("noCloseButton"),this.#t("fullscreen"),this.#t("preserveOverflow"),this.#t("placement"),this.#t("closeLabel"),this.#e?.addEventListener("click",this.#h),this.#e?.addEventListener("close",this.#l),this.#e?.addEventListener("cancel",this.#d),this.#e?.querySelector('form[method="dialog"]')?.addEventListener("submit",this.#c),this.#a?.addEventListener("slotchange",this.#g),this.#s?.addEventListener("slotchange",this.#u),this.addEventListener("command",this.#m)}disconnectedCallback(){this.#o&&clearTimeout(this.#o),this.#e?.addEventListener("click",this.#h),this.#e?.removeEventListener("close",this.#l),this.#e?.removeEventListener("cancel",this.#d),this.#e?.querySelector('form[method="dialog"]')?.removeEventListener("submit",this.#c),this.#a?.removeEventListener("slotchange",this.#g),this.#s?.removeEventListener("slotchange",this.#u),this.removeEventListener("command",this.#m)}get open(){return this.hasAttribute("open")}set open(e){this.toggleAttribute("open",!!e)}get staticBackdrop(){return this.hasAttribute("static-backdrop")}set staticBackdrop(e){this.toggleAttribute("static-backdrop",!!e)}get noHeader(){return this.hasAttribute("no-header")}set noHeader(e){this.toggleAttribute("no-header",!!e)}get noAnimations(){return this.hasAttribute("no-animations")}set noAnimations(e){this.toggleAttribute("no-animations",!!e)}get noCloseButton(){return this.hasAttribute("no-close-button")}set noCloseButton(e){this.toggleAttribute("no-close-button",!!e)}get fullscreen(){return this.hasAttribute("fullscreen")}set fullscreen(e){this.toggleAttribute("fullscreen",!!e)}get preserveOverflow(){return this.hasAttribute("preserve-overflow")}set preserveOverflow(e){this.toggleAttribute("preserve-overflow",!!e)}get placement(){return this.getAttribute("placement")||"center"}set placement(e){this.setAttribute("placement",e!=null?e.toString():e)}get closeLabel(){return this.getAttribute("close-label")||"Close"}set closeLabel(e){this.setAttribute("close-label",e!=null?e.toString():e)}#r(){if(this.#e===null)return;let e=this.#e.querySelector(".dialog__close");if(e===null)return;(this.#s?.assignedElements()||[])?.some(o=>o.textContent?.replace(/\s/g,"")!=="")?e.removeAttribute("aria-label"):e.setAttribute("aria-label",this.closeLabel)}#i(){this.#o||(this.#e?.classList.add("dialog--pulse"),this.#o=setTimeout(()=>{this.#e?.classList.remove("dialog--pulse"),clearTimeout(this.#o),this.#o=void 0},300))}#l=()=>{this.open=!1,this.dispatchEvent(new CustomEvent("me-close",{bubbles:!0,composed:!0,detail:{element:this}})),document.body&&!this.preserveOverflow&&(document.body.style.overflow="")};#d=e=>{let t=this.#n("escape-key");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),!this.noAnimations&&this.#i())};#c=e=>{let t=this.#n("close-button");this.dispatchEvent(t),t.defaultPrevented&&(e.preventDefault(),!this.noAnimations&&this.#i())};#h=e=>{let t=e.target,i=e.currentTarget;if(t===i){let o=this.#n("backdrop-click");this.dispatchEvent(o),o.defaultPrevented||this.staticBackdrop?!this.noAnimations&&this.#i():this.hide()}if(t instanceof HTMLElement&&t.closest("[data-me-close]")!==null){let o=this.#n("external-invoker");this.dispatchEvent(o),o.defaultPrevented?!this.noAnimations&&this.#i():this.hide()}};#m=e=>{if(e.command==="--me-open"&&!this.open&&this.show(),e.command==="--me-close"&&this.open){let t=this.#n("external-invoker");this.dispatchEvent(t),t.defaultPrevented?!this.noAnimations&&this.#i():this.hide()}};#g=()=>{if(this.#e===null)return;let e=this.#e.querySelector(".dialog__footer");if(e===null)return;let t=this.#a?.assignedNodes(),i=t?t.length>0:!1;e.hidden=!i};#u=()=>{this.#r()};#n(e){return new CustomEvent("me-request-close",{bubbles:!0,composed:!0,cancelable:!0,detail:{reason:e,element:this}})}#t(e){let t=this;if(Object.prototype.hasOwnProperty.call(t,e)){let i=t[e];delete t[e],t[e]=i}}show(){this.open||(this.open=!0)}hide(){this.open&&(this.open=!1)}static defineCustomElement(e="modal-element"){typeof window<"u"&&!window.customElements.get(e)&&window.customElements.define(e,s)}};export{n as ModalElement};
 //# sourceMappingURL=modal-element.js.map
