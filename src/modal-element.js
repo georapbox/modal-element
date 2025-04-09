@@ -156,25 +156,25 @@ const styles = /* css */ `
     }
 
     /* 1. IS-OPEN STATE */
-    .dialog[open] {
+    .dialog[open]:not(.dialog--no-animations) {
       transform: scale(1);
       opacity: 1;
     }
 
     /* 2. EXIT STATE */
-    .dialog {
+    .dialog:not(.dialog--no-animations) {
       transform: scale(0.95);
       opacity: 0;
     }
 
     /* 0. BEFORE-OPEN STATE */
     @starting-style {
-      .dialog[open] {
+      .dialog[open]:not(.dialog--no-animations) {
         transform: scale(0.95);
         opacity: 0;
       }
 
-      .dialog[open]::backdrop {
+      .dialog[open]:not(.dialog--no-animations)::backdrop {
         opacity: 0;
       }
     }
