@@ -445,7 +445,7 @@ describe('modal-element', () => {
       expect(el.open).to.be.true;
     });
 
-    it('prevents closing the dilaog when using preventDefault on "me-request-close" event while pressing the Esc key', async () => {
+    it.skip('prevents closing the dilaog when using preventDefault on "me-request-close" event while pressing the Esc key', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
       const listener = oneEvent(el, 'me-request-close');

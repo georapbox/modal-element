@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.9.1 (2025-08-21)
+
+- Replace `addEventListener` with `removeEventListener` for the `#handleDialogClick` event handler in `disconnectedCallback` to prevent memory leaks.
+- Update dev dependencies.
+
 ## v1.9.0 (2025-04-09)
 
 - Add support for experimental [Invoker Commands API](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API).

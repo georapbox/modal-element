@@ -482,7 +482,7 @@ class ModalElement extends HTMLElement {
    */
   disconnectedCallback() {
     this.#pulseAnimationTimeout && clearTimeout(this.#pulseAnimationTimeout);
-    this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
+    this.#dialogEl?.removeEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.removeEventListener('close', this.#handleDialogClose);
     this.#dialogEl?.removeEventListener('cancel', this.#handleDialogCancel);
     this.#dialogEl?.querySelector('form[method="dialog"]')?.removeEventListener('submit', this.#handleCloseButtonClick);
