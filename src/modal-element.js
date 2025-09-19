@@ -8,9 +8,9 @@
  */
 
 /**
- * Available values for the request close reason.
+ * Stable identifier for the reason that the modal is about to close.
  *
- * @typedef {'close-button' | 'escape-key' | 'backdrop-click' | 'external-invoker'} CloseRequestReason
+ * @typedef {typeof ModalElement.CLOSE_REQUEST_REASONS[keyof typeof ModalElement.CLOSE_REQUEST_REASONS]} CloseRequestReason
  */
 
 /**
@@ -364,6 +364,17 @@ template.innerHTML = /* html */ `
  * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
  */
 class ModalElement extends HTMLElement {
+  /**
+   * Central list of all possible reasons that the modal is about to close.
+   * @readonly
+   */
+  static CLOSE_REQUEST_REASONS = /** @type {const} */ ({
+    CLOSE_BUTTON: 'close-button',
+    ESCAPE_KEY: 'escape-key',
+    BACKDROP_CLICK: 'backdrop-click',
+    EXTERNAL_INVOKER: 'external-invoker'
+  });
+
   /** @type {Nullable<HTMLDialogElement>} */
   #dialogEl = null;
 
@@ -697,7 +708,7 @@ class ModalElement extends HTMLElement {
    * @param {Event} evt - The cancel event.
    */
   #handleDialogCancel = evt => {
-    const requestCloseEvent = this.#createRequestCloseEvent('escape-key');
+    const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.ESCAPE_KEY);
 
     this.dispatchEvent(requestCloseEvent);
 
@@ -713,7 +724,7 @@ class ModalElement extends HTMLElement {
    * @param {Event} evt - The click event.
    */
   #handleCloseButtonClick = evt => {
-    const requestCloseEvent = this.#createRequestCloseEvent('close-button');
+    const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.CLOSE_BUTTON);
 
     this.dispatchEvent(requestCloseEvent);
 
@@ -731,27 +742,19 @@ class ModalElement extends HTMLElement {
   #handleDialogClick = evt => {
     const target = evt.target;
     const currentTarget = evt.currentTarget;
+    let reason = null;
 
-    // Close the dialog when the backdrop is clicked.
     if (target === currentTarget) {
-      const requestCloseEvent = this.#createRequestCloseEvent('backdrop-click');
+      reason = ModalElement.CLOSE_REQUEST_REASONS.BACKDROP_CLICK;
+    } else if (target instanceof HTMLElement && target.closest('[data-me-close]') !== null) {
+      reason = ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER;
+    }
 
+    if (reason !== null) {
+      const requestCloseEvent = this.#createRequestCloseEvent(reason);
       this.dispatchEvent(requestCloseEvent);
 
       if (requestCloseEvent.defaultPrevented || this.staticBackdrop) {
-        !this.noAnimations && this.#applyPulseEffectOnDialog();
-      } else {
-        this.hide();
-      }
-    }
-
-    // Close the dialog when external invoker is clicked.
-    if (target instanceof HTMLElement && target.closest('[data-me-close]') !== null) {
-      const requestCloseEvent = this.#createRequestCloseEvent('external-invoker');
-
-      this.dispatchEvent(requestCloseEvent);
-
-      if (requestCloseEvent.defaultPrevented) {
         !this.noAnimations && this.#applyPulseEffectOnDialog();
       } else {
         this.hide();
