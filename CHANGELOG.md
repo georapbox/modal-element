@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v1.10.0 (2025-09-19)
+
+### Changed
+
+- Refactor: merge duplicate backdrop and external-invoker click handlers into a single unified condition for clarity and maintainability.
+
+### Added
+
+- Expose `CLOSE_REQUEST_REASONS` as static property on `ModalElement` class for consumer reference.
+
+### Maintenance
+
+- Update dev dependencies.
+
 ## v1.9.1 (2025-08-21)
 
 - Replace `addEventListener` with `removeEventListener` for the `#handleDialogClick` event handler in `disconnectedCallback` to prevent memory leaks.

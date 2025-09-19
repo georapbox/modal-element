@@ -146,6 +146,14 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 <sup>1</sup> These methods are only available after the component has been defined. To ensure the component is defined, you can use `whenDefined` method of the `CustomElementRegistry` interface, eg `customElements.whenDefined('modal-element').then(() => { /* call methods here */ });`
 
+### Static Properties
+
+Below are static properties exposed on the `ModalElement` class for consumer reference.
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `CLOSE_REQUEST_REASONS` | Object | Static object of stable identifiers used in the `reason` property of the `me-request-close` event's detail object. |
+
 ## Closing mechanisms
 
 The modal provides some default ways for the end user to dismiss the modal. These are:
