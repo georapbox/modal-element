@@ -2,7 +2,7 @@
  * @georapbox/modal-element
  * A custom element to create a modal, using the native dialog element under the hood.
  *
- * @version 1.10.0
+ * @version 1.11.0
  * @homepage https://github.com/georapbox/modal-element#readme
  * @author George Raptis <georapbox@gmail.com>
  * @license MIT

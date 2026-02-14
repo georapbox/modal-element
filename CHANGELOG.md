@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v1.11.0 (2026-02-XX)
+
+### Added
+
+- Custom Elements Manifest (CEM) support via `@custom-elements-manifest/analyzer`
+- `analyze` script for generating the Custom Elements Manifest
+- `custom-elements-manifest.config.js` configuration file
+- `customElements` metadata field in `package.json`
+
+### Changed
+
+- Updated `.nvmrc` to Node.js 24.
+- Refined JSDoc attribute documentation in `src/modal-element.js` for improved tooling and editor support.
+
 ## v1.10.0 (2025-09-19)
 
 ### Changed
