@@ -420,6 +420,7 @@ class ModalElement extends HTMLElement {
 
     if (name === 'open' && oldValue !== newValue) {
       if (this.open) {
+        this.#dialogEl.classList.toggle('dialog--no-animations', this.noAnimations);
         this.#dialogEl.showModal();
 
         this.dispatchEvent(

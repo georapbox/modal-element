@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v1.11.0 (2026-02-XX)
+## v1.11.0 (2026-02-15)
 
 ### Added
 
@@ -13,6 +13,10 @@
 
 - Updated `.nvmrc` to Node.js 24.
 - Refined JSDoc attribute documentation in `src/modal-element.js` for improved tooling and editor support.
+
+### Fixed
+
+- Resolved a race condition where the opening animation would trigger even if `no-animations` was present. The internal animation state is now synchronized immediately before the modal opens to ensure attributes are respected during initial render.
 
 ## v1.10.0 (2025-09-19)
 
