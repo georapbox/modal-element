@@ -304,15 +304,15 @@ template.innerHTML = /* html */ `
  * @property {string} placement - Determines the placement of the modal.
  * @property {string} closeLabel - The label of the default close button, used as the aria-label attribute of the close button.
  *
- * @attribute {boolean} open - Reflects the open property.
- * @attribute {boolean} static-backdrop - Reflects the staticBackdrop property.
- * @attribute {boolean} no-header - Reflects the noHeader property.
- * @attribute {boolean} no-animations - Reflects the noAnimations property.
- * @attribute {boolean} no-close-button - Reflects the noCloseButton property.
- * @attribute {boolean} fullscreen - Reflects the fullscreen property.
- * @attribute {boolean} preserve-overflow - Reflects the preserveOverflow property.
- * @attribute {string} placement - Reflects the placement property.
- * @attribute {string} close-label - Reflects the closeLabel property.
+ * @attribute {boolean} open - Determines whether the modal is open or not.
+ * @attribute {boolean} static-backdrop - Determines whether the modal should close when the backdrop is clicked.
+ * @attribute {boolean} no-header - Determines whether the modal should have a header or not.
+ * @attribute {boolean} no-animations - Determines whether the modal should have animations or not when opening and closing.
+ * @attribute {boolean} no-close-button - Determines whether the modal should have a default close button or not.
+ * @attribute {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
+ * @attribute {boolean} preserve-overflow - Determines whether the overflow of the body should be preserved when the modal is open.
+ * @attribute {string} placement - Determines the placement of the modal.
+ * @attribute {string} close-label - The label of the default close button, used as the aria-label attribute of the close button.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot header - The modal's header content, usually a title.
@@ -420,6 +420,7 @@ class ModalElement extends HTMLElement {
 
     if (name === 'open' && oldValue !== newValue) {
       if (this.open) {
+        this.#dialogEl.classList.toggle('dialog--no-animations', this.noAnimations);
         this.#dialogEl.showModal();
 
         this.dispatchEvent(
@@ -506,8 +507,8 @@ class ModalElement extends HTMLElement {
    * Deternimes if the modal is open or not.
    *
    * @type {boolean} - True if the modal is open, otherwise false.
+   * @attribute open
    * @default false
-   * @attribute open - Reflects the open property.
    */
   get open() {
     return this.hasAttribute('open');
@@ -521,8 +522,8 @@ class ModalElement extends HTMLElement {
    * Determines whether the modal should close when the backdrop is clicked.
    *
    * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false.
+   * @attribute static-backdrop
    * @default false
-   * @attribute static-backdrop - Reflects the staticBackdrop property.
    */
   get staticBackdrop() {
     return this.hasAttribute('static-backdrop');
@@ -536,8 +537,8 @@ class ModalElement extends HTMLElement {
    * Determines whether the modal should have a header or not.
    *
    * @type {boolean} - True if the modal should have a header, otherwise false.
+   * @attribute no-header
    * @default false
-   * @attribute no-header - Reflects the noHeader property.
    */
   get noHeader() {
     return this.hasAttribute('no-header');
@@ -551,8 +552,8 @@ class ModalElement extends HTMLElement {
    * Determines whether the modal should have animations or not when opening and closing.
    *
    * @type {boolean} - True if the modal should have animations, otherwise false.
+   * @attribute no-animations
    * @default false
-   * @attribute no-animations - Reflects the noAnimations property.
    */
   get noAnimations() {
     return this.hasAttribute('no-animations');
@@ -566,8 +567,8 @@ class ModalElement extends HTMLElement {
    * Determines whether the modal should have a default close button or not.
    *
    * @type {boolean} - True if the modal should have a close button, otherwise false.
+   * @attribute no-close-button
    * @default false
-   * @attribute no-close-button - Reflects the noCloseButton property.
    */
   get noCloseButton() {
     return this.hasAttribute('no-close-button');
@@ -581,8 +582,8 @@ class ModalElement extends HTMLElement {
    * Determines whether the modal should be fullscreen or not.
    *
    * @type {boolean} - True if the modal should be fullscreen, otherwise false.
+   * @attribute fullscreen
    * @default false
-   * @attribute fullscreen - Reflects the fullscreen property.
    */
   get fullscreen() {
     return this.hasAttribute('fullscreen');
@@ -596,8 +597,8 @@ class ModalElement extends HTMLElement {
    * Determines whether the overflow of the body should be preserved when the modal is open.
    *
    * @type {boolean} - True if the overflow of the body should be preserved, otherwise false.
+   * @attribute preserve-overflow
    * @default false
-   * @attribute preserve-overflow - Reflects the preserveOverflow property.
    */
   get preserveOverflow() {
     return this.hasAttribute('preserve-overflow');
@@ -612,8 +613,8 @@ class ModalElement extends HTMLElement {
    * Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'.
    *
    * @type {string}
+   * @attribute placement
    * @default 'center'
-   * @attribute placement - Reflects the placement property.
    */
   get placement() {
     return this.getAttribute('placement') || 'center';
@@ -628,8 +629,8 @@ class ModalElement extends HTMLElement {
    * If user provides text content for the close button using the `close` slot, this property is ignored and the aria-label attribute is removed.
    *
    * @type {string}
+   * @attribute close-label
    * @default 'Close'
-   * @attribute close-label - Reflects the closeLabel property.
    */
   get closeLabel() {
     return this.getAttribute('close-label') || 'Close';
@@ -886,9 +887,7 @@ class ModalElement extends HTMLElement {
    * Defines a custom element with the given name.
    * The name must contain a dash (-).
    *
-   * @param {string} [elementName='modal-element']
-   * @example
-   * ModalElement.defineCustomElement('my-modal');
+   * @param {string} [elementName='modal-element'] - The name of the custom element.
    */
   static defineCustomElement(elementName = 'modal-element') {
     if (typeof window !== 'undefined' && !window.customElements.get(elementName)) {

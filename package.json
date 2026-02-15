@@ -1,12 +1,13 @@
 {
   "name": "@georapbox/modal-element",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "A custom element to create a modal, using the native dialog element under the hood.",
   "main": "dist/modal-element.js",
   "module": "dist/modal-element.js",
   "unpkg": "dist/modal-element.js",
   "type": "module",
   "types": "dist/modal-element.d.ts",
+  "customElements": "dist/custom-elements.json",
   "files": [
     "/src",
     "/dist"
@@ -24,8 +25,9 @@
     "start": "npm-run-all --parallel \"serve:dev -- {1}\" dev",
     "build:esbuild": "node ./scripts/build.mjs",
     "build": "npm-run-all clean build:esbuild",
+    "analyze": "custom-elements-manifest analyze",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm-run-all clean lint test build types"
+    "prepublishOnly": "npm-run-all clean lint test build types analyze"
   },
   "keywords": [
     "custom element",
@@ -47,6 +49,7 @@
   },
   "homepage": "https://github.com/georapbox/modal-element#readme",
   "devDependencies": {
+    "@custom-elements-manifest/analyzer": "~0.11.0",
     "@eslint/js": "~9.35.0",
     "@esm-bundle/chai": "~4.3.4-fix.0",
     "@open-wc/testing": "~4.0.0",
