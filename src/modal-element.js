@@ -741,26 +741,30 @@ class ModalElement extends HTMLElement {
    * @param {MouseEvent} evt - The click event.
    */
   #handleDialogClick = evt => {
-    const target = evt.target;
-    const currentTarget = evt.currentTarget;
-    let reason = null;
+    const { target, currentTarget } = evt;
 
-    if (target === currentTarget) {
-      reason = ModalElement.CLOSE_REQUEST_REASONS.BACKDROP_CLICK;
-    } else if (target instanceof HTMLElement && target.closest('[data-me-close]') !== null) {
-      reason = ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER;
+    const isBackdropClick = target === currentTarget;
+    const isExternalInvoker = target instanceof HTMLElement && target.closest('[data-me-close]') !== null;
+
+    if (!isBackdropClick && !isExternalInvoker) {
+      return;
     }
 
-    if (reason !== null) {
-      const requestCloseEvent = this.#createRequestCloseEvent(reason);
-      this.dispatchEvent(requestCloseEvent);
+    const closeReason = isBackdropClick
+      ? ModalElement.CLOSE_REQUEST_REASONS.BACKDROP_CLICK
+      : ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER;
 
-      if (requestCloseEvent.defaultPrevented || this.staticBackdrop) {
-        !this.noAnimations && this.#applyPulseEffectOnDialog();
-      } else {
-        this.hide();
-      }
+    const requestCloseEvent = this.#createRequestCloseEvent(closeReason);
+    this.dispatchEvent(requestCloseEvent);
+
+    const shouldBlockClose = requestCloseEvent.defaultPrevented || (isBackdropClick && this.staticBackdrop);
+
+    if (shouldBlockClose) {
+      !this.noAnimations && this.#applyPulseEffectOnDialog();
+      return;
     }
+
+    this.hide();
   };
 
   /**

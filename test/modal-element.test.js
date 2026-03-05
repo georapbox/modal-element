@@ -513,5 +513,20 @@ describe('modal-element', () => {
       await elementUpdated(el);
       expect(el.open).to.be.false;
     });
+
+    it('static-backdrop should not block close requests from external invokers', async () => {
+      const el = await fixture(
+        html`<modal-element static-backdrop>
+          <button data-me-close>Close</button>
+        </modal-element>`
+      );
+      el.setAttribute('open', '');
+      const requestClose = oneEvent(el, 'me-request-close');
+      el.querySelector('[data-me-close]').click();
+      const { detail } = await requestClose;
+      expect(detail.reason).to.equal('external-invoker');
+      await elementUpdated(el);
+      expect(el.open).to.be.false;
+    });
   });
 });
