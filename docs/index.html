@@ -388,7 +388,7 @@
 
       <modal-element id="modal-long-content">
         <h2 slot="header">Scrolling long content</h2>
-        <div style="min-height: 150vh;">
+        <div style="min-height: 150vh; border: 2px dashed currentColor; padding: 1rem;">
           <p>This is a modal with really long content. The header and footer will remain fixed, while the body will scroll.</p>
           <p>Scroll down and see for yourself! 👇</p>
           <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -402,6 +402,8 @@
 <pre><code>&lt;style&gt;
   .long-content {
     min-height: 150vh; /* Really long body */
+    border: 2px dashed currentColor;
+    padding: 1rem;
   }
 &lt;/style&gt;
 

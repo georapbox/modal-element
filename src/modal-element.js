@@ -14,13 +14,14 @@
  */
 
 /**
- * Represents a command event.
+ * Custom events with a `command` property that can be dispatched on the modal
+ * element to trigger certain actions, such as opening or closing the modal.
  *
  * @typedef {Event & { command: string }} CommandEvent
  */
 
-const PULSE_ANIMATION_DURATION = 300; // milliseconds
-const template = document.createElement('template');
+const PULSE_KEYFRAMES = [{ transform: 'scale(1)' }, { transform: 'scale(1.02)' }, { transform: 'scale(1)' }];
+const PULSE_ANIMATION_OPTIONS = { duration: 300, easing: 'cubic-bezier(0.2, 0, 0.38, 0.9)' };
 
 const styles = /* css */ `
   :host {
@@ -178,18 +179,6 @@ const styles = /* css */ `
         opacity: 0;
       }
     }
-
-    .dialog--pulse:not(.dialog--no-animations) {
-      animation-name: pulse;
-      animation-duration: ${PULSE_ANIMATION_DURATION}ms;
-      animation-timing-function: cubic-bezier(0.2, 0, 0.38, 0.9);
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-      100% { transform: scale(1); }
-    }
   }
 
   /* Dialog panel, header, body, footer */
@@ -258,6 +247,8 @@ const styles = /* css */ `
     cursor: not-allowed;
   }
 `;
+
+const template = document.createElement('template');
 
 template.innerHTML = /* html */ `
   <style>${styles}</style>
@@ -384,8 +375,8 @@ class ModalElement extends HTMLElement {
   /** @type {Nullable<HTMLSlotElement>} */
   #closeSlotEl = null;
 
-  /** @type {ReturnType<typeof setTimeout> | undefined} */
-  #pulseAnimationTimeout = void 0;
+  /** @type {Nullable<Animation>} */
+  #pulseAnimation = null;
 
   constructor() {
     super();
@@ -493,7 +484,6 @@ class ModalElement extends HTMLElement {
    * Lifecycle method that is called when the element is removed from the DOM.
    */
   disconnectedCallback() {
-    this.#pulseAnimationTimeout && clearTimeout(this.#pulseAnimationTimeout);
     this.#dialogEl?.removeEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.removeEventListener('close', this.#handleDialogClose);
     this.#dialogEl?.removeEventListener('cancel', this.#handleDialogCancel);
@@ -501,6 +491,11 @@ class ModalElement extends HTMLElement {
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
     this.#closeSlotEl?.removeEventListener('slotchange', this.#handleCloseSlotChange);
     this.removeEventListener('command', /** @type {EventListener} */ (this.#handleCommandEvent));
+
+    if (this.#pulseAnimation) {
+      this.#pulseAnimation?.cancel();
+      this.#pulseAnimation = null;
+    }
   }
 
   /**
@@ -665,20 +660,27 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Applies a pulse effect on the dialog.
+   * Applies a pulse effect on the dialog to indicate that the
+   * modal is about to close but the close action was blocked.
    */
-  #applyPulseEffectOnDialog() {
-    if (this.#pulseAnimationTimeout) {
+  #pulseDialog() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const shouldSkipPulse = this.noAnimations || prefersReducedMotion || this.#pulseAnimation;
+    if (shouldSkipPulse) {
       return;
     }
 
-    this.#dialogEl?.classList.add('dialog--pulse');
+    const dialog = this.#dialogEl;
+    if (!dialog || typeof dialog.animate !== 'function') {
+      return;
+    }
 
-    this.#pulseAnimationTimeout = setTimeout(() => {
-      this.#dialogEl?.classList.remove('dialog--pulse');
-      clearTimeout(this.#pulseAnimationTimeout);
-      this.#pulseAnimationTimeout = void 0;
-    }, PULSE_ANIMATION_DURATION);
+    this.#pulseAnimation = dialog.animate(PULSE_KEYFRAMES, PULSE_ANIMATION_OPTIONS);
+    this.#pulseAnimation.finished
+      .catch(() => {})
+      .finally(() => {
+        this.#pulseAnimation = null;
+      });
   }
 
   /**
@@ -710,12 +712,11 @@ class ModalElement extends HTMLElement {
    */
   #handleDialogCancel = evt => {
     const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.ESCAPE_KEY);
-
     this.dispatchEvent(requestCloseEvent);
 
     if (requestCloseEvent.defaultPrevented) {
       evt.preventDefault();
-      !this.noAnimations && this.#applyPulseEffectOnDialog();
+      this.#pulseDialog();
     }
   };
 
@@ -726,12 +727,11 @@ class ModalElement extends HTMLElement {
    */
   #handleCloseButtonClick = evt => {
     const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.CLOSE_BUTTON);
-
     this.dispatchEvent(requestCloseEvent);
 
     if (requestCloseEvent.defaultPrevented) {
       evt.preventDefault();
-      !this.noAnimations && this.#applyPulseEffectOnDialog();
+      this.#pulseDialog();
     }
   };
 
@@ -760,7 +760,7 @@ class ModalElement extends HTMLElement {
     const shouldBlockClose = requestCloseEvent.defaultPrevented || (isBackdropClick && this.staticBackdrop);
 
     if (shouldBlockClose) {
-      !this.noAnimations && this.#applyPulseEffectOnDialog();
+      this.#pulseDialog();
       return;
     }
 
@@ -768,25 +768,41 @@ class ModalElement extends HTMLElement {
   };
 
   /**
-   * Handles the command event.
+   * Handles the command event. Allows external invokers, such as buttons outside the modal,
+   * to trigger certain actions on the modal, such as opening or closing it, by dispatching
+   * a command event with the corresponding command.
    *
    * @param {CommandEvent} evt - The command event.
    */
   #handleCommandEvent = evt => {
-    if (evt.command === '--me-open' && !this.open) {
-      this.show();
-    }
-
-    if (evt.command === '--me-close' && this.open) {
-      const requestCloseEvent = this.#createRequestCloseEvent('external-invoker');
-
-      this.dispatchEvent(requestCloseEvent);
-
-      if (requestCloseEvent.defaultPrevented) {
-        !this.noAnimations && this.#applyPulseEffectOnDialog();
-      } else {
-        this.hide();
+    switch (evt.command) {
+      case '--me-open': {
+        if (this.open) {
+          return;
+        }
+        this.show();
+        return;
       }
+
+      case '--me-close': {
+        if (!this.open) {
+          return;
+        }
+
+        const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER);
+        this.dispatchEvent(requestCloseEvent);
+
+        if (requestCloseEvent.defaultPrevented) {
+          this.#pulseDialog();
+          return;
+        }
+
+        this.hide();
+        return;
+      }
+
+      default:
+        return;
     }
   };
 
@@ -888,7 +904,7 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Defines a custom element with the given name.
+   * Defines the custom element with the given name.
    * The name must contain a dash (-).
    *
    * @param {string} [elementName='modal-element'] - The name of the custom element.

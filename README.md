@@ -21,19 +21,25 @@ $ npm install --save @georapbox/modal-element
 
 ## Usage
 
-### Script
+### Importing the component
+
+By default, the package exports the element class without registering it. This lets the application decide when the custom element is defined.
+
+#### Manual definition
 
 ```js
-import { ModalElement } from './node_modules/@georapbox/modal-element/dist/modal-element.js';
+import { ModalElement } from '@georapbox/modal-element';
 
-// Manually define the element.
+// Define using the default tag name
 ModalElement.defineCustomElement();
 ```
 
-Alternatively, you can import the automatically defined custom element.
+#### Auto-defined (convenience)
+
+If you don't need control over registration, you can import the pre-defined build which immediately registers `<modal-element>`.
 
 ```js
-import './node_modules/@georapbox/modal-element/dist/modal-element-defined.js';
+import '@georapbox/modal-element/dist/modal-element-defined.js';
 ```
 
 ### Markup
