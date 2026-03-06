@@ -1,35 +1,38 @@
 # CHANGELOG
 
+## v1.11.1 (2026-03-06)
+
+### Fixed
+- Fixed an issue where `static-backdrop` prevented closing the modal via elements using `data-me-close`. ([#17](https://github.com/georapbox/modal-element/issues/17))
+
+### Changed
+- Internal: switched pulse animation to the Web Animations API respecting `prefers-reduced-motion`.
+- Docs: improved usage examples in README and updated import instructions.
+
 ## v1.11.0 (2026-02-15)
 
 ### Added
-
 - Custom Elements Manifest (CEM) support via `@custom-elements-manifest/analyzer`
 - `analyze` script for generating the Custom Elements Manifest
 - `custom-elements-manifest.config.js` configuration file
 - `customElements` metadata field in `package.json`
 
 ### Changed
-
 - Updated `.nvmrc` to Node.js 24.
 - Refined JSDoc attribute documentation in `src/modal-element.js` for improved tooling and editor support.
 
 ### Fixed
-
 - Resolved a race condition where the opening animation would trigger even if `no-animations` was present. The internal animation state is now synchronized immediately before the modal opens to ensure attributes are respected during initial render.
 
 ## v1.10.0 (2025-09-19)
 
 ### Changed
-
 - Refactor: merge duplicate backdrop and external-invoker click handlers into a single unified condition for clarity and maintainability.
 
 ### Added
-
 - Expose `CLOSE_REQUEST_REASONS` as static property on `ModalElement` class for consumer reference.
 
 ### Maintenance
-
 - Update dev dependencies.
 
 ## v1.9.1 (2025-08-21)

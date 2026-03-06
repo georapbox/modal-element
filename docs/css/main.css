@@ -5,11 +5,18 @@
 }
 
 :root {
-  --body-max-width: 900px;
-  --card-bg-color: #ffffff;
+  --body-max-width: 56rem;
   --alert-danger-bg-color: #f8d7da;
   --alert-danger-color: #721c24;
+
   scroll-behavior: smooth;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --alert-danger-bg-color: #721c24;
+    --alert-danger-color: #f8d7da;
+  }
 }
 
 [hidden] {
@@ -34,7 +41,7 @@
 }
 
 .card {
-  background-color: var(--card-bg-color);
+  background-color: var(--background-card);
   padding: 1rem;
   border-radius: 6px;
   border: 1px solid var(--border);
@@ -58,7 +65,7 @@
 }
 
 .back-top {
-  text-align: right;
+  text-align: end;
   font-size: 0.875rem;
 }
 
@@ -85,22 +92,25 @@
   color: var(--alert-danger-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --card-bg-color: #283647;
-    --alert-danger-bg-color: #721c24;
-    --alert-danger-color: #f8d7da;
-  }
-}
-
 browser-window {
   --bw-background: var(--background-alt);
   display: block;
   text-align: center;
 }
 
+browser-window:not(:defined) {
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  background-color: var(--background);
+}
+
 browser-window::part(base) {
-  border-color: var(--border);
+  border-color: transparent;
+  border-radius: var(--border-radius);
+}
+
+browser-window::part(title) {
+  border-radius: var(--border-radius);
 }
 
 browser-window > button {
