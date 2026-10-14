@@ -3,7 +3,7 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "strict": true,
-    "target": "es2015",
+    "target": "es2018",
     "allowJs": true,
     "declaration": true,
     "emitDeclarationOnly": true,

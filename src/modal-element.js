@@ -378,6 +378,9 @@ class ModalElement extends HTMLElement {
   /** @type {Nullable<Animation>} */
   #pulseAnimation = null;
 
+  /** @type {string | null} */
+  #previousBodyOverflow = null;
+
   constructor() {
     super();
 
@@ -422,8 +425,11 @@ class ModalElement extends HTMLElement {
           })
         );
 
-        if (document.body && !this.preserveOverflow) {
-          document.body.style.overflow = 'hidden';
+        const body = this.ownerDocument.body;
+
+        if (body && !this.preserveOverflow) {
+          this.#previousBodyOverflow = body.style.overflow;
+          body.style.overflow = 'hidden';
         }
       } else {
         this.#dialogEl.close();
@@ -664,7 +670,8 @@ class ModalElement extends HTMLElement {
    * modal is about to close but the close action was blocked.
    */
   #pulseDialog() {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const defaultView = this.ownerDocument.defaultView;
+    const prefersReducedMotion = defaultView?.matchMedia('(prefers-reduced-motion: reduce)').matches ?? false;
     const shouldSkipPulse = this.noAnimations || prefersReducedMotion || this.#pulseAnimation;
     if (shouldSkipPulse) {
       return;
@@ -699,8 +706,11 @@ class ModalElement extends HTMLElement {
       })
     );
 
-    if (document.body && !this.preserveOverflow) {
-      document.body.style.overflow = '';
+    const body = this.ownerDocument.body;
+
+    if (body && this.#previousBodyOverflow !== null) {
+      body.style.overflow = this.#previousBodyOverflow;
+      this.#previousBodyOverflow = null;
     }
   };
 
