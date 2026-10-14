@@ -73,7 +73,7 @@ By default, the component comes with minimal styling to remain as less opinionat
 
 All of the above properties reflect their values as HTML attributes to keep the element's DOM representation in sync with its JavaScript state.
 
-<sup>1</sup> A note for animations: The entry/exit animations of the modal are implemented using the [`@starting-style`](https://caniuse.com/?search=%40starting) CSS at-rule, which is a relatively new feature and currently only supported in Chromium-based browsers. Here is an interesting [article](https://developer.chrome.com/blog/entry-exit-animations/) for more information about the feature. As a fallback, the modal will be rendered without animations in browsers that do not support this feature. Also, keep in mind that if the user has [reduced motion](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion) enabled in their operating system, the animations will be disabled as well, even if they are supported by the browser.
+<sup>1</sup> The modal's entry/exit animations are implemented using modern CSS features, including [`@starting-style`](https://developer.mozilla.org/docs/Web/CSS/Reference/At-rules/@starting-style) and [`transition-behavior: allow-discrete`](https://developer.mozilla.org/docs/Web/CSS/transition-behavior). Browser support for these features varies, so some animations may not work as expected in certain browsers. When animations are not supported, the modal remains fully functional. Additionally, animations are disabled when the user has [reduced motion](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion) enabled in their operating system.
 
 ### Slots
 
@@ -125,14 +125,8 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `--me-close-background-color` | The background color of the default close button. | `transparent` |
 | `--me-close-color` | The foreground color of the default close button. | `inherit` |
 | `--me-close-font-size` | The font size of the default close button. | `1rem` |
-| `--me-backdrop-background`<sup>1</sup> | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
-| `--me-backdrop-filter`<sup>1</sup> | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
-
-<sup>1</sup> At the time of writing, the `::backdrop` pseudo-element (which is used under the hood) does not inherit from originating element per the specification. This means that the backdrop's CSS custom properties cannot be inherited from the modal's CSS custom properties. Fortunately, this is a known issue and it is being worked on by browser vendors and the CSS working group. Currently, it's already fixed in Firefox Nightly 120+ and Chromium Canary 121+. For more details, check the browser reported bugs below:
-- [WHATWG bug report](https://github.com/whatwg/fullscreen/issues/124)
-- [Chromium bug report](https://bugs.chromium.org/p/chromium/issues/detail?id=827397)
-- [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1855668)
-- [Safari bug report](https://bugs.webkit.org/show_bug.cgi?id=263834)
+| `--me-backdrop-background` | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
+| `--me-backdrop-filter` | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
 
 ### Events
 
@@ -154,7 +148,7 @@ This is intentional native `<dialog>` behavior designed to prevent websites from
 | `show`<sup>1</sup> | Instance | Opens the modal. | - |
 | `hide`<sup>1</sup> | Instance | Closes the modal. | - |
 
-<sup>1</sup> These methods are only available after the component has been defined. To ensure the component is defined, you can use `whenDefined` method of the `CustomElementRegistry` interface, eg `customElements.whenDefined('modal-element').then(() => { /* call methods here */ });`
+<sup>1</sup> Instance methods are only available after the custom element has been defined. Use [`customElements.whenDefined()`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry/whenDefined) to ensure the element is registered before calling these methods.
 
 ### Static Properties
 

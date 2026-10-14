@@ -11,6 +11,7 @@
 ### Documentation
 - Clarified native `<dialog>` behavior in Chromium-based browsers when preventing dismissal via the `Esc` key.
 - Updated Invoker Commands documentation to reflect current browser support.
+- Updated animation browser support information and removed outdated backdrop styling notes.
 - Updated the nested modals example to demonstrate automatic overflow restoration without using `preserve-overflow`.
 
 ## v1.11.1 (2026-03-06)
