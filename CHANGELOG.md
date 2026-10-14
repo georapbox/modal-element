@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v1.11.2 (2026-10-14)
+
+### Fixed
+- Preserve and restore the document body's previous `overflow` value when the modal closes, instead of resetting it. This also improves scroll locking when using nested modals.
+
+### Changed
+- Internal: use `ownerDocument` and `defaultView` instead of global `document` and `window` references for better compatibility across documents.
+
+### Documentation
+- Clarified native `<dialog>` behavior in Chromium-based browsers when preventing dismissal via the `Esc` key.
+- Updated Invoker Commands documentation to reflect current browser support.
+- Updated animation browser support information and removed outdated backdrop styling notes.
+- Updated the nested modals example to demonstrate automatic overflow restoration without using `preserve-overflow`.
+
 ## v1.11.1 (2026-03-06)
 
 ### Fixed

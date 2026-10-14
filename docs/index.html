@@ -910,6 +910,10 @@
       This example demonstrates how to open a modal on top of another modal.
       Keep in mind though that this is considered a <em><strong>bad practice</strong></em> in terms of user experience and should be avoided if possible.
     </p>
+    <p>
+      Each modal automatically preserves and restores the previous body overflow value.
+      When closing the second modal before the first, background scrolling remains disabled until both modals are closed.
+    </p>
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
@@ -926,7 +930,7 @@
         </div>
       </modal-element>
 
-      <modal-element id="modal-nested-modals-2" placement="top-center" preserve-overflow>
+      <modal-element id="modal-nested-modals-2" placement="top-center">
         <h2 slot="header">Second modal</h2>
         <p>This is a modal that was opened on top of another modal.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -947,7 +951,7 @@
   &lt;/div&gt;
 &lt;/modal-element&gt;
 
-&lt;modal-element id="second-modal" placement="top-center" preserve-overflow&gt;
+&lt;modal-element id="second-modal" placement="top-center"&gt;
   &lt;h2 slot="header"&gt;Second modal&lt;/h2&gt;
   &lt;p&gt;This is a modal that was opened on top of another modal.&lt;/p&gt;
   &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;

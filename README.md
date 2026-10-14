@@ -73,7 +73,7 @@ By default, the component comes with minimal styling to remain as less opinionat
 
 All of the above properties reflect their values as HTML attributes to keep the element's DOM representation in sync with its JavaScript state.
 
-<sup>1</sup> A note for animations: The entry/exit animations of the modal are implemented using the [`@starting-style`](https://caniuse.com/?search=%40starting) CSS at-rule, which is a relatively new feature and currently only supported in Chromium-based browsers. Here is an interesting [article](https://developer.chrome.com/blog/entry-exit-animations/) for more information about the feature. As a fallback, the modal will be rendered without animations in browsers that do not support this feature. Also, keep in mind that if the user has [reduced motion](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion) enabled in their operating system, the animations will be disabled as well, even if they are supported by the browser.
+<sup>1</sup> The modal's entry/exit animations are implemented using modern CSS features, including [`@starting-style`](https://developer.mozilla.org/docs/Web/CSS/Reference/At-rules/@starting-style) and [`transition-behavior: allow-discrete`](https://developer.mozilla.org/docs/Web/CSS/transition-behavior). Browser support for these features varies, so some animations may not work as expected in certain browsers. When animations are not supported, the modal remains fully functional. Additionally, animations are disabled when the user has [reduced motion](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion) enabled in their operating system.
 
 ### Slots
 
@@ -125,14 +125,8 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `--me-close-background-color` | The background color of the default close button. | `transparent` |
 | `--me-close-color` | The foreground color of the default close button. | `inherit` |
 | `--me-close-font-size` | The font size of the default close button. | `1rem` |
-| `--me-backdrop-background`<sup>1</sup> | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
-| `--me-backdrop-filter`<sup>1</sup> | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
-
-<sup>1</sup> At the time of writing, the `::backdrop` pseudo-element (which is used under the hood) does not inherit from originating element per the specification. This means that the backdrop's CSS custom properties cannot be inherited from the modal's CSS custom properties. Fortunately, this is a known issue and it is being worked on by browser vendors and the CSS working group. Currently, it's already fixed in Firefox Nightly 120+ and Chromium Canary 121+. For more details, check the browser reported bugs below:
-- [WHATWG bug report](https://github.com/whatwg/fullscreen/issues/124)
-- [Chromium bug report](https://bugs.chromium.org/p/chromium/issues/detail?id=827397)
-- [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1855668)
-- [Safari bug report](https://bugs.webkit.org/show_bug.cgi?id=263834)
+| `--me-backdrop-background` | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
+| `--me-backdrop-filter` | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
 
 ### Events
 
@@ -140,7 +134,11 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | ---- | ----------- | ------------ |
 | `me-open` | Emitted when the modal opens. | `{ element: HTMLElement }` |
 | `me-close` | Emitted when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | `{ element: HTMLElement }` |
-| `me-request-close` | Emitted when the modal is about to be dismissed. This event is cancellable, hence you can prevent the modal from being dismissed by calling `event.preventDefault()`. This can be useful when you want to prevent users from dismissing the modal until they have completed a certain task, eg submitting a form. In the `event.detail` object you can find the `reason` why the modal is about to be dismissed. You can use the `reason` to determine whether the modal should be dismissed or not as demonstrated in this [example][example-prevent-close]. Note, that this event is not emitted if the modal is dismissed by an external event, eg by calling the `hide` method or by setting the `open` property to `false` manually. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
+| `me-request-close` | Emitted when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
+
+**Note:** When dismissing the modal using the `Esc` key, the browser may not always allow the close request to be canceled. In Chromium-based browsers, pressing `Esc` repeatedly without any intervening user activation may close the modal even if `event.preventDefault()` is called on `me-request-close`.
+
+This is intentional native `<dialog>` behavior designed to prevent websites from trapping users inside dialogs. See the [HTML specification](https://html.spec.whatwg.org/multipage/interaction.html#close-watcher-infrastructure) for more details.
 
 ### Methods
 
@@ -150,7 +148,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `show`<sup>1</sup> | Instance | Opens the modal. | - |
 | `hide`<sup>1</sup> | Instance | Closes the modal. | - |
 
-<sup>1</sup> These methods are only available after the component has been defined. To ensure the component is defined, you can use `whenDefined` method of the `CustomElementRegistry` interface, eg `customElements.whenDefined('modal-element').then(() => { /* call methods here */ });`
+<sup>1</sup> Instance methods are only available after the custom element has been defined. Use [`customElements.whenDefined()`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry/whenDefined) to ensure the element is registered before calling these methods.
 
 ### Static Properties
 
@@ -170,7 +168,7 @@ The modal provides some default ways for the end user to dismiss the modal. Thes
 
 These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of v1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-me-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element.
 
-Hopefully, in the future we are going to have more declarative ways to handle these kinds of scenarions natively with [Invoker Commands](https://open-ui.org/components/invokers.explainer/), but for now, this is a simple way to achieve the same result.
+Alternatively, you can use the [Invoker Commands API](#invoker-commands) to declaratively open and close the modal without adding event listeners.
 
 Here is an example:
 
@@ -184,12 +182,10 @@ Here is an example:
 
 By just adding the `data-me-close` attribute to the button, the modal will be dismissed when the button is clicked.
 
-**Note:** As of v1.7.0, by clicking on the custom close button, the `me-request-close` event will also be emitted with the `reason` set to `'external-invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
-
-## Invoker Commands (Experimental)
-
 > [!NOTE]
-> This is an experimental feature based on the [Invoker Commands API](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API). The API is still in the early stages and might change in the future. Check [browser compatibility](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API#browser_compatibility) before using it in production.
+> As of v1.7.0, by clicking on the custom close button, the `me-request-close` event will also be emitted with the `reason` set to `'external-invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
+
+## Invoker Commands
 
 As of v1.9.0 the modal supports Invoker Commands to provide a more declarative way to handle user interactions. The modal provides the following commands:
 
@@ -207,6 +203,9 @@ Here is an example, demonstrating how to use the API to open and close the modal
   <button slot="footer" type="button" commandfor="my-modal" command="--me-close">Close</button>
 </modal-element>
 ```
+
+> [!NOTE]
+> The Invoker Commands API is [Baseline Newly Available](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API) since December 2025 and is supported in the latest versions of all major browsers. Older browser versions may not support this feature. Check [browser compatibility](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API#browser_compatibility) for more details.
 
 ## Changelog
 
