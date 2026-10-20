@@ -13,13 +13,13 @@ A custom element to create a modal, using the native [&lt;dialog&gt;](https://de
 
 [API documentation](#api) &bull; [Demo][demo]
 
-## Install
+## Usage
+
+### Installation
 
 ```sh
 $ npm install --save @georapbox/modal-element
 ```
-
-## Usage
 
 ### Importing the component
 
@@ -31,7 +31,7 @@ By default, the package exports the element class without registering it. This l
 import { ModalElement } from '@georapbox/modal-element';
 
 // Define using the default tag name
-ModalElement.defineCustomElement();
+ModalElement.define();
 ```
 
 #### Auto-defined (convenience)
@@ -39,10 +39,10 @@ ModalElement.defineCustomElement();
 If you don't need control over registration, you can import the pre-defined build which immediately registers `<modal-element>`.
 
 ```js
-import '@georapbox/modal-element/dist/modal-element-defined.js';
+import '@georapbox/modal-element/define';
 ```
 
-### Markup
+### Using the component in your HTML
 
 ```html
 <modal-element>
@@ -52,7 +52,7 @@ import '@georapbox/modal-element/dist/modal-element-defined.js';
 </modal-element>
 ```
 
-### Style
+### Component styling
 
 By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS Parts](#css-parts) or by overriding the default [CSS Custom Properties](#css-custom-properties). A working example of styling the component can be found [here][example-custom-styling].
 
@@ -144,7 +144,7 @@ This is intentional native `<dialog>` behavior designed to prevent websites from
 
 | Name | Type | Description | Arguments |
 | ---- | ---- | ----------- | --------- |
-| `defineCustomElement` | Static | Defines/registers the custom element with the name provided. If no name is provided, the default name is used. The method checks if the element is already defined, hence will skip trying to redefine it. | `elementName='modal-element'` |
+| `define` | Static | Registers the custom element with the browser's CustomElementRegistry unless it has already been defined. | `tagName='modal-element'` |
 | `show`<sup>1</sup> | Instance | Opens the modal. | - |
 | `hide`<sup>1</sup> | Instance | Closes the modal. | - |
 

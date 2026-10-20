@@ -6,7 +6,7 @@ const componentUrl = isLocalhost ? '../../dist/modal-element.js' : '../lib/modal
 
 try {
   const { ModalElement } = await import(componentUrl);
-  ModalElement.defineCustomElement();
+  ModalElement.define();
 } catch (err) {
   console.error(err);
 }

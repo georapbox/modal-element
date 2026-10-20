@@ -2,7 +2,7 @@ import { expect, fixture, fixtureCleanup, html, elementUpdated, aTimeout, oneEve
 import { sendKeys } from '@web/test-runner-commands';
 import { ModalElement } from '../src/modal-element';
 
-ModalElement.defineCustomElement();
+ModalElement.define();
 
 describe('modal-element', () => {
   afterEach(() => {

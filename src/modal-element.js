@@ -282,7 +282,7 @@ template.innerHTML = /* html */ `
  * @summary A custom element that renders a modal dialog.
  * @documentation https://github.com/georapbox/modal-element
  *
- * @tagname modal-element - This is the default tag name, unless overridden by the `defineCustomElement` method.
+ * @tagname modal-element - This is the default tag name, unless overridden by the `define` method.
  * @extends HTMLElement
  *
  * @property {boolean} open - Determines whether the modal is open or not.
@@ -350,7 +350,7 @@ template.innerHTML = /* html */ `
  * @fires me-close - Dispatched when the modal is closed.
  * @fires me-request-close - Dispatched when the modal is about to close.
  *
- * @method defineCustomElement - Static method. Defines a custom element with the given name.
+ * @method define - Static method. Registers the custom element with the browser's CustomElementRegistry unless it has already been defined.
  * @method show - Instance method. Opens the modal if it is closed, otherwise does nothing.
  * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
  */
@@ -660,9 +660,11 @@ class ModalElement extends HTMLElement {
     const assignedElements = this.#closeSlotEl?.assignedElements() || [];
     const hasTextContent = assignedElements?.some(el => el.textContent?.replace(/\s/g, '') !== '');
 
-    hasTextContent
-      ? closeButtonEl.removeAttribute('aria-label')
-      : closeButtonEl.setAttribute('aria-label', this.closeLabel);
+    if (hasTextContent) {
+      closeButtonEl.removeAttribute('aria-label');
+    } else {
+      closeButtonEl.setAttribute('aria-label', this.closeLabel);
+    }
   }
 
   /**
@@ -914,15 +916,16 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Defines the custom element with the given name.
-   * The name must contain a dash (-).
+   * Registers the custom element with the browser's CustomElementRegistry unless
+   * it has already been defined.
    *
-   * @param {string} [elementName='modal-element'] - The name of the custom element.
+   * @param {string} [tagName='modal-element'] - The tag name to use for the custom element.
    */
-  static defineCustomElement(elementName = 'modal-element') {
-    if (typeof window !== 'undefined' && !window.customElements.get(elementName)) {
-      window.customElements.define(elementName, ModalElement);
+  static define(tagName = 'modal-element') {
+    if (typeof window === 'undefined' || window.customElements.get(tagName)) {
+      return;
     }
+    window.customElements.define(tagName, ModalElement);
   }
 }
 
