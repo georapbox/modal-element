@@ -788,7 +788,7 @@ class ModalElement extends HTMLElement {
    */
   #handleCommandEvent = evt => {
     switch (evt.command) {
-      case '--me-open': {
+      case '--modal-open': {
         if (this.open) {
           return;
         }
@@ -796,7 +796,7 @@ class ModalElement extends HTMLElement {
         return;
       }
 
-      case '--me-close': {
+      case '--modal-close': {
         if (!this.open) {
           return;
         }

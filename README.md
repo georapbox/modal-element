@@ -189,18 +189,18 @@ By just adding the `data-me-close` attribute to the button, the modal will be di
 
 As of v1.9.0 the modal supports Invoker Commands to provide a more declarative way to handle user interactions. The modal provides the following commands:
 
-- `--me-open` command to open the modal
-- `--me-close` command to close the modal
+- `--modal-open` command to open the modal
+- `--modal-close` command to close the modal
 
 Here is an example, demonstrating how to use the API to open and close the modal.
 
 ```html
-<button type="button" commandfor="my-modal" command="--me-open">Open Modal</button>
+<button type="button" commandfor="my-modal" command="--modal-open">Open Modal</button>
 
 <modal-element id="my-modal">
   <h5 slot="header">Modal Title</h5>
   <p>Modal content</p>
-  <button slot="footer" type="button" commandfor="my-modal" command="--me-close">Close</button>
+  <button slot="footer" type="button" commandfor="my-modal" command="--modal-close">Close</button>
 </modal-element>
 ```
 

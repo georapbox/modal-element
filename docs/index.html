@@ -988,8 +988,8 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <p style="margin-block-end: 0;">The following button opens the modal using the <code>--me-open</code> command.</p>
-        <button type="button" commandfor="modal-invoker-commands" command="--me-open" disabled>Open Modal</button>
+        <p style="margin-block-end: 0;">The following button opens the modal using the <code>--modal-open</code> command.</p>
+        <button type="button" commandfor="modal-invoker-commands" command="--modal-open" disabled>Open Modal</button>
       </browser-window>
 
       <modal-element id="modal-invoker-commands">
@@ -997,20 +997,20 @@
         <p>This is a modal that can be controlled using invoker commands.</p>
         <p>
           You can close the modal by clicking the button below.
-          This button uses the <code>--me-close</code> command.
+          This button uses the <code>--modal-close</code> command.
         </p>
-        <button slot="footer" type="button" style="margin: 0;" commandfor="modal-invoker-commands" command="--me-close">Close</button>
+        <button slot="footer" type="button" style="margin: 0;" commandfor="modal-invoker-commands" command="--modal-close">Close</button>
       </modal-element>
 
       <details>
         <summary>Source code</summary>
 
-<pre><code class="language-xml">&lt;button type="button" commandfor="my-modal" command="--me-open"&gt;Open Modal&lt;/button&gt;
+<pre><code class="language-xml">&lt;button type="button" commandfor="my-modal" command="--modal-open"&gt;Open Modal&lt;/button&gt;
 
 &lt;modal-element id="my-modal"&gt;
   &lt;h2 slot="header"&gt;Using invoker commands&lt;/h2&gt;
   &lt;p&gt;This is a modal that can be controlled using invoker commands.&lt;/p&gt;
-  &lt;button slot="footer" type="button" commandfor="my-modal" command="--me-close"&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" commandfor="my-modal" command="--modal-close"&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 </code></pre>
       </details>
