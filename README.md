@@ -132,11 +132,11 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 | Name | Description | Event Detail |
 | ---- | ----------- | ------------ |
-| `me-open` | Emitted when the modal opens. | `{ element: HTMLElement }` |
-| `me-close` | Emitted when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | `{ element: HTMLElement }` |
-| `me-request-close` | Emitted when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
+| `modal-open` | Emitted when the modal opens. | `{ element: HTMLElement }` |
+| `modal-close` | Emitted when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | `{ element: HTMLElement }` |
+| `modal-request-close` | Emitted when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
 
-**Note:** When dismissing the modal using the `Esc` key, the browser may not always allow the close request to be canceled. In Chromium-based browsers, pressing `Esc` repeatedly without any intervening user activation may close the modal even if `event.preventDefault()` is called on `me-request-close`.
+**Note:** When dismissing the modal using the `Esc` key, the browser may not always allow the close request to be canceled. In Chromium-based browsers, pressing `Esc` repeatedly without any intervening user activation may close the modal even if `event.preventDefault()` is called on `modal-request-close`.
 
 This is intentional native `<dialog>` behavior designed to prevent websites from trapping users inside dialogs. See the [HTML specification](https://html.spec.whatwg.org/multipage/interaction.html#close-watcher-infrastructure) for more details.
 
@@ -156,7 +156,7 @@ Below are static properties exposed on the `ModalElement` class for consumer ref
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| `CLOSE_REQUEST_REASONS` | Object | Static object of stable identifiers used in the `reason` property of the `me-request-close` event's detail object. |
+| `CLOSE_REQUEST_REASONS` | Object | Static object of stable identifiers used in the `reason` property of the `modal-request-close` event's detail object. |
 
 ## Closing mechanisms
 
@@ -183,7 +183,7 @@ Here is an example:
 By just adding the `data-modal-close` attribute to the button, the modal will be dismissed when the button is clicked.
 
 > [!NOTE]
-> As of v1.7.0, by clicking on the custom close button, the `me-request-close` event will also be emitted with the `reason` set to `'external-invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
+> As of v1.7.0, by clicking on the custom close button, the `modal-request-close` event will also be emitted with the `reason` set to `'external-invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
 
 ## Invoker Commands
 

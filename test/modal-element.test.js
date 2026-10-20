@@ -325,17 +325,17 @@ describe('modal-element', () => {
   });
 
   describe('custom events', () => {
-    it('should fire "me-open" event', async () => {
+    it('should fire "modal-open" event', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
-      const listener = oneEvent(el, 'me-open');
+      const listener = oneEvent(el, 'modal-open');
       el.setAttribute('open', '');
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el });
     });
 
-    it('should fire "me-close" event', async () => {
+    it('should fire "modal-close" event', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
-      const listener = oneEvent(el, 'me-close');
+      const listener = oneEvent(el, 'modal-close');
       el.setAttribute('open', '');
       aTimeout(100);
       el.removeAttribute('open');
@@ -343,39 +343,39 @@ describe('modal-element', () => {
       expect(detail).to.deep.equal({ element: el });
     });
 
-    it('should fire "me-request-close" event when clicking the close button', async () => {
+    it('should fire "modal-request-close" event when clicking the close button', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
-      const listener = oneEvent(el, 'me-request-close');
+      const listener = oneEvent(el, 'modal-request-close');
       const closeButton = el.shadowRoot.querySelector('.dialog__close');
       closeButton.click();
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'close-button' });
     });
 
-    it('should fire "me-request-close" event when pressing the Esc key', async () => {
+    it('should fire "modal-request-close" event when pressing the Esc key', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
-      const listener = oneEvent(el, 'me-request-close');
+      const listener = oneEvent(el, 'modal-request-close');
       await sendKeys({ press: 'Escape' });
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'escape-key' });
     });
 
-    it('should fire "me-request-close" event when clicking on the ::backdrop', async () => {
+    it('should fire "modal-request-close" event when clicking on the ::backdrop', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
-      const listener = oneEvent(el, 'me-request-close');
+      const listener = oneEvent(el, 'modal-request-close');
       const backdrop = el.shadowRoot.querySelector('.dialog');
       backdrop.click();
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'backdrop-click' });
     });
 
-    it('should fire "me-request-close" event when clicking on an external invoker', async () => {
+    it('should fire "modal-request-close" event when clicking on an external invoker', async () => {
       const el = await fixture(html`<modal-element><button data-modal-close>Close</button></modal-element>`);
       el.setAttribute('open', '');
-      const listener = oneEvent(el, 'me-request-close');
+      const listener = oneEvent(el, 'modal-request-close');
       const invoker = el.querySelector('[data-modal-close]');
       invoker.click();
       const { detail } = await listener;
@@ -433,11 +433,11 @@ describe('modal-element', () => {
       expect(closeButton).to.have.attribute('hidden');
     });
 
-    it('prevents closing the dilaog when using preventDefault on "me-request-close" event while clicking the close button', async () => {
+    it('prevents closing the dilaog when using preventDefault on "modal-request-close" event while clicking the close button', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
-      const listener = oneEvent(el, 'me-request-close');
-      el.addEventListener('me-request-close', event => event.preventDefault());
+      const listener = oneEvent(el, 'modal-request-close');
+      el.addEventListener('modal-request-close', event => event.preventDefault());
       const closeButton = el.shadowRoot.querySelector('.dialog__close');
       closeButton.click();
       const { detail } = await listener;
@@ -445,22 +445,22 @@ describe('modal-element', () => {
       expect(el.open).to.be.true;
     });
 
-    it.skip('prevents closing the dilaog when using preventDefault on "me-request-close" event while pressing the Esc key', async () => {
+    it.skip('prevents closing the dilaog when using preventDefault on "modal-request-close" event while pressing the Esc key', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
-      const listener = oneEvent(el, 'me-request-close');
-      el.addEventListener('me-request-close', event => event.preventDefault());
+      const listener = oneEvent(el, 'modal-request-close');
+      el.addEventListener('modal-request-close', event => event.preventDefault());
       await sendKeys({ press: 'Escape' });
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'escape-key' });
       expect(el.open).to.be.true;
     });
 
-    it('prevents closing the dilaog when using preventDefault on "me-request-close" event while clicking on the ::backdrop', async () => {
+    it('prevents closing the dilaog when using preventDefault on "modal-request-close" event while clicking on the ::backdrop', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
-      const listener = oneEvent(el, 'me-request-close');
-      el.addEventListener('me-request-close', event => event.preventDefault());
+      const listener = oneEvent(el, 'modal-request-close');
+      el.addEventListener('modal-request-close', event => event.preventDefault());
       const backdrop = el.shadowRoot.querySelector('.dialog');
       backdrop.click();
       const { detail } = await listener;
@@ -521,7 +521,7 @@ describe('modal-element', () => {
         </modal-element>`
       );
       el.setAttribute('open', '');
-      const requestClose = oneEvent(el, 'me-request-close');
+      const requestClose = oneEvent(el, 'modal-request-close');
       el.querySelector('[data-modal-close]').click();
       const { detail } = await requestClose;
       expect(detail.reason).to.equal('external-invoker');

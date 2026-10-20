@@ -346,9 +346,9 @@ template.innerHTML = /* html */ `
  * @csspart body - The body wrapper of the modal.
  * @csspart footer - The footer wrapper of the modal.
  *
- * @fires me-open - Dispatched when the modal is opened.
- * @fires me-close - Dispatched when the modal is closed.
- * @fires me-request-close - Dispatched when the modal is about to close.
+ * @fires modal-open - Dispatched when the modal is opened.
+ * @fires modal-close - Dispatched when the modal is closed.
+ * @fires modal-request-close - Dispatched when the modal is about to close.
  *
  * @method define - Static method. Registers the custom element with the browser's CustomElementRegistry unless it has already been defined.
  * @method show - Instance method. Opens the modal if it is closed, otherwise does nothing.
@@ -418,7 +418,7 @@ class ModalElement extends HTMLElement {
         this.#dialogEl.showModal();
 
         this.dispatchEvent(
-          new CustomEvent('me-open', {
+          new CustomEvent('modal-open', {
             bubbles: true,
             composed: true,
             detail: { element: this }
@@ -701,7 +701,7 @@ class ModalElement extends HTMLElement {
     this.open = false;
 
     this.dispatchEvent(
-      new CustomEvent('me-close', {
+      new CustomEvent('modal-close', {
         bubbles: true,
         composed: true,
         detail: { element: this }
@@ -852,7 +852,7 @@ class ModalElement extends HTMLElement {
    * @param {CloseRequestReason} reason - The reason that the modal is about to close.
    */
   #createRequestCloseEvent(reason) {
-    return new CustomEvent('me-request-close', {
+    return new CustomEvent('modal-request-close', {
       bubbles: true,
       composed: true,
       cancelable: true,

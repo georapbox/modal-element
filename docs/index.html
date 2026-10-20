@@ -693,7 +693,7 @@
 
     <h3 id="example-prevent-close">Prevent modal from closing</h3>
     <p>
-      You can prevent the modal from closing by listening to the <code>me-request-close</code> event and
+      You can prevent the modal from closing by listening to the <code>modal-request-close</code> event and
       calling <code>event.preventDefault()</code> in the event handler.
     </p>
 
@@ -735,7 +735,7 @@
     modalElement.open = true;
   });
 
-  modalElement.addEventListener('me-request-close', evt => {
+  modalElement.addEventListener('modal-request-close', evt => {
     if (evt.detail.reason === 'close-button') {
       evt.preventDefault();
     }

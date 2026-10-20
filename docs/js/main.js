@@ -51,7 +51,7 @@ attributesForm.addEventListener('change', () => {
   });
 });
 
-interactiveDemoModal.addEventListener('me-request-close', evt => {
+interactiveDemoModal.addEventListener('modal-request-close', evt => {
   reasonsForm.querySelectorAll('input[type="checkbox"]').forEach(el => {
     if (el.checked && el.getAttribute('name') === evt.detail.reason) {
       evt.preventDefault();
@@ -70,7 +70,7 @@ customStylingForm.addEventListener('change', () => {
 // Events
 const handleEvents = evt => {
   if (
-    evt.type === 'me-request-close' &&
+    evt.type === 'modal-request-close' &&
     evt.detail.reason === 'close-button' &&
     evt.detail.element.id === 'modal-prevent-close'
   ) {
@@ -80,6 +80,6 @@ const handleEvents = evt => {
   console.log(`${evt.type} =>`, evt.detail);
 };
 
-document.addEventListener('me-open', handleEvents);
-document.addEventListener('me-close', handleEvents);
-document.addEventListener('me-request-close', handleEvents);
+document.addEventListener('modal-open', handleEvents);
+document.addEventListener('modal-close', handleEvents);
+document.addEventListener('modal-request-close', handleEvents);
