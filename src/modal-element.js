@@ -25,36 +25,36 @@ const PULSE_ANIMATION_OPTIONS = { duration: 300, easing: 'cubic-bezier(0.2, 0, 0
 
 const styles = /* css */ `
   :host {
-    --me-width: 32rem;
-    --me-height: fit-content;
-    --me-border-color: initial;
-    --me-border-style: solid;
-    --me-border-width: initial;
-    --me-border-radius: 0;
-    --me-box-shadow: none;
-    --me-background-color: canvas;
-    --me-color: canvastext;
+    --modal-width: 32rem;
+    --modal-height: fit-content;
+    --modal-border-color: initial;
+    --modal-border-style: solid;
+    --modal-border-width: initial;
+    --modal-border-radius: 0;
+    --modal-box-shadow: none;
+    --modal-background-color: canvas;
+    --modal-color: canvastext;
 
-    --me-header-spacing: 1rem;
-    --me-footer-spacing: 1rem;
-    --me-header-background-color: transparent;
-    --me-header-color: initial;
+    --modal-header-spacing: 1rem;
+    --modal-footer-spacing: 1rem;
+    --modal-header-background-color: transparent;
+    --modal-header-color: initial;
 
-    --me-body-spacing: 1rem;
-    --me-body-background-color: transparent;
-    --me-body-color: initial;
-    --me-footer-background-color: transparent;
-    --me-footer-color: initial;
+    --modal-body-spacing: 1rem;
+    --modal-body-background-color: transparent;
+    --modal-body-color: initial;
+    --modal-footer-background-color: transparent;
+    --modal-footer-color: initial;
 
-    --me-close-padding: 0.4375rem;
-    --me-close-border: none;
-    --me-close-border-radius: 0;
-    --me-close-background-color: transparent;
-    --me-close-color: inherit;
-    --me-close-font-size: 1rem;
+    --modal-close-padding: 0.4375rem;
+    --modal-close-border: none;
+    --modal-close-border-radius: 0;
+    --modal-close-background-color: transparent;
+    --modal-close-color: inherit;
+    --modal-close-font-size: 1rem;
 
-    --me-backdrop-background: rgba(0, 0, 0, 0.5);
-    --me-backdrop-filter: none;
+    --modal-backdrop-background: rgba(0, 0, 0, 0.5);
+    --modal-backdrop-filter: none;
 
     display: contents;
     box-sizing: border-box;
@@ -75,16 +75,16 @@ const styles = /* css */ `
   .dialog {
     --dialog-placement-margin: calc((2em + 6px) / 2);
 
-    width: var(--me-width);
-    height: var(--me-height);
+    width: var(--modal-width);
+    height: var(--modal-height);
     padding: 0;
-    border-color: var(--me-border-color);
-    border-style: var(--me-border-style);
-    border-width: var(--me-border-width);
-    border-radius: var(--me-border-radius);
-    box-shadow: var(--me-box-shadow);
-    background-color: var(--me-background-color);
-    color: var(--me-color);
+    border-color: var(--modal-border-color);
+    border-style: var(--modal-border-style);
+    border-width: var(--modal-border-width);
+    border-radius: var(--modal-border-radius);
+    box-shadow: var(--modal-box-shadow);
+    background-color: var(--modal-background-color);
+    color: var(--modal-color);
   }
 
   .dialog[open] {
@@ -99,8 +99,8 @@ const styles = /* css */ `
   }
 
   .dialog::backdrop {
-    background: var(--me-backdrop-background, rgba(0, 0, 0, 0.5));
-    backdrop-filter: var(--me-backdrop-filter, none);
+    background: var(--modal-backdrop-background, rgba(0, 0, 0, 0.5));
+    backdrop-filter: var(--modal-backdrop-filter, none);
     opacity: 0;
   }
 
@@ -192,10 +192,10 @@ const styles = /* css */ `
   .dialog__header {
     display: flex;
     align-items: center;
-    padding: var(--me-header-spacing);
+    padding: var(--modal-header-spacing);
     column-gap: 0.5rem;
-    background-color: var(--me-header-background-color);
-    color: var(--me-header-color);
+    background-color: var(--modal-header-background-color);
+    color: var(--modal-header-color);
   }
 
   :host([no-close-button]) .dialog__header {
@@ -212,31 +212,31 @@ const styles = /* css */ `
   .dialog__body {
     display: block;
     flex: 1 1 auto;
-    padding: var(--me-body-spacing);
+    padding: var(--modal-body-spacing);
     overflow: auto;
-    background-color: var(--me-body-background-color);
-    color: var(--me-body-color);
+    background-color: var(--modal-body-background-color);
+    color: var(--modal-body-color);
     overscroll-behavior: contain;
   }
 
   .dialog__footer {
     flex: 0 0 auto;
     text-align: end;
-    padding: var(--me-footer-spacing);
-    background-color: var(--me-footer-background-color);
-    color: var(--me-footer-color);
+    padding: var(--modal-footer-spacing);
+    background-color: var(--modal-footer-background-color);
+    color: var(--modal-footer-color);
   }
 
   .dialog__close {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--me-close-padding);
-    border: var(--me-close-border);
-    border-radius: var(--me-close-border-radius);
-    background-color: var(--me-close-background-color);
-    color: var(--me-close-color);
-    font-size: var(--me-close-font-size);
+    padding: var(--modal-close-padding);
+    border: var(--modal-close-border);
+    border-radius: var(--modal-close-border-radius);
+    background-color: var(--modal-close-background-color);
+    color: var(--modal-close-color);
+    font-size: var(--modal-close-font-size);
   }
 
   .dialog__close:not(:disabled) {
@@ -310,32 +310,32 @@ template.innerHTML = /* html */ `
  * @slot footer - The modals' footer content. Usually used for buttons or other actions.
  * @slot close - The content of the close button that appears in the modal's header.
  *
- * @cssproperty --me-width - The width of the modal.
- * @cssproperty --me-height - The height of the modal.
- * @cssproperty --me-border-color - The border color of the modal.
- * @cssproperty --me-border-style - The border style of the modal.
- * @cssproperty --me-border-width - The border width of the modal.
- * @cssproperty --me-border-radius - The border radius of the modal.
- * @cssproperty --me-box-shadow - The box shadow of the modal.
- * @cssproperty --me-background-color - The background color of the modal.
- * @cssproperty --me-color - The foreground color of the modal.
- * @cssproperty --me-header-spacing - The spacing of the header.
- * @cssproperty --me-header-background-color - The background color of the header.
- * @cssproperty --me-header-color - The foreground color of the header.
- * @cssproperty --me-body-spacing - The spacing of the body.
- * @cssproperty --me-body-background-color - The background color of the body.
- * @cssproperty --me-body-color - The foreground color of the body.
- * @cssproperty --me-footer-spacing - The spacing of the footer.
- * @cssproperty --me-footer-background-color - The background color of the footer.
- * @cssproperty --me-footer-color - The foreground color of the footer.
- * @cssproperty --me-close-padding - The padding of the close button.
- * @cssproperty --me-close-border - The border shorthand property of the close button.
- * @cssproperty --me-close-border-radius - The border radius shorthand property of the close button.
- * @cssproperty --me-close-background-color - The background color of the close button.
- * @cssproperty --me-close-color - The foreground color of the close button.
- * @cssproperty --me-close-font-size - The font size of the close button.
- * @cssproperty --me-backdrop-background - The background shorthand property of the backdrop.
- * @cssproperty --me-backdrop-filter - The backdrop filter property of the backdrop.
+ * @cssproperty --modal-width - The width of the modal.
+ * @cssproperty --modal-height - The height of the modal.
+ * @cssproperty --modal-border-color - The border color of the modal.
+ * @cssproperty --modal-border-style - The border style of the modal.
+ * @cssproperty --modal-border-width - The border width of the modal.
+ * @cssproperty --modal-border-radius - The border radius of the modal.
+ * @cssproperty --modal-box-shadow - The box shadow of the modal.
+ * @cssproperty --modal-background-color - The background color of the modal.
+ * @cssproperty --modal-color - The foreground color of the modal.
+ * @cssproperty --modal-header-spacing - The spacing of the header.
+ * @cssproperty --modal-header-background-color - The background color of the header.
+ * @cssproperty --modal-header-color - The foreground color of the header.
+ * @cssproperty --modal-body-spacing - The spacing of the body.
+ * @cssproperty --modal-body-background-color - The background color of the body.
+ * @cssproperty --modal-body-color - The foreground color of the body.
+ * @cssproperty --modal-footer-spacing - The spacing of the footer.
+ * @cssproperty --modal-footer-background-color - The background color of the footer.
+ * @cssproperty --modal-footer-color - The foreground color of the footer.
+ * @cssproperty --modal-close-padding - The padding of the close button.
+ * @cssproperty --modal-close-border - The border shorthand property of the close button.
+ * @cssproperty --modal-close-border-radius - The border radius shorthand property of the close button.
+ * @cssproperty --modal-close-background-color - The background color of the close button.
+ * @cssproperty --modal-close-color - The foreground color of the close button.
+ * @cssproperty --modal-close-font-size - The font size of the close button.
+ * @cssproperty --modal-backdrop-background - The background shorthand property of the backdrop.
+ * @cssproperty --modal-backdrop-filter - The backdrop filter property of the backdrop.
  *
  * @csspart base - The base wrapper of the modal.
  * @csspart panel - The panel wrapper of the modal.

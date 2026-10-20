@@ -66,7 +66,7 @@ By default, the component comes with minimal styling to remain as less opinionat
 | `noHeader`<br>*`no-header`* | ✓ | Boolean | - | `false` | Determines whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
 | `noAnimations`<br>*`no-animations`*<sup>1</sup> | ✓ | Boolean | - | `false` | Determines whether the modal should have animations or not. Animations include the modal's entrance and exit animations, as well as the static backdrop's bounce effect when users clicks on it. |
 | `noCloseButton`<br>*`no-close-button`* | ✓ | Boolean | - | `false` | Determines whether the modal should have a default close button or not. If the modal has no close button, you probably need to provide an accessible way for users to dismiss the modal. |
-| `fullscreen` | ✓ | Boolean | - | `false` | Determines whether the modal should be displayed in fullscreen or not. Note, the `--me-width` and `--me-height` CSS custom properties will be overriden if this property is set to `true`. Notice that the backdrop is not visible in fullscreen mode. If you still want a full-width modal with a backdrop, you can use `--me-width: 100%;` and `--me-height: 100%;` instead. |
+| `fullscreen` | ✓ | Boolean | - | `false` | Determines whether the modal should be displayed in fullscreen or not. Note, the `--modal-width` and `--modal-height` CSS custom properties will be overriden if this property is set to `true`. Notice that the backdrop is not visible in fullscreen mode. If you still want a full-width modal with a backdrop, you can use `--modal-width: 100%;` and `--modal-height: 100%;` instead. |
 | `preserveOverflow`<br>*`preserve-overflow`* | ✓ | Boolean | - | `false` | Determines whether the modal should preserve the document's overflow when the modal is open. If this property is set to `true`, the document's overflow will not be hidden when the modal is open. |
 | `placement` | ✓ | String | - | `center` | Determines the placement of the modal. Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'. Placement respects the direction of the document, eg if the document is in RTL mode, the placement will be mirrored accordingly. Note, that the placement is not applied when the modal is in fullscreen mode and it might not be visible in some cases when the modal is too large for the viewport, eg in small viewports. |
 | `closeLabel`<br>*`close-label`* | ✓ | String | - | `Close` | The label for the default close button that resides in the modal's header. It is used as the `aria-label` attribute of the close button. If user provides text content for the close button using the `close` slot, this property is ignored and the `aria-label` attribute is removed. |
@@ -101,32 +101,32 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 | Name | Description | Default |
 | ---- | ----------- | ------- |
-| `--me-width` | The preferred width of the modal. If this width is larger than the viewport, the modal's width will adjust to fit the viewport. | `32rem` |
-| `--me-height` | The preferred height of the modal. If this height is larger than the viewport, the modal's height will adjust to fit the viewport. | `fit-content` |
-| `--me-border-color` | The modal's border color. | `initial` |
-| `--me-border-style` | The modal's border style. | `solid` |
-| `--me-border-width` | The modal's border width. | `initial` |
-| `--me-border-radius` | The modal's border radius. | `0` |
-| `--me-box-shadow` | The modal's box shadow. | `none` |
-| `--me-background-color` | The modal's background color. | `canvas` |
-| `--me-color` | The modal's foreground color. | `canvastext` |
-| `--me-header-spacing` | The amount of spacing (padding) to use for the header element. | `1rem` |
-| `--me-header-background-color` | The header's background color. | `transparent` |
-| `--me-header-color` | The header's foreground color. | `initial` |
-| `--me-body-spacing` | The amount of spacing (padding) to use for the body element. | `1rem` |
-| `--me-body-background-color` | The body's background color. | `transparent` |
-| `--me-body-color` | The body's foreground color. | `initial` |
-| `--me-footer-spacing` | The amount of spacing (padding) to use for the footer element. | `1rem` |
-| `--me-footer-background-color` | The footer's background color. | `transparent` |
-| `--me-footer-color` | The footer's foreground color. | `initial` |
-| `--me-close-padding` | The padding of the default close button. | `0.4375rem` |
-| `--me-close-border` | The border shorthand property of the default close button. | `none` |
-| `--me-close-border-radius` | The border radius shorthand property of the default close button. | `0` |
-| `--me-close-background-color` | The background color of the default close button. | `transparent` |
-| `--me-close-color` | The foreground color of the default close button. | `inherit` |
-| `--me-close-font-size` | The font size of the default close button. | `1rem` |
-| `--me-backdrop-background` | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
-| `--me-backdrop-filter` | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
+| `--modal-width` | The preferred width of the modal. If this width is larger than the viewport, the modal's width will adjust to fit the viewport. | `32rem` |
+| `--modal-height` | The preferred height of the modal. If this height is larger than the viewport, the modal's height will adjust to fit the viewport. | `fit-content` |
+| `--modal-border-color` | The modal's border color. | `initial` |
+| `--modal-border-style` | The modal's border style. | `solid` |
+| `--modal-border-width` | The modal's border width. | `initial` |
+| `--modal-border-radius` | The modal's border radius. | `0` |
+| `--modal-box-shadow` | The modal's box shadow. | `none` |
+| `--modal-background-color` | The modal's background color. | `canvas` |
+| `--modal-color` | The modal's foreground color. | `canvastext` |
+| `--modal-header-spacing` | The amount of spacing (padding) to use for the header element. | `1rem` |
+| `--modal-header-background-color` | The header's background color. | `transparent` |
+| `--modal-header-color` | The header's foreground color. | `initial` |
+| `--modal-body-spacing` | The amount of spacing (padding) to use for the body element. | `1rem` |
+| `--modal-body-background-color` | The body's background color. | `transparent` |
+| `--modal-body-color` | The body's foreground color. | `initial` |
+| `--modal-footer-spacing` | The amount of spacing (padding) to use for the footer element. | `1rem` |
+| `--modal-footer-background-color` | The footer's background color. | `transparent` |
+| `--modal-footer-color` | The footer's foreground color. | `initial` |
+| `--modal-close-padding` | The padding of the default close button. | `0.4375rem` |
+| `--modal-close-border` | The border shorthand property of the default close button. | `none` |
+| `--modal-close-border-radius` | The border radius shorthand property of the default close button. | `0` |
+| `--modal-close-background-color` | The background color of the default close button. | `transparent` |
+| `--modal-close-color` | The foreground color of the default close button. | `inherit` |
+| `--modal-close-font-size` | The font size of the default close button. | `1rem` |
+| `--modal-backdrop-background` | The backdrop's background shorthand property. It can be used to set the backdrop's background color, gradient, or image. | `rgba(0, 0, 0, 0.5)` |
+| `--modal-backdrop-filter` | The backdrop's filter property. It can be used to set the backdrop's filter effects like blur, brightness, contrast, etc. | `none` |
 
 ### Events
 

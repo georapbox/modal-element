@@ -147,7 +147,7 @@ modal-element button {
 }
 
 #modal-placement {
-  --me-width: 22rem;
+  --modal-width: 22rem;
 }
 
 form[name="modal-placement-form"] {
@@ -169,7 +169,7 @@ form[name="modal-placement-form"] > fieldset > div {
 
 @media screen and (max-width: 576px) {
   #modal-placement {
-    --me-width: 15rem;
+    --modal-width: 15rem;
   }
 
   form[name="modal-placement-form"] > fieldset > div {
@@ -188,23 +188,23 @@ form input[type="checkbox"] {
 
 /* Custom styling on modal-element */
 modal-element.custom-styling {
-  --me-width: 35rem;
-  --me-border-width: 1px;
-  --me-border-color: var(--border);
-  --me-border-radius: 0.375rem;
-  --me-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
-  --me-header-background-color: var(--background-alt);
-  --me-body-background-color: var(--background-body);
-  --me-footer-background-color: var(--background-alt);
-  --me-backdrop-background: rgba(0, 0, 0, 0.7);
-  --me-backdrop-filter: blur(5px);
+  --modal-width: 35rem;
+  --modal-border-width: 1px;
+  --modal-border-color: var(--border);
+  --modal-border-radius: 0.375rem;
+  --modal-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+  --modal-header-background-color: var(--background-alt);
+  --modal-body-background-color: var(--background-body);
+  --modal-footer-background-color: var(--background-alt);
+  --modal-backdrop-background: rgba(0, 0, 0, 0.7);
+  --modal-backdrop-filter: blur(5px);
 }
 
 modal-element.custom-styling[fullscreen] {
-  --me-border-style: none;
-  --me-border-radius: 0;
-  --me-backdrop-background: transparent;
-  --me-backdrop-filter: none;
+  --modal-border-style: none;
+  --modal-border-radius: 0;
+  --modal-backdrop-background: transparent;
+  --modal-backdrop-filter: none;
 }
 
 modal-element.custom-styling::part(header) {
@@ -260,7 +260,7 @@ modal-element.custom-styling [slot="footer"] button {
 
 /* Custom backdrop */
 modal-element.custom-backdrop {
-  --me-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat bottom center / 90%;
+  --modal-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat bottom center / 90%;
 }
 
 modal-element.custom-backdrop::part(base) {
