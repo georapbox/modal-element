@@ -78,7 +78,7 @@
         <h2 slot="header">Default configuration</h2>
         <p>This is a modal with the default configuration.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -89,7 +89,7 @@
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Default configuration&lt;/h2&gt;
   &lt;p&gt;This is a modal with the default configuration.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -119,7 +119,7 @@
         <h2 slot="header">Static backdrop</h2>
         <p>This is a modal with static backdrop. Clicking on the backdrop will not close the modal.</p>
         <p><small>Close the modal by either clicking the "X" button, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -130,7 +130,7 @@
 &lt;modal-element static-backdrop&gt;
   &lt;h2 slot="header"&gt;Static backdrop&lt;/h2&gt;
   &lt;p&gt;This is a modal with static backdrop.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -157,7 +157,7 @@
         <h2 slot="header">Without header</h2>
         <p>This is a modal without header.</p>
         <p><small>Close the modal by either clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
       <details>
         <summary>Source code</summary>
@@ -167,7 +167,7 @@
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Without header&lt;/h2&gt;
   &lt;p&gt;This is a modal without header.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -193,7 +193,7 @@
       <modal-element id="modal-without-title">
         <p>This is a modal without title. It will still have a close button though.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -203,7 +203,7 @@
 
 &lt;modal-element&gt;
   &lt;p&gt;This is a modal without title. It will still have a close button though.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -230,7 +230,7 @@
         <h2 slot="header">Without close button</h2>
         <p>This is a modal without default close button.</p>
         <p><small>Close the modal by either clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -241,7 +241,7 @@
 &lt;modal-element no-close-button&gt;
   &lt;h2 slot="header"&gt;Without close button&lt;/h2&gt;
   &lt;p&gt;This is a modal without default close button.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -271,7 +271,7 @@
         <p>This is a fullscreen modal.</p>
         <p>Note, that <code>--modal-width</code> and <code>--modal-height</code> CSS Custom Properties are overriden when the modal is in fullscreen mode.</p>
         <p><small>Close the modal by either clicking the "X" button, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -282,7 +282,7 @@
 &lt;modal-element fullscreen&gt;
   &lt;h2 slot="header"&gt;Fullscreen modal&lt;/h2&gt;
   &lt;p&gt;This is a fullscreen modal.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -348,7 +348,7 @@
         <h2 slot="header">Without animations</h2>
         <p>This is a modal that does not use animations on open and close or backdrop click.</p>
         <p><small>Close the modal by either clicking the "X" button, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -359,7 +359,7 @@
 &lt;modal-element no-animations static-backdrop&gt;
   &lt;h2 slot="header"&gt;Without animations&lt;/h2&gt;
   &lt;p&gt;This is a modal that does not use animations on open and close or backdrop click.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -393,7 +393,7 @@
           <p>Scroll down and see for yourself! 👇</p>
           <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
         </div>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -418,7 +418,7 @@
     &lt;/p&gt;
     &lt;p&gt;Scroll down and see for yourself! 👇&lt;/p&gt;
   &lt;/div&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -453,7 +453,7 @@
           or by overriding the default <a href="https://github.com/georapbox/modal-element#css-custom-properties" target="_blank" rel="noopener noreferrer">CSS Custom Properties</a>.
         </p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -498,7 +498,7 @@
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Custom styling&lt;/h2&gt;
   &lt;p&gt;This is a modal with custom styling.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -534,7 +534,7 @@
           </form>
         </div>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -557,7 +557,7 @@
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quis eveniet dicta saepe rem impedit odio quisquam ducimus eaque animi laborum quod, iusto autem, nobis cumque, voluptate repellat quo ab?&lt;/h2&gt;
   &lt;p&gt;This is a modal with a really long title.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -586,7 +586,7 @@
         <p>If you are wondering how I got here, I used the <code>--modal-backdrop-background</code> CSS Custom Property.</p>
         <p>If you don't see me though, it's probably because of this <a href="https://github.com/whatwg/fullscreen/issues/124" target="_blank" rel="noopener noreferrer">bug</a> but fortunately it's already being worked on.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -600,7 +600,7 @@
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;It's me, Mario!&lt;/h2&gt;
   &lt;p&gt;...and I'm in a custom backdrop!&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -633,7 +633,7 @@
         <h2 slot="header">Custom transition</h2>
         <p>This is a modal with custom transitions.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -676,7 +676,7 @@
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Custom transition&lt;/h2&gt;
   &lt;p&gt;This is a modal with custom transitions.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -709,7 +709,7 @@
           but it will close when clicking on the backdrop
           or pressing the <kbd>Esc</kbd> key.
         </p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -724,7 +724,7 @@
     but it will close when clicking on the backdrop
     or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
   &lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -816,7 +816,7 @@
         <p>This is a modal with custom placement.</p>
         <p><code>placement="center"</code></p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -827,7 +827,7 @@
 &lt;modal-element placement="top-start"&gt;
   &lt;h2 slot="header"&gt;Modal placement&lt;/h2&gt;
   &lt;p&gt;This is a modal with custom placement.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;form name="modal-placement-form"&gt;
@@ -879,7 +879,7 @@
         <h2 slot="header">Preserve body overflow</h2>
         <p>This is a modal that preserves the body overflow. Try scrolling the document while the modal is open.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -890,7 +890,7 @@
 &lt;modal-element preserve-overflow&gt;
   &lt;h2 slot="header"&gt;Preserve body overflow&lt;/h2&gt;
   &lt;p&gt;This is a modal that preserves the body overflow. Try scrolling the document while the modal is open.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -926,7 +926,7 @@
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
         <div slot="footer">
           <button type="button" data-open="modal-nested-modals-2" style="margin: 0;">Open second modal</button>
-          <button type="button" style="margin: 0;" data-me-close>Close</button>
+          <button type="button" style="margin: 0;" data-modal-close>Close</button>
         </div>
       </modal-element>
 
@@ -934,7 +934,7 @@
         <h2 slot="header">Second modal</h2>
         <p>This is a modal that was opened on top of another modal.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
 
       <details>
@@ -947,14 +947,14 @@
   &lt;p&gt;This is a modal from which you can open another modal.&lt;/p&gt;
   &lt;div slot="footer"&gt;
     &lt;button type="button" id="open-second-modal-button"&gt;Open another modal&lt;/button&gt;
-    &lt;button type="button" data-me-close&gt;Close&lt;/button&gt;
+    &lt;button type="button" data-modal-close&gt;Close&lt;/button&gt;
   &lt;/div&gt;
 &lt;/modal-element&gt;
 
 &lt;modal-element id="second-modal" placement="top-center"&gt;
   &lt;h2 slot="header"&gt;Second modal&lt;/h2&gt;
   &lt;p&gt;This is a modal that was opened on top of another modal.&lt;/p&gt;
-  &lt;button slot="footer" type="button" data-me-close&gt;Close&lt;/button&gt;
+  &lt;button slot="footer" type="button" data-modal-close&gt;Close&lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
@@ -1086,7 +1086,7 @@
             </p>
             <p>
               <input type="checkbox" id="external-invoker" name="external-invoker">
-              <label for="external-invoker">By clicking an external invoker, eg a button with <code>data-me-close</code> attribute inside the modal</label>
+              <label for="external-invoker">By clicking an external invoker, eg a button with <code>data-modal-close</code> attribute inside the modal</label>
             </p>
             <p>
               <small>For more info on events, check the <a href="https://github.com/georapbox/modal-element#events" target="_blank" rel="noopener noreferrer">relevant section</a> in the documentation.</small>
@@ -1111,7 +1111,7 @@
           </fieldset>
         </form>
 
-        <button slot="footer" type="button" style="margin: 0;" data-me-close>Close</button>
+        <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
       </modal-element>
     </div>
 

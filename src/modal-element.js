@@ -756,7 +756,7 @@ class ModalElement extends HTMLElement {
     const { target, currentTarget } = evt;
 
     const isBackdropClick = target === currentTarget;
-    const isExternalInvoker = target instanceof HTMLElement && target.closest('[data-me-close]') !== null;
+    const isExternalInvoker = target instanceof HTMLElement && target.closest('[data-modal-close]') !== null;
 
     if (!isBackdropClick && !isExternalInvoker) {
       return;

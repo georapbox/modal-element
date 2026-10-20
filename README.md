@@ -166,7 +166,7 @@ The modal provides some default ways for the end user to dismiss the modal. Thes
 - By pressing the `Esc` key.
 - By clicking outside the modal if the `staticBackdrop` property is set to `false`.
 
-These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of v1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-me-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element.
+These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of v1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-modal-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element.
 
 Alternatively, you can use the [Invoker Commands API](#invoker-commands) to declaratively open and close the modal without adding event listeners.
 
@@ -176,11 +176,11 @@ Here is an example:
 <modal-element>
   <h5 slot="header">Modal Title</h5>
   <p>Modal content</p>
-  <button slot="footer" type="button" data-me-close>Close</button>
+  <button slot="footer" type="button" data-modal-close>Close</button>
 </modal-element>
 ```
 
-By just adding the `data-me-close` attribute to the button, the modal will be dismissed when the button is clicked.
+By just adding the `data-modal-close` attribute to the button, the modal will be dismissed when the button is clicked.
 
 > [!NOTE]
 > As of v1.7.0, by clicking on the custom close button, the `me-request-close` event will also be emitted with the `reason` set to `'external-invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.

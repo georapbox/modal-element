@@ -373,10 +373,10 @@ describe('modal-element', () => {
     });
 
     it('should fire "me-request-close" event when clicking on an external invoker', async () => {
-      const el = await fixture(html`<modal-element><button data-me-close>Close</button></modal-element>`);
+      const el = await fixture(html`<modal-element><button data-modal-close>Close</button></modal-element>`);
       el.setAttribute('open', '');
       const listener = oneEvent(el, 'me-request-close');
-      const invoker = el.querySelector('[data-me-close]');
+      const invoker = el.querySelector('[data-modal-close]');
       invoker.click();
       const { detail } = await listener;
       expect(detail).to.deep.equal({ element: el, reason: 'external-invoker' });
@@ -503,11 +503,11 @@ describe('modal-element', () => {
       expect(el.open).to.be.true;
     });
 
-    it('should close the dialog when clicking on a button with `data-me-close` attribute', async () => {
+    it('should close the dialog when clicking on a button with `data-modal-close` attribute', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
       el.setAttribute('open', '');
       const button = document.createElement('button');
-      button.setAttribute('data-me-close', '');
+      button.setAttribute('data-modal-close', '');
       el.appendChild(button);
       button.click();
       await elementUpdated(el);
@@ -517,12 +517,12 @@ describe('modal-element', () => {
     it('static-backdrop should not block close requests from external invokers', async () => {
       const el = await fixture(
         html`<modal-element static-backdrop>
-          <button data-me-close>Close</button>
+          <button data-modal-close>Close</button>
         </modal-element>`
       );
       el.setAttribute('open', '');
       const requestClose = oneEvent(el, 'me-request-close');
-      el.querySelector('[data-me-close]').click();
+      el.querySelector('[data-modal-close]').click();
       const { detail } = await requestClose;
       expect(detail.reason).to.equal('external-invoker');
       await elementUpdated(el);
