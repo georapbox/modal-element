@@ -34,6 +34,8 @@
 
     <p>Below are examples of different configurations and use cases of the <code>&lt;modal-element&gt;</code> component.</p>
 
+    <p>Open your browser's developer console to see the events dispatched by the modal element.</p>
+
     <details open>
       <summary>Table of contents</summary>
       <ol class="table-of-contents">
@@ -59,10 +61,6 @@
       </ol>
     </details>
 
-    <blockquote>
-      <strong>Note:</strong> Open the browser's console to see the events fired by the modal element.
-    </blockquote>
-
     <h3 id="example-default-config">Default configuration</h3>
     <p>
       This is a modal with the default configurations.
@@ -71,7 +69,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-default-config" disabled>Open Modal</button>
+        <button type="button" data-open="modal-default-config" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-default-config">
@@ -84,7 +82,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Default configuration&lt;/h2&gt;
@@ -112,7 +110,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-static-backdrop" disabled>Open Modal</button>
+        <button type="button" data-open="modal-static-backdrop" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-static-backdrop" static-backdrop>
@@ -125,7 +123,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element static-backdrop&gt;
   &lt;h2 slot="header"&gt;Static backdrop&lt;/h2&gt;
@@ -150,7 +148,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-header" disabled>Open Modal</button>
+        <button type="button" data-open="modal-without-header" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-without-header" no-header>
@@ -162,7 +160,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element no-header&gt;
   &lt;h2 slot="header"&gt;Without header&lt;/h2&gt;
@@ -187,7 +185,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-title" disabled>Open Modal</button>
+        <button type="button" data-open="modal-without-title" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-without-title">
@@ -199,7 +197,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;p&gt;This is a modal without title. It will still have a close button though.&lt;/p&gt;
@@ -223,7 +221,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-close-button" disabled>Open Modal</button>
+        <button type="button" data-open="modal-without-close-button" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-without-close-button" no-close-button>
@@ -236,7 +234,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element no-close-button&gt;
   &lt;h2 slot="header"&gt;Without close button&lt;/h2&gt;
@@ -263,7 +261,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-fullscreen" disabled>Open Modal</button>
+        <button type="button" data-open="modal-fullscreen" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-fullscreen" fullscreen>
@@ -277,7 +275,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element fullscreen&gt;
   &lt;h2 slot="header"&gt;Fullscreen modal&lt;/h2&gt;
@@ -302,7 +300,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-footer" disabled>Open Modal</button>
+        <button type="button" data-open="modal-without-footer" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-without-footer">
@@ -314,7 +312,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Without footer&lt;/h2&gt;
@@ -341,7 +339,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-animations" disabled>Open Modal</button>
+        <button type="button" data-open="modal-without-animations" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-without-animations" no-animations static-backdrop>
@@ -354,7 +352,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element no-animations static-backdrop&gt;
   &lt;h2 slot="header"&gt;Without animations&lt;/h2&gt;
@@ -407,7 +405,7 @@
   }
 &lt;/style&gt;
 
-&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Scrolling long content&lt;/h2&gt;
@@ -441,7 +439,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-custom-styling" disabled>Open Modal</button>
+        <button type="button" data-open="modal-custom-styling" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-custom-styling" class="custom-styling">
@@ -493,7 +491,7 @@
   }
 &lt;/style&gt;
 
-&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Custom styling&lt;/h2&gt;
@@ -521,7 +519,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-truncate-title" disabled>Open Modal</button>
+        <button type="button" data-open="modal-truncate-title" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-truncate-title" class="truncate-title">
@@ -552,7 +550,7 @@
   }
 &lt;/style&gt;
 
-&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quis eveniet dicta saepe rem impedit odio quisquam ducimus eaque animi laborum quod, iusto autem, nobis cumque, voluptate repellat quo ab?&lt;/h2&gt;
@@ -577,7 +575,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-custom-backdrop" disabled>Open Modal</button>
+        <button type="button" data-open="modal-custom-backdrop" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-custom-backdrop" class="custom-backdrop">
@@ -595,7 +593,7 @@
   --modal-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat bottom center / 90%;
 &lt;/style&gt;
 
-&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;It's me, Mario!&lt;/h2&gt;
@@ -626,7 +624,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-custom-transition" disabled>Open Modal</button>
+        <button type="button" data-open="modal-custom-transition" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-custom-transition" class="custom-transition">
@@ -671,7 +669,7 @@
   }
 &lt;/style&gt;
 
-&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Custom transition&lt;/h2&gt;
@@ -699,7 +697,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-prevent-close" disabled>Open Modal</button>
+        <button type="button" data-open="modal-prevent-close" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-prevent-close">
@@ -715,7 +713,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element&gt;
   &lt;h2 slot="header"&gt;Prevent from closing&lt;/h2&gt;
@@ -753,7 +751,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-placement" disabled>Open Modal</button>
+        <button type="button" data-open="modal-placement" disabled>Open modal</button>
 
         <form name="modal-placement-form">
           <fieldset>
@@ -822,7 +820,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element placement="top-start"&gt;
   &lt;h2 slot="header"&gt;Modal placement&lt;/h2&gt;
@@ -872,7 +870,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-preserve-overflow" disabled>Open Modal</button>
+        <button type="button" data-open="modal-preserve-overflow" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-preserve-overflow" preserve-overflow>
@@ -885,7 +883,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element preserve-overflow&gt;
   &lt;h2 slot="header"&gt;Preserve body overflow&lt;/h2&gt;
@@ -917,7 +915,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-nested-modals-1" disabled>Open Modal</button>
+        <button type="button" data-open="modal-nested-modals-1" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-nested-modals-1">
@@ -940,7 +938,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;button type="button" id="open-first-modal-button"&gt;Open Modal&lt;/button&gt;
+<pre><code>&lt;button type="button" id="open-first-modal-button"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element id="first-modal"&gt;
   &lt;h2 slot="header"&gt;First modal&lt;/h2&gt;
@@ -989,7 +987,7 @@
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
         <p style="margin-block-end: 0;">The following button opens the modal using the <code>--modal-open</code> command.</p>
-        <button type="button" commandfor="modal-invoker-commands" command="--modal-open" disabled>Open Modal</button>
+        <button type="button" commandfor="modal-invoker-commands" command="--modal-open" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-invoker-commands">
@@ -1005,7 +1003,7 @@
       <details>
         <summary>Source code</summary>
 
-<pre><code class="language-xml">&lt;button type="button" commandfor="my-modal" command="--modal-open"&gt;Open Modal&lt;/button&gt;
+<pre><code class="language-xml">&lt;button type="button" commandfor="my-modal" command="--modal-open"&gt;Open modal&lt;/button&gt;
 
 &lt;modal-element id="my-modal"&gt;
   &lt;h2 slot="header"&gt;Using invoker commands&lt;/h2&gt;
@@ -1024,7 +1022,7 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-interactive-demo" disabled>Open Modal</button>
+        <button type="button" data-open="modal-interactive-demo" disabled>Open modal</button>
       </browser-window>
 
       <modal-element id="modal-interactive-demo" style="--modal-width: 40rem;">
@@ -1128,15 +1126,6 @@
 
     document.querySelectorAll('.card').forEach(el => {
       el.insertAdjacentHTML('afterend', `<div class="back-top"><a href="#">↑ Back to top</a></div>`);
-    });
-
-    document.querySelectorAll('browser-window > button').forEach(el => {
-      el.insertAdjacentHTML('afterbegin', `
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M3 3.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1.5 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z" />
-          <path d="M.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5H.5ZM1 5V2h14v3H1Zm0 1h14v8H1V6Z" />
-        </svg>
-      `);
     });
 
     if (!Object.prototype.hasOwnProperty.call(HTMLButtonElement.prototype, 'command')) {

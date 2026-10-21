@@ -132,9 +132,9 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 | Name | Description | Event Detail |
 | ---- | ----------- | ------------ |
-| `modal-open` | Emitted when the modal opens. | `{ element: HTMLElement }` |
-| `modal-close` | Emitted when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | `{ element: HTMLElement }` |
-| `modal-request-close` | Emitted when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
+| `modal-open` | Dispatched when the modal opens. | `{ element: HTMLElement }` |
+| `modal-close` | Dispatched when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | `{ element: HTMLElement }` |
+| `modal-request-close` | Dispatched when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ element: HTMLElement, reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
 
 **Note:** When dismissing the modal using the `Esc` key, the browser may not always allow the close request to be canceled. In Chromium-based browsers, pressing `Esc` repeatedly without any intervening user activation may close the modal even if `event.preventDefault()` is called on `modal-request-close`.
 
@@ -195,7 +195,7 @@ As of v1.9.0 the modal supports Invoker Commands to provide a more declarative w
 Here is an example, demonstrating how to use the API to open and close the modal.
 
 ```html
-<button type="button" commandfor="my-modal" command="--modal-open">Open Modal</button>
+<button type="button" commandfor="my-modal" command="--modal-open">Open modal</button>
 
 <modal-element id="my-modal">
   <h5 slot="header">Modal Title</h5>
