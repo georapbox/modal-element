@@ -416,14 +416,7 @@ class ModalElement extends HTMLElement {
       if (this.open) {
         this.#dialogEl.classList.toggle('dialog--no-animations', this.noAnimations);
         this.#dialogEl.showModal();
-
-        this.dispatchEvent(
-          new CustomEvent('modal-open', {
-            bubbles: true,
-            composed: true,
-            detail: { element: this }
-          })
-        );
+        this.#emit('modal-open');
 
         const body = this.ownerDocument.body;
 
@@ -700,13 +693,7 @@ class ModalElement extends HTMLElement {
     // the open property when the dialog is closed by the user.
     this.open = false;
 
-    this.dispatchEvent(
-      new CustomEvent('modal-close', {
-        bubbles: true,
-        composed: true,
-        detail: { element: this }
-      })
-    );
+    this.#emit('modal-close');
 
     const body = this.ownerDocument.body;
 
@@ -723,10 +710,13 @@ class ModalElement extends HTMLElement {
    * @param {Event} evt - The cancel event.
    */
   #handleDialogCancel = evt => {
-    const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.ESCAPE_KEY);
-    this.dispatchEvent(requestCloseEvent);
+    const canClose = this.#emit(
+      'modal-request-close',
+      { reason: ModalElement.CLOSE_REQUEST_REASONS.ESCAPE_KEY },
+      { cancelable: true }
+    );
 
-    if (requestCloseEvent.defaultPrevented) {
+    if (!canClose) {
       evt.preventDefault();
       this.#pulseDialog();
     }
@@ -738,10 +728,13 @@ class ModalElement extends HTMLElement {
    * @param {Event} evt - The click event.
    */
   #handleCloseButtonClick = evt => {
-    const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.CLOSE_BUTTON);
-    this.dispatchEvent(requestCloseEvent);
+    const canClose = this.#emit(
+      'modal-request-close',
+      { reason: ModalElement.CLOSE_REQUEST_REASONS.CLOSE_BUTTON },
+      { cancelable: true }
+    );
 
-    if (requestCloseEvent.defaultPrevented) {
+    if (!canClose) {
       evt.preventDefault();
       this.#pulseDialog();
     }
@@ -756,9 +749,9 @@ class ModalElement extends HTMLElement {
     const { target, currentTarget } = evt;
 
     const isBackdropClick = target === currentTarget;
-    const isExternalInvoker = target instanceof HTMLElement && target.closest('[data-modal-close]') !== null;
+    const isCloseInvoker = target instanceof HTMLElement && target.closest('[data-modal-close]') !== null;
 
-    if (!isBackdropClick && !isExternalInvoker) {
+    if (!isBackdropClick && !isCloseInvoker) {
       return;
     }
 
@@ -766,12 +759,11 @@ class ModalElement extends HTMLElement {
       ? ModalElement.CLOSE_REQUEST_REASONS.BACKDROP_CLICK
       : ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER;
 
-    const requestCloseEvent = this.#createRequestCloseEvent(closeReason);
-    this.dispatchEvent(requestCloseEvent);
+    const canClose = this.#emit('modal-request-close', { reason: closeReason }, { cancelable: true });
 
-    const shouldBlockClose = requestCloseEvent.defaultPrevented || (isBackdropClick && this.staticBackdrop);
+    const shouldPreventClose = !canClose || (isBackdropClick && this.staticBackdrop);
 
-    if (shouldBlockClose) {
+    if (shouldPreventClose) {
       this.#pulseDialog();
       return;
     }
@@ -801,10 +793,13 @@ class ModalElement extends HTMLElement {
           return;
         }
 
-        const requestCloseEvent = this.#createRequestCloseEvent(ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER);
-        this.dispatchEvent(requestCloseEvent);
+        const canClose = this.#emit(
+          'modal-request-close',
+          { reason: ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER },
+          { cancelable: true }
+        );
 
-        if (requestCloseEvent.defaultPrevented) {
+        if (!canClose) {
           this.#pulseDialog();
           return;
         }
@@ -847,20 +842,18 @@ class ModalElement extends HTMLElement {
   };
 
   /**
-   * Creates a request close event.
+   * Dispatches an event, using CustomEvent when detail is provided.
    *
-   * @param {CloseRequestReason} reason - The reason that the modal is about to close.
+   * @template T
+   * @param {string} type - The event type.
+   * @param {T} [detail] - Optional event detail.
+   * @param {{ cancelable?: boolean }} [options] - Event options.
+   * @returns {boolean} Whether the event was not canceled.
    */
-  #createRequestCloseEvent(reason) {
-    return new CustomEvent('modal-request-close', {
-      bubbles: true,
-      composed: true,
-      cancelable: true,
-      detail: {
-        reason,
-        element: this
-      }
-    });
+  #emit(type, detail, { cancelable = false } = {}) {
+    const options = { bubbles: true, composed: true, cancelable };
+    const event = detail === undefined ? new Event(type, options) : new CustomEvent(type, { ...options, detail });
+    return this.dispatchEvent(event);
   }
 
   /**

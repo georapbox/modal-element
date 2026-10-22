@@ -69,15 +69,16 @@ customStylingForm.addEventListener('change', () => {
 
 // Events
 const handleEvents = evt => {
-  if (
+  const shouldPreventClose =
     evt.type === 'modal-request-close' &&
     evt.detail.reason === 'close-button' &&
-    evt.detail.element.id === 'modal-prevent-close'
-  ) {
+    evt.target.id === 'modal-prevent-close';
+
+  if (shouldPreventClose) {
     evt.preventDefault();
   }
 
-  console.log(`${evt.type} =>`, evt.detail);
+  console.log(evt.type, evt);
 };
 
 document.addEventListener('modal-open', handleEvents);
