@@ -55,7 +55,7 @@
         <li><a href="#example-prevent-close">Prevent modal from closing</a></li>
         <li><a href="#example-placement">Modal placement</a></li>
         <li><a href="#example-preserve-overflow">Preserve body overflow</a></li>
-        <li><a href="#example-nested-modals">Nested modals</a></li>
+        <li><a href="#example-stacked-modals">Stacked modals</a></li>
         <li><a href="#example-invoker-commands">Invoker commands</a></li>
         <li><a href="#example-interactive-demo">Interactive demo</a></li>
       </ol>
@@ -69,10 +69,10 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-default-config" disabled>Open modal</button>
+        <button type="button" data-open="modal-default" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-default-config">
+      <modal-element id="modal-default">
         <h2 slot="header">Default configuration</h2>
         <p>This is a modal with the default configuration.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -148,10 +148,10 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-header" disabled>Open modal</button>
+        <button type="button" data-open="modal-no-header" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-without-header" no-header>
+      <modal-element id="modal-no-header" no-header>
         <h2 slot="header">Without header</h2>
         <p>This is a modal without header.</p>
         <p><small>Close the modal by either clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -185,10 +185,10 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-title" disabled>Open modal</button>
+        <button type="button" data-open="modal-no-title" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-without-title">
+      <modal-element id="modal-no-title">
         <p>This is a modal without title. It will still have a close button though.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
         <button slot="footer" type="button" style="margin: 0;" data-modal-close>Close</button>
@@ -221,10 +221,10 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-close-button" disabled>Open modal</button>
+        <button type="button" data-open="modal-no-close-button" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-without-close-button" no-close-button>
+      <modal-element id="modal-no-close-button" no-close-button>
         <h2 slot="header">Without close button</h2>
         <p>This is a modal without default close button.</p>
         <p><small>Close the modal by either clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -300,10 +300,10 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-footer" disabled>Open modal</button>
+        <button type="button" data-open="modal-no-footer" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-without-footer">
+      <modal-element id="modal-no-footer">
         <h2 slot="header">Without footer</h2>
         <p>This is a modal without footer.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -339,10 +339,10 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-without-animations" disabled>Open modal</button>
+        <button type="button" data-open="modal-no-animations" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-without-animations" no-animations static-backdrop>
+      <modal-element id="modal-no-animations" no-animations static-backdrop>
         <h2 slot="header">Without animations</h2>
         <p>This is a modal that does not use animations on open and close or backdrop click.</p>
         <p><small>Close the modal by either clicking the "X" button, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -903,32 +903,34 @@
       </details>
     </div>
 
-    <h3 id="example-nested-modals">Nested modals</h3>
+    <h3 id="example-stacked-modals">Stacked modals</h3>
     <p>
-      This example demonstrates how to open a modal on top of another modal.
-      Keep in mind though that this is considered a <em><strong>bad practice</strong></em> in terms of user experience and should be avoided if possible.
+      This example demonstrates how to open a second modal on top of an already open modal.
     </p>
     <p>
       Each modal automatically preserves and restores the previous body overflow value.
-      When closing the second modal before the first, background scrolling remains disabled until both modals are closed.
+      Closing the second modal before the first ensures that background scrolling remains disabled until both modals are closed.
+    </p>
+    <p>
+      Although stacking modals is supported, it is generally discouraged from a user experience perspective and should be avoided when possible.
     </p>
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-nested-modals-1" disabled>Open modal</button>
+        <button type="button" data-open="modal-stacked-first" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-nested-modals-1">
+      <modal-element id="modal-stacked-first">
         <h2 slot="header">First modal</h2>
         <p>This is a modal from which you can open another modal.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
         <div slot="footer">
-          <button type="button" data-open="modal-nested-modals-2" style="margin: 0;">Open second modal</button>
+          <button type="button" data-open="modal-stacked-second" style="margin: 0;">Open second modal</button>
           <button type="button" style="margin: 0;" data-modal-close>Close</button>
         </div>
       </modal-element>
 
-      <modal-element id="modal-nested-modals-2" placement="top-center">
+      <modal-element id="modal-stacked-second" placement="top-center">
         <h2 slot="header">Second modal</h2>
         <p>This is a modal that was opened on top of another modal.</p>
         <p><small>Close the modal by either clicking the "X" button, clicking on the backdrop, or pressing the <kbd>Esc</kbd> key</small>.</p>
@@ -1022,10 +1024,10 @@
 
     <div class="card">
       <browser-window url="https://github.com/georapbox/modal-element" icon>
-        <button type="button" data-open="modal-interactive-demo" disabled>Open modal</button>
+        <button type="button" data-open="modal-interactive" disabled>Open modal</button>
       </browser-window>
 
-      <modal-element id="modal-interactive-demo" style="--modal-width: 40rem;">
+      <modal-element id="modal-interactive" style="--modal-width: 40rem;">
         <h2 slot="header">Interactive demo</h2>
 
         <p style="margin-bottom: 1rem;">This is an interactive demo of the component.</p>

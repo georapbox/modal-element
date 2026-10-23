@@ -37,7 +37,7 @@ placementForm.addEventListener('change', evt => {
 const attributesForm = document.getElementById('attributes-form');
 const reasonsForm = document.getElementById('reasons-form');
 const customStylingForm = document.getElementById('custom-styling-form');
-const interactiveDemoModal = document.getElementById('modal-interactive-demo');
+const interactiveDemoModal = document.getElementById('modal-interactive');
 
 attributesForm.addEventListener('change', () => {
   [...attributesForm.elements].forEach(el => {
@@ -69,16 +69,24 @@ customStylingForm.addEventListener('change', () => {
 
 // Events
 const handleEvents = evt => {
+  const { type, target } = evt;
+
+  if (type === 'modal-open') {
+    console.group(`Modal: ${target.id}`);
+  }
+
   const shouldPreventClose =
-    evt.type === 'modal-request-close' &&
-    evt.detail.reason === 'close-button' &&
-    evt.target.id === 'modal-prevent-close';
+    type === 'modal-request-close' && evt.detail.reason === 'close-button' && target.id === 'modal-prevent-close';
 
   if (shouldPreventClose) {
     evt.preventDefault();
   }
 
-  console.log(evt.type, evt);
+  console.log(type, evt);
+
+  if (type === 'modal-close') {
+    console.groupEnd();
+  }
 };
 
 document.addEventListener('modal-open', handleEvents);

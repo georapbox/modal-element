@@ -71,9 +71,9 @@ By default, the component comes with minimal styling to remain as less opinionat
 | `placement` | ✓ | String | - | `center` | Determines the placement of the modal. Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'. Placement respects the direction of the document, eg if the document is in RTL mode, the placement will be mirrored accordingly. Note, that the placement is not applied when the modal is in fullscreen mode and it might not be visible in some cases when the modal is too large for the viewport, eg in small viewports. |
 | `closeLabel`<br>*`close-label`* | ✓ | String | - | `Close` | The label for the default close button that resides in the modal's header. It is used as the `aria-label` attribute of the close button. If user provides text content for the close button using the `close` slot, this property is ignored and the `aria-label` attribute is removed. |
 
-All of the above properties reflect their values as HTML attributes to keep the element's DOM representation in sync with its JavaScript state.
-
 <sup>1</sup> The modal's entry/exit animations are implemented using modern CSS features, including [`@starting-style`](https://developer.mozilla.org/docs/Web/CSS/Reference/At-rules/@starting-style) and [`transition-behavior: allow-discrete`](https://developer.mozilla.org/docs/Web/CSS/transition-behavior). Browser support for these features varies, so some animations may not work as expected in certain browsers. When animations are not supported, the modal remains fully functional. Additionally, animations are disabled when the user has [reduced motion](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion) enabled in their operating system.
+
+All of the above properties reflect their values as HTML attributes to keep the element's DOM representation in sync with its JavaScript state.
 
 ### Slots
 
@@ -130,11 +130,11 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 ### Events
 
-| Name | Description | Event Detail |
-| ---- | ----------- | ------------ |
-| `modal-open` | Dispatched when the modal opens. | - |
-| `modal-close` | Dispatched when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | - |
-| `modal-request-close` | Dispatched when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
+| Name | Type | Description | Event Detail |
+| ---- | ---- | ----------- | ------------ |
+| `modal-open` | Event | Dispatched when the modal opens. | - |
+| `modal-close` | Event | Dispatched when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | - |
+| `modal-request-close` | CustomEvent | Dispatched when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ reason: 'close-button' \| 'escape-key' \| 'backdrop-click' \| 'external-invoker' }` |
 
 > [!NOTE]
 > When dismissing the modal using the `Esc` key, the browser may not always allow the close request to be canceled. In Chromium-based browsers, pressing `Esc` repeatedly without any intervening user activation may close the modal even if `event.preventDefault()` is called on `modal-request-close`.
@@ -158,6 +158,22 @@ Below are static properties exposed on the `ModalElement` class for consumer ref
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `CLOSE_REQUEST_REASONS` | Object | Static object of stable identifiers used in the `reason` property of the `modal-request-close` event's detail object. |
+
+## Scroll locking
+
+By default, the modal prevents the document from scrolling while it is open by setting the body's `overflow` property to `hidden`. The previous value is restored when the modal closes. This behavior can be disabled using the `preserve-overflow` attribute.
+
+Hiding the scrollbar may cause horizontal layout shifts. To prevent this, consider applying [`scrollbar-gutter: stable`](https://developer.mozilla.org/docs/Web/CSS/scrollbar-gutter) to the document's root element:
+
+```css
+html {
+  scrollbar-gutter: stable;
+}
+```
+
+Unlike scroll locking, which is managed by the component, scrollbar gutter behavior is left to the consuming application because it affects the layout of the entire document. This allows applications to decide whether to reserve scrollbar space based on their own layout requirements.
+
+Note that `scrollbar-gutter` has no effect on browsers that use overlay scrollbars.
 
 ## Closing mechanisms
 

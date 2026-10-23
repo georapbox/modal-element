@@ -10,6 +10,7 @@
   --alert-danger-color: #721c24;
 
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 @media (prefers-color-scheme: dark) {
