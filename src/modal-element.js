@@ -239,8 +239,8 @@ const template = document.createElement('template');
 template.innerHTML = /* html */ `
   <style>${styles}</style>
 
-  <dialog part="base" class="dialog">
-    <div part="panel" class="dialog__panel" aria-labelledby="title">
+  <dialog part="base" class="dialog" aria-labelledby="title">
+    <div part="panel" class="dialog__panel">
       <header part="header" class="dialog__header">
         <slot name="header" part="title" class="dialog__title" id="title"></slot>
 
@@ -279,7 +279,7 @@ template.innerHTML = /* html */ `
  * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
  * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
  * @property {string} placement - Determines the placement of the modal.
- * @property {string} closeLabel - The label of the default close button, used as the aria-label attribute of the close button.
+ * @property {string} closeLabel - The accessible label for the default close button, used as its aria-label attribute.
  *
  * @attribute {boolean} open - Determines whether the modal is open or not.
  * @attribute {boolean} static-backdrop - Determines whether the modal should close when the backdrop is clicked.
@@ -289,12 +289,12 @@ template.innerHTML = /* html */ `
  * @attribute {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
  * @attribute {boolean} preserve-overflow - Determines whether the overflow of the body should be preserved when the modal is open.
  * @attribute {string} placement - Determines the placement of the modal.
- * @attribute {string} close-label - The label of the default close button, used as the aria-label attribute of the close button.
+ * @attribute {string} close-label - The accessible label for the default close button, used as its aria-label attribute.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot header - The modal's header content, usually a title.
  * @slot footer - The modals' footer content. Usually used for buttons or other actions.
- * @slot close - The content of the close button that appears in the modal's header.
+ * @slot close - The content of the close button in the modal's header.
  *
  * @cssproperty --modal-width - The width of the modal.
  * @cssproperty --modal-height - The height of the modal.
@@ -358,9 +358,6 @@ class ModalElement extends HTMLElement {
   /** @type {HTMLSlotElement | null} */
   #footerSlotEl = null;
 
-  /** @type {HTMLSlotElement | null} */
-  #closeSlotEl = null;
-
   /** @type {Animation | null} */
   #pulseAnimation = null;
 
@@ -378,7 +375,6 @@ class ModalElement extends HTMLElement {
     if (this.shadowRoot) {
       this.#dialogEl = this.shadowRoot.querySelector('dialog');
       this.#footerSlotEl = this.shadowRoot.querySelector('slot[name="footer"]');
-      this.#closeSlotEl = this.shadowRoot.querySelector('slot[name="close"]');
     }
   }
 
@@ -461,7 +457,6 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.addEventListener('cancel', this.#handleDialogCancel);
     this.#dialogEl?.querySelector('form[method="dialog"]')?.addEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.addEventListener('slotchange', this.#handleFooterSlotChange);
-    this.#closeSlotEl?.addEventListener('slotchange', this.#handleCloseSlotChange);
     this.addEventListener('command', /** @type {EventListener} */ (this.#handleCommandEvent));
   }
 
@@ -474,17 +469,18 @@ class ModalElement extends HTMLElement {
     this.#dialogEl?.removeEventListener('cancel', this.#handleDialogCancel);
     this.#dialogEl?.querySelector('form[method="dialog"]')?.removeEventListener('submit', this.#handleCloseButtonClick);
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
-    this.#closeSlotEl?.removeEventListener('slotchange', this.#handleCloseSlotChange);
     this.removeEventListener('command', /** @type {EventListener} */ (this.#handleCommandEvent));
 
     if (this.#pulseAnimation) {
       this.#pulseAnimation?.cancel();
       this.#pulseAnimation = null;
     }
+
+    this.#restoreBodyOverflow();
   }
 
   /**
-   * Deternimes if the modal is open or not.
+   * Determines if the modal is open or not.
    *
    * @type {boolean} - True if the modal is open, otherwise false.
    * @attribute open
@@ -501,7 +497,7 @@ class ModalElement extends HTMLElement {
   /**
    * Determines whether the modal should close when the backdrop is clicked.
    *
-   * @type {boolean} - True if the modal should close when the backdrop is clicked, otherwise false.
+   * @type {boolean} - True if clicking the backdrop should not close the modal, otherwise false.
    * @attribute static-backdrop
    * @default false
    */
@@ -516,7 +512,7 @@ class ModalElement extends HTMLElement {
   /**
    * Determines whether the modal should have a header or not.
    *
-   * @type {boolean} - True if the modal should have a header, otherwise false.
+   * @type {boolean} - True if the header should be hidden, otherwise false.
    * @attribute no-header
    * @default false
    */
@@ -546,7 +542,7 @@ class ModalElement extends HTMLElement {
   /**
    * Determines whether the modal should have a default close button or not.
    *
-   * @type {boolean} - True if the modal should have a close button, otherwise false.
+   * @type {boolean} - True if the close button should be hidden, otherwise false.
    * @attribute no-close-button
    * @default false
    */
@@ -605,8 +601,9 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * The label of the default close button, used as the aria-label attribute of the close button.
-   * If user provides text content for the close button using the `close` slot, this property is ignored and the aria-label attribute is removed.
+   * The accessible label for the default close button, used as its aria-label attribute.
+   * When providing custom text content through the `close` slot, make sure `closeLabel`
+   * matches the visible text to ensure accessibility.
    *
    * @type {string}
    * @attribute close-label
@@ -621,27 +618,13 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Updates the aria-label attribute of the close button.
-   * If the slot for the close button has text content, the aria-label attribute is removed to allow the text content to be used as the label.
-   * Otherwise, the aria-label attribute is set to the `closeLabel` property.
+   * Updates the close button's aria-label attribute
+   * using the `closeLabel` property.
    */
   #updateCloseLabel() {
-    if (this.#dialogEl === null) {
-      return;
-    }
+    const closeButtonEl = this.#dialogEl?.querySelector('.dialog__close');
 
-    const closeButtonEl = this.#dialogEl.querySelector('.dialog__close');
-
-    if (closeButtonEl === null) {
-      return;
-    }
-
-    const assignedElements = this.#closeSlotEl?.assignedElements() || [];
-    const hasTextContent = assignedElements?.some(el => el.textContent?.replace(/\s/g, '') !== '');
-
-    if (hasTextContent) {
-      closeButtonEl.removeAttribute('aria-label');
-    } else {
+    if (closeButtonEl) {
       closeButtonEl.setAttribute('aria-label', this.closeLabel);
     }
   }
@@ -680,13 +663,7 @@ class ModalElement extends HTMLElement {
     this.open = false;
 
     this.#emit('modal-close');
-
-    const body = this.ownerDocument.body;
-
-    if (body && this.#previousBodyOverflow !== null) {
-      body.style.overflow = this.#previousBodyOverflow;
-      this.#previousBodyOverflow = null;
-    }
+    this.#restoreBodyOverflow();
   };
 
   /**
@@ -821,11 +798,17 @@ class ModalElement extends HTMLElement {
   };
 
   /**
-   * Handles the slotchange event of the close slot.
+   * Restores the body's previous overflow value when the modal is closed
+   * or disconnected from the DOM.
    */
-  #handleCloseSlotChange = () => {
-    this.#updateCloseLabel();
-  };
+  #restoreBodyOverflow() {
+    const body = this.ownerDocument.body;
+
+    if (body && this.#previousBodyOverflow !== null) {
+      body.style.overflow = this.#previousBodyOverflow;
+      this.#previousBodyOverflow = null;
+    }
+  }
 
   /**
    * Dispatches an event, using CustomEvent when detail is provided.
@@ -852,10 +835,9 @@ class ModalElement extends HTMLElement {
    * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow' | 'placement' | 'closeLabel'} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
-    /** @type {any} */
-    const instance = this;
+    const instance = /** @type {HTMLElement & Record<string, unknown>} */ (this);
 
-    if (Object.prototype.hasOwnProperty.call(instance, prop)) {
+    if (Object.hasOwn(instance, prop)) {
       const value = instance[prop];
       delete instance[prop];
       instance[prop] = value;

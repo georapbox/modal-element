@@ -69,7 +69,7 @@ By default, the component comes with minimal styling to remain as less opinionat
 | `fullscreen` | ✓ | Boolean | - | `false` | Determines whether the modal should be displayed in fullscreen or not. Note, the `--modal-width` and `--modal-height` CSS custom properties will be overriden if this property is set to `true`. Notice that the backdrop is not visible in fullscreen mode. If you still want a full-width modal with a backdrop, you can use `--modal-width: 100%;` and `--modal-height: 100%;` instead. |
 | `preserveOverflow`<br>*`preserve-overflow`* | ✓ | Boolean | - | `false` | Determines whether the modal should preserve the document's overflow when the modal is open. If this property is set to `true`, the document's overflow will not be hidden when the modal is open. |
 | `placement` | ✓ | String | - | `center` | Determines the placement of the modal. Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'. Placement respects the direction of the document, eg if the document is in RTL mode, the placement will be mirrored accordingly. Note, that the placement is not applied when the modal is in fullscreen mode and it might not be visible in some cases when the modal is too large for the viewport, eg in small viewports. |
-| `closeLabel`<br>*`close-label`* | ✓ | String | - | `Close` | The label for the default close button that resides in the modal's header. It is used as the `aria-label` attribute of the close button. If user provides text content for the close button using the `close` slot, this property is ignored and the `aria-label` attribute is removed. |
+| `closeLabel`<br>*`close-label`* | ✓ | String | - | `Close` | The accessible label for the default close button, used as its `aria-label` attribute. When providing custom text content through the `close` slot, make sure `closeLabel` matches the visible text to ensure accessibility. |
 
 <sup>1</sup> The modal's entry/exit animations are implemented using modern CSS features, including [`@starting-style`](https://developer.mozilla.org/docs/Web/CSS/Reference/At-rules/@starting-style) and [`transition-behavior: allow-discrete`](https://developer.mozilla.org/docs/Web/CSS/transition-behavior). Browser support for these features varies, so some animations may not work as expected in certain browsers. When animations are not supported, the modal remains fully functional. Additionally, animations are disabled when the user has [reduced motion](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion) enabled in their operating system.
 
@@ -82,7 +82,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | (default/unnamed) | The modal's main content. |
 | `header` | The modal's header content, usually a title. |
 | `footer` | The modals' footer content. Usually used for buttons or other actions. |
-| `close` | The content of the close button that appears in the modal's header. |
+| `close` | The content of the close button in the modal's header. When providing visible text, ensure the closeLabel property matches the text. |
 
 ### CSS Parts
 

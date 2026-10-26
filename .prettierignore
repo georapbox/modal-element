@@ -2,3 +2,5 @@
 **/*.css
 **/*.md
 docs/lib/**
+.zed/
+.vscode/

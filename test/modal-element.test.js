@@ -34,11 +34,15 @@ describe('modal-element', () => {
       expect(closeButton.getAttribute('aria-label')).to.equal('Close modal');
     });
 
-    it('close button does not have aria-label attribute if user provides text content for the button', async () => {
-      const el = await fixture(html`<modal-element><span slot="close">Close modal</span></modal-element>`);
+    it('close button retains aria-label when custom content is provided', async () => {
+      const el = await fixture(html`
+        <modal-element>
+          <span slot="close">Close modal</span>
+        </modal-element>
+      `);
       const closeButton = el.shadowRoot.querySelector('.dialog__close');
 
-      expect(closeButton.hasAttribute('aria-label')).to.be.false;
+      expect(closeButton.getAttribute('aria-label')).to.equal('Close');
     });
 
     it('close button has default aria-label attribute if user provides non-text content for the button', async () => {
