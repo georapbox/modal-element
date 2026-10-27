@@ -53,8 +53,12 @@ attributesForm.addEventListener('change', () => {
 
 interactiveDemoModal.addEventListener('modal-request-close', evt => {
   reasonsForm.querySelectorAll('input[type="checkbox"]').forEach(el => {
-    if (el.checked && el.getAttribute('name') === evt.detail.reason) {
-      evt.preventDefault();
+    if (el.checked) {
+      const reason = el.getAttribute('data-reason');
+
+      if (reason === evt.detail.reason) {
+        evt.preventDefault();
+      }
     }
   });
 });

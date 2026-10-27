@@ -347,9 +347,9 @@ class ModalElement extends HTMLElement {
    */
   static CLOSE_REQUEST_REASONS = /** @type {const} */ ({
     CLOSE_BUTTON: 'close-button',
-    ESCAPE_KEY: 'escape-key',
-    BACKDROP_CLICK: 'backdrop-click',
-    EXTERNAL_INVOKER: 'external-invoker'
+    BACKDROP: 'backdrop',
+    INVOKER: 'invoker',
+    PLATFORM: 'platform'
   });
 
   /** @type {HTMLDialogElement | null} */
@@ -675,7 +675,7 @@ class ModalElement extends HTMLElement {
   #handleDialogCancel = evt => {
     const canClose = this.#emit(
       'modal-request-close',
-      { reason: ModalElement.CLOSE_REQUEST_REASONS.ESCAPE_KEY },
+      { reason: ModalElement.CLOSE_REQUEST_REASONS.PLATFORM },
       { cancelable: true }
     );
 
@@ -719,8 +719,8 @@ class ModalElement extends HTMLElement {
     }
 
     const closeReason = isBackdropClick
-      ? ModalElement.CLOSE_REQUEST_REASONS.BACKDROP_CLICK
-      : ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER;
+      ? ModalElement.CLOSE_REQUEST_REASONS.BACKDROP
+      : ModalElement.CLOSE_REQUEST_REASONS.INVOKER;
 
     const canClose = this.#emit('modal-request-close', { reason: closeReason }, { cancelable: true });
 
@@ -758,7 +758,7 @@ class ModalElement extends HTMLElement {
 
         const canClose = this.#emit(
           'modal-request-close',
-          { reason: ModalElement.CLOSE_REQUEST_REASONS.EXTERNAL_INVOKER },
+          { reason: ModalElement.CLOSE_REQUEST_REASONS.INVOKER },
           { cancelable: true }
         );
 

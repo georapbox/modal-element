@@ -461,7 +461,7 @@ describe('modal-element', () => {
 
       expect(spy.calledOnce).to.be.true;
       expect(spy.firstCall.args[0].cancelable).to.be.true;
-      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'escape-key' });
+      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'platform' });
     });
 
     it('should fire "modal-request-close" event when clicking on the ::backdrop', async () => {
@@ -476,7 +476,7 @@ describe('modal-element', () => {
 
       expect(spy.calledOnce).to.be.true;
       expect(spy.firstCall.args[0].cancelable).to.be.true;
-      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'backdrop-click' });
+      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'backdrop' });
     });
 
     it('should fire "modal-request-close" event when clicking on an external invoker', async () => {
@@ -491,7 +491,7 @@ describe('modal-element', () => {
 
       expect(spy.calledOnce).to.be.true;
       expect(spy.firstCall.args[0].cancelable).to.be.true;
-      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'external-invoker' });
+      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'invoker' });
     });
   });
 
@@ -579,7 +579,7 @@ describe('modal-element', () => {
 
       const event = await listener;
 
-      expect(event.detail).to.deep.equal({ reason: 'escape-key' });
+      expect(event.detail).to.deep.equal({ reason: 'platform' });
       expect(el.open).to.be.true;
     });
 
@@ -595,7 +595,7 @@ describe('modal-element', () => {
 
       const event = await listener;
 
-      expect(event.detail).to.deep.equal({ reason: 'backdrop-click' });
+      expect(event.detail).to.deep.equal({ reason: 'backdrop' });
       expect(el.open).to.be.true;
     });
 
@@ -678,7 +678,7 @@ describe('modal-element', () => {
 
       const { detail } = await requestClose;
 
-      expect(detail.reason).to.equal('external-invoker');
+      expect(detail.reason).to.equal('invoker');
 
       await elementUpdated(el);
 
