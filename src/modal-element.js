@@ -339,6 +339,7 @@ template.innerHTML = /* html */ `
  * @method define - Static method. Registers the custom element with the browser's CustomElementRegistry unless it has already been defined.
  * @method show - Instance method. Opens the modal if it is closed, otherwise does nothing.
  * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
+ * @method requestClose - Instance method. Requests to close the modal, allowing the close request to be canceled.
  */
 class ModalElement extends HTMLElement {
   /**
@@ -349,7 +350,8 @@ class ModalElement extends HTMLElement {
     CLOSE_BUTTON: 'close-button',
     BACKDROP: 'backdrop',
     INVOKER: 'invoker',
-    PLATFORM: 'platform'
+    PLATFORM: 'platform',
+    PROGRAMMATIC: 'programmatic'
   });
 
   /** @type {HTMLDialogElement | null} */
@@ -874,6 +876,34 @@ class ModalElement extends HTMLElement {
     }
 
     this.open = false;
+  }
+
+  /**
+   * Requests to close the modal if it is open.
+   * Dispatches a cancelable `modal-request-close` event before closing.
+   * If the event is canceled, the modal remains open.
+   *
+   * @example
+   * const modal = document.querySelector('modal-element');
+   * modal.requestClose();
+   */
+  requestClose() {
+    if (!this.open) {
+      return;
+    }
+
+    const canClose = this.#emit(
+      'modal-request-close',
+      { reason: ModalElement.CLOSE_REQUEST_REASONS.PROGRAMMATIC },
+      { cancelable: true }
+    );
+
+    if (!canClose) {
+      this.#pulseDialog();
+      return;
+    }
+
+    this.hide();
   }
 
   /**

@@ -134,7 +134,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | ---- | ---- | ----------- | ------------ |
 | `modal-open` | Event | Dispatched when the modal opens. | - |
 | `modal-close` | Event | Dispatched when the modal is dismissed in any way, either by clicking on the close button, by pressing the `Esc` key or by clicking outside the modal. | - |
-| `modal-request-close` | CustomEvent | Dispatched when the modal is about to be dismissed. This event is cancelable, allowing you to prevent dismissal by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for dismissal. This event is not emitted when the modal is closed programmatically using `hide()` or by setting `open` to `false`. | `{ reason: 'close-button' \| 'backdrop' \| 'invoker' \| 'platform' }` |
+| `modal-request-close` | CustomEvent | Dispatched when the modal is about to close through a user interaction or a call to `requestClose()`. This event is cancelable, allowing you to prevent the modal from closing by calling `event.preventDefault()`, subject to native browser behavior. The `event.detail` object contains the reason for the close request. This event is not dispatched when using `hide()` or setting `open` to `false`. | `{ reason: 'close-button' \| 'backdrop' \| 'invoker' \| 'platform' \| 'programmatic' }` |
 
 > [!NOTE]
 > When dismissing the modal using the `Esc` key, the browser may not always allow the close request to be canceled. In Chromium-based browsers, pressing `Esc` repeatedly without any intervening user activation may close the modal even if `event.preventDefault()` is called on `modal-request-close`.
@@ -146,10 +146,11 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | Name | Type | Description | Arguments |
 | ---- | ---- | ----------- | --------- |
 | `define` | Static | Registers the custom element with the browser's CustomElementRegistry unless it has already been defined. | `tagName='modal-element'` |
-| `show`<sup>1</sup> | Instance | Opens the modal. | - |
-| `hide`<sup>1</sup> | Instance | Closes the modal. | - |
+| `show` | Instance | Opens the modal. | - |
+| `hide` | Instance | Closes the modal without dispatching `modal-request-close`. | - |
+| `requestClose` | Instance | Requests to close the modal by dispatching a cancelable `modal-request-close` event with the reason set to `'programmatic'`. | - |
 
-<sup>1</sup> Instance methods are only available after the custom element has been defined. Use [`customElements.whenDefined()`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry/whenDefined) to ensure the element is registered before calling these methods.
+Instance methods are only available after the custom element has been defined. Use [`customElements.whenDefined()`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry/whenDefined) to ensure the element is registered before calling these methods.
 
 ### Static Properties
 
@@ -199,7 +200,29 @@ Here is an example:
 
 By just adding the `data-modal-close` attribute to the button, the modal will be dismissed when the button is clicked.
 
-Clicking on the custom close button, the `modal-request-close` event will also be emitted with the `reason` set to `'invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
+Clicking on the custom close button, the `modal-request-close` event will also be dispatched with the `reason` set to `'invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
+
+### Programmatic closing
+
+The modal provides two methods for closing it programmatically: `hide()` and `requestClose()`.
+
+- `hide()` closes the modal directly without dispatching `modal-request-close`.
+- `requestClose()` dispatches a cancelable `modal-request-close` event with the reason set to `'programmatic'`. If the event is canceled, the modal remains open.
+
+For example:
+
+```js
+const modal = document.querySelector('modal-element');
+
+modal.addEventListener('modal-request-close', event => {
+  if (hasUnsavedChanges) {
+    event.preventDefault();
+  }
+});
+
+modal.requestClose(); // Can be prevented
+modal.hide(); // Always closes
+```
 
 ## Invoker Commands
 
