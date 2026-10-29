@@ -178,29 +178,13 @@ Note that `scrollbar-gutter` has no effect on browsers that use overlay scrollba
 
 ## Closing mechanisms
 
-The modal provides some default ways for the end user to dismiss the modal. These are:
+The modal provides the following default ways for users to dismiss it:
 
-- By clicking on the default close button in the modal's header.
-- By pressing the `Esc` key.
-- By clicking outside the modal if the `staticBackdrop` property is set to `false`.
+- By clicking the default close button in the modal's header.
+- By pressing the `Esc` key on desktop browsers or using the Back button or gesture on supported mobile devices.
+- By clicking outside the modal, if backdrop dismissal is enabled.
 
-These default mechanisms are enough for most use cases. However, sometimes developers want to provide extra mechanisms for modal closure. The most usual scenario is to provide a "Close" button on the modal's footer or a "Cancel" button for modals that act as confirmation prompts. To achieve this the developer would need to add the button and then add a click event listener to it to dismiss the modal. This is a common pattern and it works well. However, it can be a bit cumbersome to do this for every modal, especially if the developer is using the modal in a lot of places. Therefore, as of v1.5.0, the modal provides an automatic way to dismiss the modal by clicking on a button or a link inside the modal's content with the `data-modal-close` attribute. This is a convenient way to dismiss the modal without the need to add a click event listener to the element.
-
-Alternatively, you can use the [Invoker Commands API](#invoker-commands) to declaratively open and close the modal without adding event listeners.
-
-Here is an example:
-
-```html
-<modal-element>
-  <h5 slot="header">Modal Title</h5>
-  <p>Modal content</p>
-  <button slot="footer" type="button" data-modal-close>Close</button>
-</modal-element>
-```
-
-By just adding the `data-modal-close` attribute to the button, the modal will be dismissed when the button is clicked.
-
-Clicking on the custom close button, the `modal-request-close` event will also be dispatched with the `reason` set to `'invoker'` and therefore the user can prevent the modal from being dismissed by calling `event.preventDefault()` in the event listener if needed.
+Additional close controls can be implemented using the [Invoker Commands API](#invoker-commands), allowing the modal to be dismissed declaratively without adding event listeners.
 
 ### Programmatic closing
 
@@ -243,7 +227,7 @@ Here is an example, demonstrating how to use the API to open and close the modal
 </modal-element>
 ```
 
-Closing the modal using `--modal-close` dispatches a cancelable `modal-request-close` event with the reason set to `'invoker'`, just like elements using `data-modal-close`.
+Closing the modal using `--modal-close` dispatches a cancelable `modal-request-close` event with the reason set to `'invoker'`. The close request can be prevented by calling `event.preventDefault()`.
 
 > [!NOTE]
 > The Invoker Commands API is [Baseline Newly Available](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API) since December 2025 and is supported in the latest versions of all major browsers. Older browser versions may not support this feature. Check [browser compatibility](https://developer.mozilla.org/docs/Web/API/Invoker_Commands_API#browser_compatibility) for more details.

@@ -493,10 +493,14 @@ describe('modal-element', () => {
       expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'backdrop' });
     });
 
-    it('should dispatch "modal-request-close" event when clicking on an external invoker', async () => {
-      const el = await fixture(html`<modal-element><button data-modal-close>Close</button></modal-element>`);
+    it('should dispatch "modal-request-close" event when using "--modal-close" command', async () => {
+      const el = await fixture(html`
+        <modal-element id="test-modal">
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+        </modal-element>
+      `);
       const spy = sinon.spy();
-      const invoker = el.querySelector('[data-modal-close]');
+      const invoker = el.querySelector('[command="--modal-close"]');
 
       el.show();
       el.addEventListener('modal-request-close', spy);
@@ -608,36 +612,52 @@ describe('modal-element', () => {
       expect(el.open).to.be.true;
     });
 
-    it('should close the modal when clicking on a button with `data-modal-close` attribute', async () => {
-      const el = await fixture(html`<modal-element></modal-element>`);
+    it('should close the modal when using "--modal-close" command', async () => {
+      const el = await fixture(html`
+        <modal-element id="test-modal">
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+        </modal-element>
+      `);
 
       el.show();
 
-      const button = document.createElement('button');
-      button.setAttribute('data-modal-close', '');
-      el.appendChild(button);
-
-      button.click();
+      const invoker = el.querySelector('[command="--modal-close"]');
+      invoker.click();
 
       await elementUpdated(el);
 
       expect(el.open).to.be.false;
     });
 
-    it('should allow invokers to close the modal when "static-backdrop" is set', async () => {
-      const el = await fixture(
-        html`<modal-element static-backdrop>
-          <button data-modal-close>Close</button>
-        </modal-element>`
-      );
+    it('should allow invoker commands to close the modal when "static-backdrop" is set', async () => {
+      const el = await fixture(html`
+        <modal-element id="test-modal" static-backdrop>
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+        </modal-element>
+      `);
 
       el.show();
 
-      el.querySelector('[data-modal-close]').click();
+      el.querySelector('[command="--modal-close"]').click();
 
       await elementUpdated(el);
 
       expect(el.open).to.be.false;
+    });
+
+    it('should prevent closing when the invoker command request is canceled', async () => {
+      const el = await fixture(html`
+        <modal-element id="test-modal">
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+        </modal-element>
+      `);
+
+      el.show();
+      el.addEventListener('modal-request-close', evt => evt.preventDefault());
+
+      el.querySelector('[command="--modal-close"]').click();
+
+      expect(el.open).to.be.true;
     });
   });
 

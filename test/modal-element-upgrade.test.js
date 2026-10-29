@@ -1,11 +1,16 @@
-import { elementUpdated, expect, fixture, fixtureCleanup, html } from '@open-wc/testing';
+import { expect, fixture, fixtureCleanup, html } from '@open-wc/testing';
 import { ModalElement } from '../src/modal-element.js';
 
 describe('modal-element upgrading', () => {
-  it('default properties', async () => {
-    const el = await fixture(html`<modal-element></modal-element>`);
+  afterEach(() => {
+    fixtureCleanup();
+  });
 
-    // Update properties before upgrading
+  it('should preserve properties set before the custom element is defined', async () => {
+    const container = await fixture(html`<div></div>`);
+    const el = document.createElement('modal-element');
+
+    // Set properties before upgrading
     el.open = true;
     el.staticBackdrop = true;
     el.noHeader = true;
@@ -16,10 +21,12 @@ describe('modal-element upgrading', () => {
     el.placement = 'top-start';
     el.closeLabel = 'Close';
 
-    // Upgrade custom element
+    // Define and explicitly upgrade the custom element
     ModalElement.define();
+    customElements.upgrade(el);
 
-    await elementUpdated(el);
+    // Connect the element so connectedCallback runs
+    container.appendChild(el);
 
     expect(el.getAttribute('open')).to.equal('');
     expect(el.getAttribute('static-backdrop')).to.equal('');
@@ -29,9 +36,5 @@ describe('modal-element upgrading', () => {
     expect(el.getAttribute('fullscreen')).to.equal('');
     expect(el.getAttribute('placement')).to.equal('top-start');
     expect(el.getAttribute('close-label')).to.equal('Close');
-  });
-
-  afterEach(() => {
-    fixtureCleanup();
   });
 });

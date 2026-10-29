@@ -714,17 +714,16 @@ class ModalElement extends HTMLElement {
     const { target, currentTarget } = evt;
 
     const isBackdropClick = target === currentTarget;
-    const isCloseInvoker = target instanceof HTMLElement && target.closest('[data-modal-close]') !== null;
 
-    if (!isBackdropClick && !isCloseInvoker) {
+    if (!isBackdropClick) {
       return;
     }
 
-    const closeReason = isBackdropClick
-      ? ModalElement.CLOSE_REQUEST_REASONS.BACKDROP
-      : ModalElement.CLOSE_REQUEST_REASONS.INVOKER;
-
-    const canClose = this.#emit('modal-request-close', { reason: closeReason }, { cancelable: true });
+    const canClose = this.#emit(
+      'modal-request-close',
+      { reason: ModalElement.CLOSE_REQUEST_REASONS.BACKDROP },
+      { cancelable: true }
+    );
 
     const shouldPreventClose = !canClose || (isBackdropClick && this.staticBackdrop);
 
