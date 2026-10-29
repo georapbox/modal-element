@@ -6,9 +6,6 @@
  * @typedef {typeof ModalElement.CLOSE_REQUEST_REASONS[keyof typeof ModalElement.CLOSE_REQUEST_REASONS]} CloseRequestReason
  */
 
-const PULSE_KEYFRAMES = [{ transform: 'scale(1)' }, { transform: 'scale(1.02)' }, { transform: 'scale(1)' }];
-const PULSE_ANIMATION_OPTIONS = { duration: 300, easing: 'cubic-bezier(0.2, 0, 0.38, 0.9)' };
-
 const styles = /* css */ `
   :host {
     --modal-width: 32rem;
@@ -239,10 +236,10 @@ const template = document.createElement('template');
 template.innerHTML = /* html */ `
   <style>${styles}</style>
 
-  <dialog part="base" class="dialog" aria-labelledby="title">
+  <dialog part="base" class="dialog" closedby="any" aria-labelledby="title">
     <div part="panel" class="dialog__panel">
       <header part="header" class="dialog__header">
-        <slot name="header" part="title" class="dialog__title" id="title"></slot>
+        <slot name="title" part="title" class="dialog__title" id="title"></slot>
 
         <form method="dialog">
           <button type="submit" part="close" class="dialog__close" aria-label="Close">
@@ -272,9 +269,9 @@ template.innerHTML = /* html */ `
  * @extends HTMLElement
  *
  * @property {boolean} open - Determines whether the modal is open or not.
- * @property {boolean} staticBackdrop - Determines whether the modal should close when the backdrop is clicked.
+ * @property {string} closedBy - Controls which native user interactions can dismiss the modal.
  * @property {boolean} noHeader - Determines whether the modal should have a header or not.
- * @property {boolean} noAnimations - Determines whether the modal should have animations or not when opening and closing.
+ * @property {boolean} noAnimations - Determines whether the modal's opening and closing animations are disabled.
  * @property {boolean} noCloseButton - Determines whether the modal should have a default close button or not.
  * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
  * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
@@ -282,9 +279,9 @@ template.innerHTML = /* html */ `
  * @property {string} closeLabel - The accessible label for the default close button, used as its aria-label attribute.
  *
  * @attribute {boolean} open - Determines whether the modal is open or not.
- * @attribute {boolean} static-backdrop - Determines whether the modal should close when the backdrop is clicked.
+ * @attribute {string} closed-by - Controls which native user interactions can dismiss the modal.
  * @attribute {boolean} no-header - Determines whether the modal should have a header or not.
- * @attribute {boolean} no-animations - Determines whether the modal should have animations or not when opening and closing.
+ * @attribute {boolean} no-animations - Determines whether the modal's opening and closing animations are disabled.
  * @attribute {boolean} no-close-button - Determines whether the modal should have a default close button or not.
  * @attribute {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
  * @attribute {boolean} preserve-overflow - Determines whether the overflow of the body should be preserved when the modal is open.
@@ -292,8 +289,8 @@ template.innerHTML = /* html */ `
  * @attribute {string} close-label - The accessible label for the default close button, used as its aria-label attribute.
  *
  * @slot - The modal's main content (default/unnamed slot).
- * @slot header - The modal's header content, usually a title.
- * @slot footer - The modals' footer content. Usually used for buttons or other actions.
+ * @slot title - The modal's title, used as its accessible name via `aria-labelledby`. Displayed in the header alongside the default close button.
+ * @slot footer - The modal's footer content. Usually used for buttons or other actions.
  * @slot close - The content of the close button in the modal's header.
  *
  * @cssproperty --modal-width - The width of the modal.
@@ -323,7 +320,7 @@ template.innerHTML = /* html */ `
  * @cssproperty --modal-backdrop-background - The background shorthand property of the backdrop.
  * @cssproperty --modal-backdrop-filter - The backdrop filter property of the backdrop.
  *
- * @csspart base - The base wrapper of the modal.
+ * @csspart base - The component's base wrapper.
  * @csspart panel - The panel wrapper of the modal.
  * @csspart header - The header wrapper of the modal.
  * @csspart title - The title wrapper of the modal.
@@ -348,20 +345,19 @@ class ModalElement extends HTMLElement {
    */
   static CLOSE_REQUEST_REASONS = /** @type {const} */ ({
     CLOSE_BUTTON: 'close-button',
-    BACKDROP: 'backdrop',
     INVOKER: 'invoker',
-    PLATFORM: 'platform',
+    NATIVE: 'native',
     PROGRAMMATIC: 'programmatic'
   });
 
   /** @type {HTMLDialogElement | null} */
   #dialogEl = null;
 
+  /** @type {HTMLFormElement | null} */
+  #dialogFormEl = null;
+
   /** @type {HTMLSlotElement | null} */
   #footerSlotEl = null;
-
-  /** @type {Animation | null} */
-  #pulseAnimation = null;
 
   /** @type {string | null} */
   #previousBodyOverflow = null;
@@ -369,19 +365,20 @@ class ModalElement extends HTMLElement {
   constructor() {
     super();
 
-    if (!this.shadowRoot) {
-      const shadowRoot = this.attachShadow({ mode: 'open' });
+    let shadowRoot = this.shadowRoot;
+
+    if (!shadowRoot) {
+      shadowRoot = this.attachShadow({ mode: 'open' });
       shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
-    if (this.shadowRoot) {
-      this.#dialogEl = this.shadowRoot.querySelector('dialog');
-      this.#footerSlotEl = this.shadowRoot.querySelector('slot[name="footer"]');
-    }
+    this.#dialogEl = shadowRoot.querySelector('dialog');
+    this.#dialogFormEl = shadowRoot.querySelector('form[method="dialog"]');
+    this.#footerSlotEl = shadowRoot.querySelector('slot[name="footer"]');
   }
 
   static get observedAttributes() {
-    return ['open', 'no-header', 'no-animations', 'no-close-button', 'close-label'];
+    return ['open', 'no-header', 'no-animations', 'no-close-button', 'close-label', 'closed-by'];
   }
 
   /**
@@ -400,7 +397,6 @@ class ModalElement extends HTMLElement {
       if (this.open) {
         this.#dialogEl.classList.toggle('dialog--no-animations', this.noAnimations);
         this.#dialogEl.showModal();
-        this.#emit('modal-open');
 
         const body = this.ownerDocument.body;
 
@@ -408,9 +404,15 @@ class ModalElement extends HTMLElement {
           this.#previousBodyOverflow = body.style.overflow;
           body.style.overflow = 'hidden';
         }
+
+        this.#emit('modal-open');
       } else {
         this.#dialogEl.close();
       }
+    }
+
+    if (name === 'closed-by' && oldValue !== newValue) {
+      this.#dialogEl.setAttribute('closedby', this.closedBy);
     }
 
     if (name === 'no-header' && oldValue !== newValue) {
@@ -445,7 +447,7 @@ class ModalElement extends HTMLElement {
    */
   connectedCallback() {
     this.#upgradeProperty('open');
-    this.#upgradeProperty('staticBackdrop');
+    this.#upgradeProperty('closedBy');
     this.#upgradeProperty('noHeader');
     this.#upgradeProperty('noAnimations');
     this.#upgradeProperty('noCloseButton');
@@ -454,29 +456,22 @@ class ModalElement extends HTMLElement {
     this.#upgradeProperty('placement');
     this.#upgradeProperty('closeLabel');
 
-    this.#dialogEl?.addEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.addEventListener('close', this.#handleDialogClose);
     this.#dialogEl?.addEventListener('cancel', this.#handleDialogCancel);
-    this.#dialogEl?.querySelector('form[method="dialog"]')?.addEventListener('submit', this.#handleCloseButtonClick);
+    this.#dialogFormEl?.addEventListener('submit', this.#handleCloseFormSubmit);
     this.#footerSlotEl?.addEventListener('slotchange', this.#handleFooterSlotChange);
-    this.addEventListener('command', /** @type {EventListener} */ (this.#handleCommandEvent));
+    this.addEventListener('command', this.#handleCommandEvent);
   }
 
   /**
    * Lifecycle method that is called when the element is removed from the DOM.
    */
   disconnectedCallback() {
-    this.#dialogEl?.removeEventListener('click', this.#handleDialogClick);
     this.#dialogEl?.removeEventListener('close', this.#handleDialogClose);
     this.#dialogEl?.removeEventListener('cancel', this.#handleDialogCancel);
-    this.#dialogEl?.querySelector('form[method="dialog"]')?.removeEventListener('submit', this.#handleCloseButtonClick);
+    this.#dialogFormEl?.removeEventListener('submit', this.#handleCloseFormSubmit);
     this.#footerSlotEl?.removeEventListener('slotchange', this.#handleFooterSlotChange);
-    this.removeEventListener('command', /** @type {EventListener} */ (this.#handleCommandEvent));
-
-    if (this.#pulseAnimation) {
-      this.#pulseAnimation?.cancel();
-      this.#pulseAnimation = null;
-    }
+    this.removeEventListener('command', this.#handleCommandEvent);
 
     this.#restoreBodyOverflow();
   }
@@ -497,18 +492,23 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Determines whether the modal should close when the backdrop is clicked.
+   * Controls which native user interactions can dismiss the modal.
    *
-   * @type {boolean} - True if clicking the backdrop should not close the modal, otherwise false.
-   * @attribute static-backdrop
-   * @default false
+   * @type {'any' | 'closerequest' | 'none'}
+   * @attribute closed-by
+   * @default 'any'
    */
-  get staticBackdrop() {
-    return this.hasAttribute('static-backdrop');
+  get closedBy() {
+    const value = this.getAttribute('closed-by');
+    return value === 'any' || value === 'closerequest' || value === 'none' ? value : 'any';
   }
 
-  set staticBackdrop(value) {
-    this.toggleAttribute('static-backdrop', !!value);
+  set closedBy(value) {
+    if (value == null) {
+      this.removeAttribute('closed-by');
+    } else {
+      this.setAttribute('closed-by', value);
+    }
   }
 
   /**
@@ -527,9 +527,9 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Determines whether the modal should have animations or not when opening and closing.
+   * Determines whether the modal's opening and closing animations are disabled.
    *
-   * @type {boolean} - True if the modal should have animations, otherwise false.
+   * @type {boolean} - True if animations are disabled, otherwise false.
    * @attribute no-animations
    * @default false
    */
@@ -632,67 +632,43 @@ class ModalElement extends HTMLElement {
   }
 
   /**
-   * Applies a pulse effect on the dialog to indicate that the
-   * modal is about to close but the close action was blocked.
-   */
-  #pulseDialog() {
-    const defaultView = this.ownerDocument.defaultView;
-    const prefersReducedMotion = defaultView?.matchMedia('(prefers-reduced-motion: reduce)').matches ?? false;
-    const shouldSkipPulse = this.noAnimations || prefersReducedMotion || this.#pulseAnimation;
-    if (shouldSkipPulse) {
-      return;
-    }
-
-    const dialog = this.#dialogEl;
-    if (!dialog || typeof dialog.animate !== 'function') {
-      return;
-    }
-
-    this.#pulseAnimation = dialog.animate(PULSE_KEYFRAMES, PULSE_ANIMATION_OPTIONS);
-    this.#pulseAnimation.finished
-      .catch(() => {})
-      .finally(() => {
-        this.#pulseAnimation = null;
-      });
-  }
-
-  /**
    * Handles the close event of the dialog.
    */
   #handleDialogClose = () => {
-    // This is required because the dialog element does not reset
-    // the open property when the dialog is closed by the user.
-    this.open = false;
+    // Ignore a stale close event if the dialog has already reopened.
+    if (!this.#dialogEl || this.#dialogEl.open) {
+      return;
+    }
 
-    this.#emit('modal-close');
+    this.open = false; // Synchronize the host's open property with the native dialog.
     this.#restoreBodyOverflow();
+    this.#emit('modal-close');
   };
 
   /**
-   * Handles the cancel event of the dialog.
-   * This event is fired when the user presses the escape key.
+   * Handles native close requests, such as pressing Escape
+   * or clicking outside the dialog when allowed by closedby.
    *
    * @param {Event} evt - The cancel event.
    */
   #handleDialogCancel = evt => {
     const canClose = this.#emit(
       'modal-request-close',
-      { reason: ModalElement.CLOSE_REQUEST_REASONS.PLATFORM },
+      { reason: ModalElement.CLOSE_REQUEST_REASONS.NATIVE },
       { cancelable: true }
     );
 
     if (!canClose) {
       evt.preventDefault();
-      this.#pulseDialog();
     }
   };
 
   /**
-   * Handles the click event of the close button.
+   * Handles the submission of the default close button's form.
    *
-   * @param {Event} evt - The click event.
+   * @param {Event} evt - The submit event.
    */
-  #handleCloseButtonClick = evt => {
+  #handleCloseFormSubmit = evt => {
     const canClose = this.#emit(
       'modal-request-close',
       { reason: ModalElement.CLOSE_REQUEST_REASONS.CLOSE_BUTTON },
@@ -701,38 +677,7 @@ class ModalElement extends HTMLElement {
 
     if (!canClose) {
       evt.preventDefault();
-      this.#pulseDialog();
     }
-  };
-
-  /**
-   * Handles the click event of the dialog.
-   *
-   * @param {MouseEvent} evt - The click event.
-   */
-  #handleDialogClick = evt => {
-    const { target, currentTarget } = evt;
-
-    const isBackdropClick = target === currentTarget;
-
-    if (!isBackdropClick) {
-      return;
-    }
-
-    const canClose = this.#emit(
-      'modal-request-close',
-      { reason: ModalElement.CLOSE_REQUEST_REASONS.BACKDROP },
-      { cancelable: true }
-    );
-
-    const shouldPreventClose = !canClose || (isBackdropClick && this.staticBackdrop);
-
-    if (shouldPreventClose) {
-      this.#pulseDialog();
-      return;
-    }
-
-    this.hide();
   };
 
   /**
@@ -740,40 +685,26 @@ class ModalElement extends HTMLElement {
    * to trigger certain actions on the modal, such as opening or closing it, by dispatching
    * a command event with the corresponding command.
    *
-   * @param {CommandEvent} evt - The command event.
+   * @param {Event} evt - The command event.
    */
   #handleCommandEvent = evt => {
-    switch (evt.command) {
-      case '--modal-open': {
-        if (this.open) {
-          return;
-        }
-        this.show();
-        return;
-      }
+    const event = /** @type {CommandEvent} */ (evt);
 
-      case '--modal-close': {
-        if (!this.open) {
-          return;
-        }
+    if (event.command === '--modal-open') {
+      this.show();
+      return;
+    }
 
-        const canClose = this.#emit(
-          'modal-request-close',
-          { reason: ModalElement.CLOSE_REQUEST_REASONS.INVOKER },
-          { cancelable: true }
-        );
+    if (event.command === '--modal-close' && this.open) {
+      const canClose = this.#emit(
+        'modal-request-close',
+        { reason: ModalElement.CLOSE_REQUEST_REASONS.INVOKER },
+        { cancelable: true }
+      );
 
-        if (!canClose) {
-          this.#pulseDialog();
-          return;
-        }
-
+      if (canClose) {
         this.hide();
-        return;
       }
-
-      default:
-        return;
     }
   };
 
@@ -781,21 +712,12 @@ class ModalElement extends HTMLElement {
    * Handles the slotchange event of the footer slot.
    */
   #handleFooterSlotChange = () => {
-    if (this.#dialogEl === null) {
-      return;
-    }
-
     /** @type {HTMLElement | null} */
-    const footerEl = this.#dialogEl.querySelector('.dialog__footer');
+    const footerEl = this.#dialogEl?.querySelector('.dialog__footer') || null;
 
-    if (footerEl === null) {
-      return;
+    if (footerEl) {
+      footerEl.hidden = !this.#footerSlotEl?.assignedElements().length;
     }
-
-    const footerSlotNodes = this.#footerSlotEl?.assignedNodes();
-    const hasFooterSlotNodes = footerSlotNodes ? footerSlotNodes.length > 0 : false;
-
-    footerEl.hidden = !hasFooterSlotNodes;
   };
 
   /**
@@ -833,7 +755,7 @@ class ModalElement extends HTMLElement {
    *
    * https://developers.google.com/web/fundamentals/web-components/best-practices#lazy-properties
    *
-   * @param {'open' | 'staticBackdrop' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow' | 'placement' | 'closeLabel'} prop - The property to upgrade.
+   * @param {'open' | 'closedBy' | 'noHeader' | 'noAnimations' | 'noCloseButton' | 'fullscreen' | 'preserveOverflow' | 'placement' | 'closeLabel'} prop - The property to upgrade.
    */
   #upgradeProperty(prop) {
     const instance = /** @type {HTMLElement & Record<string, unknown>} */ (this);
@@ -898,7 +820,6 @@ class ModalElement extends HTMLElement {
     );
 
     if (!canClose) {
-      this.#pulseDialog();
       return;
     }
 

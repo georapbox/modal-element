@@ -5,11 +5,9 @@
 }
 
 :root {
-  --body-max-width: 56rem;
   --alert-danger-bg-color: #f8d7da;
   --alert-danger-color: #721c24;
 
-  scroll-behavior: smooth;
   scrollbar-gutter: stable;
 }
 
@@ -71,7 +69,7 @@
 }
 
 .table-of-contents {
-  columns: 15.625rem 2;
+  columns: 15.625rem 3;
 }
 
 .table-of-contents>li {
@@ -127,7 +125,7 @@ modal-element:not(:defined) {
   display: none !important;
 }
 
-modal-element [slot="header"] {
+modal-element [slot="title"] {
   margin: 0;
   font-weight: normal;
   font-size: 1.25rem;
@@ -261,7 +259,12 @@ modal-element.custom-styling [slot="footer"] button {
 
 /* Custom backdrop */
 modal-element.custom-backdrop {
-  --modal-backdrop-background: #0060ad url('./assets/super-mario.jpg') no-repeat bottom center / 90%;
+  --modal-backdrop-background: linear-gradient(
+    135deg,
+    rgb(79 70 229 / 95%) 0%,
+    rgb(147 51 234 / 90%) 50%,
+    rgb(236 72 153 / 85%) 100%
+  );
 }
 
 modal-element.custom-backdrop::part(base) {
@@ -274,7 +277,7 @@ modal-element.truncate-title::part(title) {
 }
 
 @supports not selector(:has(a, b)) {
-  modal-element.truncate-title [slot="header"] {
+  modal-element.truncate-title [slot="title"] {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -285,7 +288,7 @@ modal-element.truncate-title::part(title) {
   }
 }
 
-modal-element.truncate-title:has(input[type="checkbox"]:checked) [slot="header"] {
+modal-element.truncate-title:has(input[type="checkbox"]:checked) [slot="title"] {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -293,4 +296,9 @@ modal-element.truncate-title:has(input[type="checkbox"]:checked) [slot="header"]
 
 modal-element.truncate-title #truncate-action {
   margin-top: 1.5rem;
+}
+
+/* Utils */
+.d-block {
+  display: block;
 }

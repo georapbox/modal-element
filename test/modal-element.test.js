@@ -1,4 +1,4 @@
-import { expect, fixture, fixtureCleanup, html, elementUpdated, oneEvent } from '@open-wc/testing';
+import { expect, fixture, fixtureCleanup, html, oneEvent } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
 import sinon from 'sinon';
 import { ModalElement } from '../src/modal-element';
@@ -12,10 +12,14 @@ describe('modal-element', () => {
 
   describe('accessibility', () => {
     it('passes accessibility tests', async () => {
-      const el = await fixture(html` <modal-element></modal-element> `);
+      const el = await fixture(html`
+        <modal-element>
+          <h2 slot="title">Test modal</h2>
+          <p>Modal content</p>
+        </modal-element>
+      `);
 
       el.show();
-      await elementUpdated(el);
 
       await expect(el).to.be.accessible();
     });
@@ -55,6 +59,25 @@ describe('modal-element', () => {
 
       expect(closeButton.getAttribute('aria-label')).to.equal('Close modal');
     });
+
+    it('should have an accessible name when the header is hidden', async () => {
+      const el = await fixture(html`
+        <modal-element no-header>
+          <h2 slot="title">Account settings</h2>
+          <p>Manage your account settings.</p>
+        </modal-element>
+      `);
+
+      const dialog = el.shadowRoot.querySelector('dialog');
+      const header = el.shadowRoot.querySelector('.dialog__header');
+
+      el.show();
+
+      expect(header.hidden).to.be.true;
+      expect(dialog.getAttribute('aria-labelledby')).to.equal('title');
+
+      await expect(el).to.be.accessible();
+    });
   });
 
   describe('attributes - properties', () => {
@@ -71,37 +94,34 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.open = true;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('open')).to.be.true;
 
       el.open = false;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('open')).to.be.false;
     });
 
-    // static-backdrop
-    it('reflects attribute "static-backdrop" to property "staticBackdrop"', async () => {
+    // closed-by
+    it('reflects attribute "closed-by" to property "closedBy"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
-      el.setAttribute('static-backdrop', '');
+      el.setAttribute('closed-by', 'closerequest');
 
-      expect(el.staticBackdrop).to.be.true;
+      expect(el.closedBy).to.equal('closerequest');
     });
 
-    it('reflects property "staticBackdrop" to attribute "static-backdrop"', async () => {
+    it('reflects property "closedBy" to attribute "closed-by"', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
-      el.staticBackdrop = true;
-      await elementUpdated(el);
+      el.closedBy = 'none';
 
-      expect(el.hasAttribute('static-backdrop')).to.be.true;
+      expect(el.getAttribute('closed-by')).to.equal('none');
 
-      el.staticBackdrop = false;
-      await elementUpdated(el);
+      el.closedBy = null;
 
-      expect(el.hasAttribute('static-backdrop')).to.be.false;
+      expect(el.hasAttribute('closed-by')).to.be.false;
+      expect(el.closedBy).to.equal('any');
     });
 
     // no-header
@@ -117,12 +137,10 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.noHeader = true;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('no-header')).to.be.true;
 
       el.noHeader = false;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('no-header')).to.be.false;
     });
@@ -140,12 +158,10 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.noAnimations = true;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('no-animations')).to.be.true;
 
       el.noAnimations = false;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('no-animations')).to.be.false;
     });
@@ -163,12 +179,10 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.noCloseButton = true;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('no-close-button')).to.be.true;
 
       el.noCloseButton = false;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('no-close-button')).to.be.false;
     });
@@ -186,12 +200,10 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.fullscreen = true;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('fullscreen')).to.be.true;
 
       el.fullscreen = false;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('fullscreen')).to.be.false;
     });
@@ -209,12 +221,10 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.preserveOverflow = true;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('preserve-overflow')).to.be.true;
 
       el.preserveOverflow = false;
-      await elementUpdated(el);
 
       expect(el.hasAttribute('preserve-overflow')).to.be.false;
     });
@@ -232,7 +242,6 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.placement = 'top-start';
-      await elementUpdated(el);
 
       expect(el.getAttribute('placement')).to.equal('top-start');
     });
@@ -250,7 +259,6 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.closeLabel = 'Close modal';
-      await elementUpdated(el);
 
       expect(el.getAttribute('close-label')).to.equal('Close modal');
     });
@@ -267,25 +275,21 @@ describe('modal-element', () => {
       body.textContent = 'Main content goes here';
       el.appendChild(body);
 
-      await elementUpdated(el);
-
       expect(bodySlot.assignedElements()).to.deep.equal([body]);
     });
 
-    it('should have "header" slot', async () => {
+    it('should have "title" slot', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
-      const headerSlot = el.shadowRoot.querySelector('slot[name="header"]');
+      const titleSlot = el.shadowRoot.querySelector('slot[name="title"]');
 
-      expect(headerSlot).to.exist;
+      expect(titleSlot).to.exist;
 
-      const header = document.createElement('h2');
-      header.setAttribute('slot', 'header');
-      header.textContent = 'Modal title';
-      el.appendChild(header);
+      const title = document.createElement('h2');
+      title.setAttribute('slot', 'title');
+      title.textContent = 'Modal title';
+      el.appendChild(title);
 
-      await elementUpdated(el);
-
-      expect(headerSlot.assignedElements()).to.deep.equal([header]);
+      expect(titleSlot.assignedElements()).to.deep.equal([title]);
     });
 
     it('should have "footer" slot', async () => {
@@ -298,8 +302,6 @@ describe('modal-element', () => {
       footer.setAttribute('slot', 'footer');
       footer.textContent = 'Footer goes here';
       el.appendChild(footer);
-
-      await elementUpdated(el);
 
       expect(footerSlot.assignedElements()).to.deep.equal([footer]);
     });
@@ -314,8 +316,6 @@ describe('modal-element', () => {
       close.setAttribute('slot', 'close');
       close.textContent = 'Close';
       el.appendChild(close);
-
-      await elementUpdated(el);
 
       expect(closeSlot.assignedElements()).to.deep.equal([close]);
     });
@@ -475,41 +475,7 @@ describe('modal-element', () => {
 
       expect(spy.calledOnce).to.be.true;
       expect(spy.firstCall.args[0].cancelable).to.be.true;
-      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'platform' });
-    });
-
-    it('should dispatch "modal-request-close" event when clicking on the ::backdrop', async () => {
-      const el = await fixture(html`<modal-element></modal-element>`);
-      const spy = sinon.spy();
-      const backdrop = el.shadowRoot.querySelector('.dialog');
-
-      el.show();
-      el.addEventListener('modal-request-close', spy);
-
-      backdrop.click();
-
-      expect(spy.calledOnce).to.be.true;
-      expect(spy.firstCall.args[0].cancelable).to.be.true;
-      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'backdrop' });
-    });
-
-    it('should dispatch "modal-request-close" event when using "--modal-close" command', async () => {
-      const el = await fixture(html`
-        <modal-element id="test-modal">
-          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
-        </modal-element>
-      `);
-      const spy = sinon.spy();
-      const invoker = el.querySelector('[command="--modal-close"]');
-
-      el.show();
-      el.addEventListener('modal-request-close', spy);
-
-      invoker.click();
-
-      expect(spy.calledOnce).to.be.true;
-      expect(spy.firstCall.args[0].cancelable).to.be.true;
-      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'invoker' });
+      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'native' });
     });
 
     it('should dispatch "modal-request-close" with reason "programmatic" when calling "requestClose()" method', async () => {
@@ -551,27 +517,15 @@ describe('modal-element', () => {
       expect(el.open).to.be.true;
     });
 
-    it('should prevent closing when the backdrop close request is canceled', async () => {
-      const el = await fixture(html`<modal-element></modal-element>`);
-
-      el.show();
-      el.addEventListener('modal-request-close', evt => evt.preventDefault());
-      const backdrop = el.shadowRoot.querySelector('.dialog');
-
-      backdrop.click();
-
-      expect(el.open).to.be.true;
-    });
-
     it('should close the modal when clicking the close button', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.show();
+
       const closeButton = el.shadowRoot.querySelector('.dialog__close');
-
+      const closed = oneEvent(el, 'modal-close');
       closeButton.click();
-
-      await elementUpdated(el);
+      await closed;
 
       expect(el.open).to.be.false;
     });
@@ -580,84 +534,29 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.show();
+
+      const closed = oneEvent(el, 'modal-close');
       await sendKeys({ press: 'Escape' });
-      await elementUpdated(el);
+      await closed;
 
       expect(el.open).to.be.false;
     });
 
-    it('should close the modal when clicking on the ::backdrop', async () => {
-      const el = await fixture(html`<modal-element></modal-element>`);
+    it('should not close the modal when pressing Escape with "closed-by" set to "none"', async function () {
+      const el = await fixture(html`<modal-element closed-by="none"></modal-element>`);
+      const dialog = el.shadowRoot.querySelector('dialog');
+
+      // Skip if the browser doesn't support the native closedBy property.
+      if (!('closedBy' in dialog)) {
+        this.skip();
+      }
 
       el.show();
-      const backdrop = el.shadowRoot.querySelector('.dialog');
 
-      backdrop.click();
-
-      await elementUpdated(el);
-
-      expect(el.open).to.be.false;
-    });
-
-    it('should not close the modal when clicking on the ::backdrop if "static-backdrop" attribute is set', async () => {
-      const el = await fixture(html`<modal-element static-backdrop></modal-element>`);
-
-      el.show();
-      const backdrop = el.shadowRoot.querySelector('.dialog');
-
-      backdrop.click();
-
-      await elementUpdated(el);
+      await sendKeys({ press: 'Escape' });
 
       expect(el.open).to.be.true;
-    });
-
-    it('should close the modal when using "--modal-close" command', async () => {
-      const el = await fixture(html`
-        <modal-element id="test-modal">
-          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
-        </modal-element>
-      `);
-
-      el.show();
-
-      const invoker = el.querySelector('[command="--modal-close"]');
-      invoker.click();
-
-      await elementUpdated(el);
-
-      expect(el.open).to.be.false;
-    });
-
-    it('should allow invoker commands to close the modal when "static-backdrop" is set', async () => {
-      const el = await fixture(html`
-        <modal-element id="test-modal" static-backdrop>
-          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
-        </modal-element>
-      `);
-
-      el.show();
-
-      el.querySelector('[command="--modal-close"]').click();
-
-      await elementUpdated(el);
-
-      expect(el.open).to.be.false;
-    });
-
-    it('should prevent closing when the invoker command request is canceled', async () => {
-      const el = await fixture(html`
-        <modal-element id="test-modal">
-          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
-        </modal-element>
-      `);
-
-      el.show();
-      el.addEventListener('modal-request-close', evt => evt.preventDefault());
-
-      el.querySelector('[command="--modal-close"]').click();
-
-      expect(el.open).to.be.true;
+      expect(dialog.open).to.be.true;
     });
   });
 
@@ -666,14 +565,12 @@ describe('modal-element', () => {
       const el = await fixture(html`<modal-element></modal-element>`);
 
       el.setAttribute('open', '');
-      await elementUpdated(el);
 
       const dialog = el.shadowRoot.querySelector('.dialog');
 
       expect(dialog.getAttribute('open')).to.equal('');
 
       el.removeAttribute('open');
-      await elementUpdated(el);
 
       expect(dialog.hasAttribute('open')).to.be.false;
     });
@@ -697,6 +594,140 @@ describe('modal-element', () => {
       const closeButton = el.shadowRoot.querySelector('.dialog__close');
 
       expect(closeButton.hasAttribute('hidden')).to.be.true;
+    });
+
+    it('should reflect "closed-by" to the internal dialog "closedby" attribute', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      const dialog = el.shadowRoot.querySelector('dialog');
+
+      expect(dialog.getAttribute('closedby')).to.equal('any');
+
+      el.closedBy = 'none';
+      expect(dialog.getAttribute('closedby')).to.equal('none');
+
+      el.closedBy = 'closerequest';
+      expect(dialog.getAttribute('closedby')).to.equal('closerequest');
+
+      el.removeAttribute('closed-by');
+      expect(dialog.getAttribute('closedby')).to.equal('any');
+    });
+  });
+
+  describe('invoker commands', () => {
+    it('should open the modal when using "--modal-open" command', async () => {
+      const container = await fixture(html`
+        <div>
+          <button type="button" commandfor="test-modal" command="--modal-open">Open</button>
+          <modal-element id="test-modal"></modal-element>
+        </div>
+      `);
+
+      const el = container.querySelector('modal-element');
+      const invoker = container.querySelector('[command="--modal-open"]');
+      const spy = sinon.spy();
+
+      el.addEventListener('modal-open', spy);
+
+      invoker.click();
+
+      expect(el.open).to.be.true;
+      expect(el.shadowRoot.querySelector('dialog').open).to.be.true;
+      expect(spy.calledOnce).to.be.true;
+    });
+
+    it('should close the modal when using "--modal-close" command', async () => {
+      const el = await fixture(html`
+        <modal-element id="test-modal">
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+        </modal-element>
+      `);
+
+      el.show();
+
+      const invoker = el.querySelector('[command="--modal-close"]');
+      invoker.click();
+
+      expect(el.open).to.be.false;
+    });
+
+    it('should dispatch "modal-request-close" event when using "--modal-close" command', async () => {
+      const el = await fixture(html`
+        <modal-element id="test-modal">
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+        </modal-element>
+      `);
+      const spy = sinon.spy();
+      const invoker = el.querySelector('[command="--modal-close"]');
+
+      el.show();
+      el.addEventListener('modal-request-close', spy);
+
+      invoker.click();
+
+      expect(spy.calledOnce).to.be.true;
+      expect(spy.firstCall.args[0].cancelable).to.be.true;
+      expect(spy.firstCall.args[0].detail).to.deep.equal({ reason: 'invoker' });
+    });
+
+    it('should prevent closing when the invoker command request is canceled', async () => {
+      const el = await fixture(html`
+        <modal-element id="test-modal">
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+        </modal-element>
+      `);
+
+      el.show();
+      el.addEventListener('modal-request-close', evt => evt.preventDefault());
+
+      el.querySelector('[command="--modal-close"]').click();
+
+      expect(el.open).to.be.true;
+    });
+
+    it('should do nothing when using "--modal-open" command on an already open modal', async () => {
+      const container = await fixture(html`
+        <div>
+          <button type="button" commandfor="test-modal" command="--modal-open">Open</button>
+          <modal-element id="test-modal"></modal-element>
+        </div>
+      `);
+
+      const el = container.querySelector('modal-element');
+      const invoker = container.querySelector('[command="--modal-open"]');
+      const spy = sinon.spy();
+
+      el.addEventListener('modal-open', spy);
+
+      invoker.click();
+      invoker.click();
+
+      expect(el.open).to.be.true;
+      expect(el.shadowRoot.querySelector('dialog').open).to.be.true;
+      expect(spy.calledOnce).to.be.true;
+    });
+
+    it('should do nothing when using "--modal-close" command on an already closed modal', async () => {
+      const container = await fixture(html`
+        <div>
+          <button type="button" commandfor="test-modal" command="--modal-close">Close</button>
+          <modal-element id="test-modal"></modal-element>
+        </div>
+      `);
+
+      const el = container.querySelector('modal-element');
+      const invoker = container.querySelector('[command="--modal-close"]');
+      const spy = sinon.spy();
+
+      el.addEventListener('modal-request-close', spy);
+
+      el.show();
+
+      invoker.click();
+      invoker.click();
+
+      expect(el.open).to.be.false;
+      expect(el.shadowRoot.querySelector('dialog').open).to.be.false;
+      expect(spy.calledOnce).to.be.true;
     });
   });
 });

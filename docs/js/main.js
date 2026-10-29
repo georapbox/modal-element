@@ -39,16 +39,17 @@ const reasonsForm = document.getElementById('reasons-form');
 const customStylingForm = document.getElementById('custom-styling-form');
 const interactiveDemoModal = document.getElementById('modal-interactive');
 
-attributesForm.addEventListener('change', () => {
-  [...attributesForm.elements].forEach(el => {
-    if (el.type === 'checkbox') {
-      el.checked ? interactiveDemoModal.setAttribute(el.name, '') : interactiveDemoModal.removeAttribute(el.name);
+attributesForm.addEventListener('change', evt => {
+  const el = evt.target;
 
-      if (el.name === 'preserve-overflow') {
-        document.body.style.overflow = el.checked ? '' : 'hidden';
-      }
-    }
-  });
+  if (el.name === 'closed-by') {
+    interactiveDemoModal.closedBy = el.value;
+    return;
+  }
+
+  if (el.type === 'checkbox') {
+    interactiveDemoModal.toggleAttribute(el.name, el.checked);
+  }
 });
 
 interactiveDemoModal.addEventListener('modal-request-close', evt => {
@@ -64,7 +65,7 @@ interactiveDemoModal.addEventListener('modal-request-close', evt => {
 });
 
 customStylingForm.addEventListener('change', () => {
-  [...customStylingForm.elements].forEach(el => {
+  customStylingForm.querySelectorAll('input[type="checkbox"]').forEach(el => {
     if (el.type === 'checkbox') {
       interactiveDemoModal.classList.toggle(el.getAttribute('name'), el.checked);
     }

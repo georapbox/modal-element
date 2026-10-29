@@ -12,7 +12,7 @@ describe('modal-element upgrading', () => {
 
     // Set properties before upgrading
     el.open = true;
-    el.staticBackdrop = true;
+    el.closedBy = 'closerequest';
     el.noHeader = true;
     el.noAnimations = true;
     el.noCloseButton = true;
@@ -29,7 +29,7 @@ describe('modal-element upgrading', () => {
     container.appendChild(el);
 
     expect(el.getAttribute('open')).to.equal('');
-    expect(el.getAttribute('static-backdrop')).to.equal('');
+    expect(el.getAttribute('closed-by')).to.equal('closerequest');
     expect(el.getAttribute('no-header')).to.equal('');
     expect(el.getAttribute('no-animations')).to.equal('');
     expect(el.getAttribute('no-close-button')).to.equal('');
