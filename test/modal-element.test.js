@@ -421,6 +421,18 @@ describe('modal-element', () => {
       expect(el.open).to.be.false;
       expect(spy.called).to.be.false;
     });
+
+    it('should do nothing when calling "hide()" on an already closed modal', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      const dialog = el.shadowRoot.querySelector('dialog');
+      const spy = sinon.spy(dialog, 'close');
+
+      el.hide();
+
+      expect(el.open).to.be.false;
+      expect(dialog.open).to.be.false;
+      expect(spy.called).to.be.false;
+    });
   });
 
   describe('custom events', () => {
@@ -506,15 +518,19 @@ describe('modal-element', () => {
       expect(el.open).to.be.true;
     });
 
-    it.skip('should prevent closing when the platform close request is canceled', async () => {
+    it('should prevent the first Escape close request after user activation', async () => {
       const el = await fixture(html`<modal-element></modal-element>`);
+      const dialog = el.shadowRoot.querySelector('dialog');
 
       el.show();
       el.addEventListener('modal-request-close', evt => evt.preventDefault());
 
+      // Provide user activation before the native close request.
+      await sendKeys({ press: 'Tab' });
       await sendKeys({ press: 'Escape' });
 
       expect(el.open).to.be.true;
+      expect(dialog.open).to.be.true;
     });
 
     it('should close the modal when clicking the close button', async () => {
@@ -610,6 +626,27 @@ describe('modal-element', () => {
 
       el.removeAttribute('closed-by');
       expect(dialog.getAttribute('closedby')).to.equal('any');
+    });
+
+    it('should remain open when reopened before the native close event fires', async () => {
+      const el = await fixture(html`<modal-element></modal-element>`);
+      const dialog = el.shadowRoot.querySelector('dialog');
+      const spy = sinon.spy();
+
+      el.addEventListener('modal-close', spy);
+
+      el.show();
+
+      const nativeClose = oneEvent(dialog, 'close');
+
+      el.hide();
+      el.show();
+
+      await nativeClose;
+
+      expect(el.open).to.be.true;
+      expect(dialog.open).to.be.true;
+      expect(spy.called).to.be.false;
     });
   });
 
