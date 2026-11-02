@@ -6,7 +6,7 @@ const componentUrl = isLocalhost ? '../../dist/modal-element.js' : '../lib/modal
 
 try {
   const { ModalElement } = await import(componentUrl);
-  ModalElement.defineCustomElement();
+  ModalElement.define();
 } catch (err) {
   console.error(err);
 }
@@ -37,30 +37,35 @@ placementForm.addEventListener('change', evt => {
 const attributesForm = document.getElementById('attributes-form');
 const reasonsForm = document.getElementById('reasons-form');
 const customStylingForm = document.getElementById('custom-styling-form');
-const interactiveDemoModal = document.getElementById('modal-interactive-demo');
+const interactiveDemoModal = document.getElementById('modal-interactive');
 
-attributesForm.addEventListener('change', () => {
-  [...attributesForm.elements].forEach(el => {
-    if (el.type === 'checkbox') {
-      el.checked ? interactiveDemoModal.setAttribute(el.name, '') : interactiveDemoModal.removeAttribute(el.name);
+attributesForm.addEventListener('change', evt => {
+  const el = evt.target;
 
-      if (el.name === 'preserve-overflow') {
-        document.body.style.overflow = el.checked ? '' : 'hidden';
+  if (el.name === 'closed-by') {
+    interactiveDemoModal.closedBy = el.value;
+    return;
+  }
+
+  if (el.type === 'checkbox') {
+    interactiveDemoModal.toggleAttribute(el.name, el.checked);
+  }
+});
+
+interactiveDemoModal.addEventListener('modal-request-close', evt => {
+  reasonsForm.querySelectorAll('input[type="checkbox"]').forEach(el => {
+    if (el.checked) {
+      const reason = el.getAttribute('data-reason');
+
+      if (reason === evt.detail.reason) {
+        evt.preventDefault();
       }
     }
   });
 });
 
-interactiveDemoModal.addEventListener('me-request-close', evt => {
-  reasonsForm.querySelectorAll('input[type="checkbox"]').forEach(el => {
-    if (el.checked && el.getAttribute('name') === evt.detail.reason) {
-      evt.preventDefault();
-    }
-  });
-});
-
 customStylingForm.addEventListener('change', () => {
-  [...customStylingForm.elements].forEach(el => {
+  customStylingForm.querySelectorAll('input[type="checkbox"]').forEach(el => {
     if (el.type === 'checkbox') {
       interactiveDemoModal.classList.toggle(el.getAttribute('name'), el.checked);
     }
@@ -69,17 +74,26 @@ customStylingForm.addEventListener('change', () => {
 
 // Events
 const handleEvents = evt => {
-  if (
-    evt.type === 'me-request-close' &&
-    evt.detail.reason === 'close-button' &&
-    evt.detail.element.id === 'modal-prevent-close'
-  ) {
+  const { type, target } = evt;
+
+  if (type === 'modal-open') {
+    console.group(`Modal: ${target.id}`);
+  }
+
+  const shouldPreventClose =
+    type === 'modal-request-close' && evt.detail.reason === 'close-button' && target.id === 'modal-prevent-close';
+
+  if (shouldPreventClose) {
     evt.preventDefault();
   }
 
-  console.log(`${evt.type} =>`, evt.detail);
+  console.log(type, evt);
+
+  if (type === 'modal-close') {
+    console.groupEnd();
+  }
 };
 
-document.addEventListener('me-open', handleEvents);
-document.addEventListener('me-close', handleEvents);
-document.addEventListener('me-request-close', handleEvents);
+document.addEventListener('modal-open', handleEvents);
+document.addEventListener('modal-close', handleEvents);
+document.addEventListener('modal-request-close', handleEvents);

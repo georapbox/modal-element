@@ -3,5 +3,6 @@
   "editor.formatOnSave": true,
   "eslint.enable": true,
   "eslint.run": "onType",
-  "eslint.validate": ["javascript", "html"]
+  "eslint.validate": ["javascript", "html"],
+  "js/ts.experimental.useTsgo": true
 }

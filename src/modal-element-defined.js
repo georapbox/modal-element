@@ -1,5 +1,5 @@
 import { ModalElement } from './modal-element.js';
 
-ModalElement.defineCustomElement();
+ModalElement.define();
 
 export { ModalElement };
