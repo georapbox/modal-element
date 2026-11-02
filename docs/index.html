@@ -17,10 +17,7 @@
 </head>
 <body>
   <noscript>
-    <div class="noscript-banner">
-      This page requires JavaScript to work properly.
-      Please enable JavaScript in your browser settings.
-    </div>
+    <div class="noscript-banner">This demo requires JavaScript to work.</div>
   </noscript>
 
   <main>
@@ -140,22 +137,26 @@
       <modal-element id="modal-prevent-close">
         <h2 slot="title">Custom close behavior</h2>
         <p>
-          This modal will not close when clicking the "X" button,
-          but it will close when clicking on the backdrop
-          or pressing the <kbd>Esc</kbd> key.
+          This modal will not close when clicking the "X" button, but it will close when clicking on the backdrop,
+          pressing the <kbd>Esc</kbd> key, or clicking the Close button in the footer.
         </p>
+        <button slot="footer" type="button" style="margin: 0;" commandfor="modal-prevent-close" command="--modal-close">Close</button>
       </modal-element>
 
       <details>
         <summary>Source code</summary>
 
-<pre><code>&lt;modal-element&gt;
+<pre><code>&lt;modal-element id="modal-prevent-close"&gt;
   &lt;h2 slot="title"&gt;Custom close behavior&lt;/h2&gt;
   &lt;p&gt;
     This modal will not close when clicking the "X" button,
-    but it will close when clicking on the backdrop
-    or pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key.
+    but it will close when clicking on the backdrop,
+    pressing the &lt;kbd&gt;Esc&lt;/kbd&gt; key,
+    or clicking the Close button in the footer.
   &lt;/p&gt;
+  &lt;button slot="footer" type="button" commandfor="modal-prevent-close" command="--modal-close"&gt;
+    Close
+  &lt;/button&gt;
 &lt;/modal-element&gt;
 
 &lt;script&gt;
