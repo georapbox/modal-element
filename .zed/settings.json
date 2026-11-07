@@ -1,14 +1,7 @@
 {
   "languages": {
     "JavaScript": {
-       "language_servers": [
-         "typescript-ls",
-         "!vtsls",
-         "!typescript-language-server",
-         "eslint",
-         "!oxlint",
-         "..."
-       ],
+      "language_servers": ["typescript-ls", "eslint"],
       "formatter": "prettier",
       "format_on_save": "on"
     }
