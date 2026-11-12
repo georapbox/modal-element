@@ -6,6 +6,18 @@
  * @typedef {typeof ModalElement.CLOSE_REQUEST_REASONS[keyof typeof ModalElement.CLOSE_REQUEST_REASONS]} CloseRequestReason
  */
 
+const VALID_PLACEMENTS = /** @type {const} */ ([
+  'top-start',
+  'top-center',
+  'top-end',
+  'center-start',
+  'center',
+  'center-end',
+  'bottom-start',
+  'bottom-center',
+  'bottom-end'
+]);
+
 const styles = /* css */ `
   :host {
     --modal-width: 32rem;
@@ -92,6 +104,10 @@ const styles = /* css */ `
   }
 
   /* Dialog placement */
+  :host(:not([fullscreen])) .dialog {
+    margin: auto;
+  }
+
   :host(:not([fullscreen])[placement="top-start"]) .dialog {
     margin-block-start: var(--dialog-placement-margin);
     margin-inline-start: var(--dialog-placement-margin);
@@ -262,31 +278,12 @@ template.innerHTML = /* html */ `
 `;
 
 /**
- * @summary A custom element that renders a modal dialog.
+ * A custom element that renders a modal dialog.
+ *
  * @documentation https://github.com/georapbox/modal-element
  *
- * @tagname modal-element - This is the default tag name, unless overridden by the `define` method.
+ * @tagname modal-element
  * @extends HTMLElement
- *
- * @property {boolean} open - Determines whether the modal is open or not.
- * @property {string} closedBy - Controls which native user interactions can dismiss the modal.
- * @property {boolean} noHeader - Determines whether the modal should have a header or not.
- * @property {boolean} noAnimations - Determines whether the modal's opening and closing animations are disabled.
- * @property {boolean} noCloseButton - Determines whether the modal should have a default close button or not.
- * @property {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
- * @property {boolean} preserveOverflow - Determines whether the overflow of the body should be preserved when the modal is open.
- * @property {string} placement - Determines the placement of the modal.
- * @property {string} closeLabel - The accessible label for the default close button, used as its aria-label attribute.
- *
- * @attribute {boolean} open - Determines whether the modal is open or not.
- * @attribute {string} closed-by - Controls which native user interactions can dismiss the modal.
- * @attribute {boolean} no-header - Determines whether the modal should have a header or not.
- * @attribute {boolean} no-animations - Determines whether the modal's opening and closing animations are disabled.
- * @attribute {boolean} no-close-button - Determines whether the modal should have a default close button or not.
- * @attribute {boolean} fullscreen - Determines whether the modal should be fullscreen or not.
- * @attribute {boolean} preserve-overflow - Determines whether the overflow of the body should be preserved when the modal is open.
- * @attribute {string} placement - Determines the placement of the modal.
- * @attribute {string} close-label - The accessible label for the default close button, used as its aria-label attribute.
  *
  * @slot - The modal's main content (default/unnamed slot).
  * @slot title - The modal's title, used as its accessible name via `aria-labelledby`. Displayed in the header alongside the default close button.
@@ -329,14 +326,9 @@ template.innerHTML = /* html */ `
  * @csspart body - The body wrapper of the modal.
  * @csspart footer - The footer wrapper of the modal.
  *
- * @fires modal-open - Dispatched when the modal is opened.
- * @fires modal-close - Dispatched when the modal is closed.
- * @fires modal-request-close - Dispatched when the modal is about to close.
- *
- * @method define - Static method. Registers the custom element with the browser's CustomElementRegistry unless it has already been defined.
- * @method show - Instance method. Opens the modal if it is closed, otherwise does nothing.
- * @method hide - Instance method. Closes the modal if it is open, otherwise does nothing.
- * @method requestClose - Instance method. Requests to close the modal, allowing the close request to be canceled.
+ * @event modal-open - Dispatched when the modal is opened.
+ * @event modal-close - Dispatched when the modal is closed.
+ * @event modal-request-close - Dispatched when the modal is about to close.
  */
 class ModalElement extends HTMLElement {
   /**
@@ -481,6 +473,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {boolean} - True if the modal is open, otherwise false.
    * @attribute open
+   * @reflect
    * @default false
    */
   get open() {
@@ -496,6 +489,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {'any' | 'closerequest' | 'none'}
    * @attribute closed-by
+   * @reflect
    * @default 'any'
    */
   get closedBy() {
@@ -516,6 +510,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {boolean} - True if the header should be hidden, otherwise false.
    * @attribute no-header
+   * @reflect
    * @default false
    */
   get noHeader() {
@@ -531,6 +526,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {boolean} - True if animations are disabled, otherwise false.
    * @attribute no-animations
+   * @reflect
    * @default false
    */
   get noAnimations() {
@@ -546,6 +542,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {boolean} - True if the close button should be hidden, otherwise false.
    * @attribute no-close-button
+   * @reflect
    * @default false
    */
   get noCloseButton() {
@@ -561,6 +558,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {boolean} - True if the modal should be fullscreen, otherwise false.
    * @attribute fullscreen
+   * @reflect
    * @default false
    */
   get fullscreen() {
@@ -576,6 +574,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {boolean} - True if the overflow of the body should be preserved, otherwise false.
    * @attribute preserve-overflow
+   * @reflect
    * @default false
    */
   get preserveOverflow() {
@@ -588,14 +587,15 @@ class ModalElement extends HTMLElement {
 
   /**
    * Determines the placement of the modal.
-   * Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'.
    *
-   * @type {string}
+   * @type {'top-start' | 'top-center' | 'top-end' | 'center-start' | 'center' | 'center-end' | 'bottom-start' | 'bottom-center' | 'bottom-end'}
    * @attribute placement
+   * @reflect
    * @default 'center'
    */
   get placement() {
-    return this.getAttribute('placement') || 'center';
+    const value = this.getAttribute('placement');
+    return VALID_PLACEMENTS.find(placement => placement === value) ?? 'center';
   }
 
   set placement(value) {
@@ -609,6 +609,7 @@ class ModalElement extends HTMLElement {
    *
    * @type {string}
    * @attribute close-label
+   * @reflect
    * @default 'Close'
    */
   get closeLabel() {
@@ -833,10 +834,13 @@ class ModalElement extends HTMLElement {
    * @param {string} [tagName='modal-element'] - The tag name to use for the custom element.
    */
   static define(tagName = 'modal-element') {
-    if (typeof window === 'undefined' || window.customElements.get(tagName)) {
+    const registry = globalThis.customElements;
+
+    if (!registry || registry.get(tagName)) {
       return;
     }
-    window.customElements.define(tagName, ModalElement);
+
+    registry.define(tagName, ModalElement);
   }
 }
 

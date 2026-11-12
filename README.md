@@ -13,36 +13,38 @@ A custom element to create a modal, using the native [&lt;dialog&gt;](https://de
 
 [API documentation](#api) &bull; [Demo][demo]
 
-## Usage
-
-### Installation
+## Installation
 
 ```sh
 $ npm install --save @georapbox/modal-element
 ```
 
-### Importing the component
+## Registration
 
-By default, the package exports the element class without registering it. This lets the application decide when the custom element is defined.
+By default, the package exports the element class without registering it.
+This lets the application decide when the custom element is defined.
 
-#### Manual definition
+### Manual registration
+
+Import the `ModalElement` class and call its static `define()` method:
 
 ```js
 import { ModalElement } from '@georapbox/modal-element';
 
-// Define using the default tag name
 ModalElement.define();
 ```
 
-#### Auto-defined (convenience)
+### Automatic registration
 
-If you don't need control over registration, you can import the pre-defined build which immediately registers `<modal-element>`.
+If you don't need control over registration, import the convenience entry point:
 
 ```js
 import '@georapbox/modal-element/define';
 ```
 
-### Using the component in your HTML
+## Usage
+
+Once registered, use the custom element in your HTML:
 
 ```html
 <modal-element>
@@ -52,28 +54,29 @@ import '@georapbox/modal-element/define';
 </modal-element>
 ```
 
-### Component styling
+## Styling
 
-By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS Parts](#css-parts) or by overriding the default [CSS Custom Properties](#css-custom-properties). A working example of styling the component can be found [here][example-custom-styling].
+By default, the component comes with minimal styling to remain as less opinionated as possible. However, you can style the various elements of the component using the available [CSS parts](#css-parts) or by overriding the default [CSS custom properties](#css-custom-properties). A working example of styling the component can be found [here][example-custom-styling].
 
 ## API
 
-### Properties
-| Name | Reflects | Type | Required | Default | Description |
-| ---- | -------- | ---- | -------- | ------- | ----------- |
-| `open` | ✓ | Boolean | - | `false` | Determines whether the modal is open or not.<br><br>**NOTE:** If you create a modal-element programmatically via `document.createElement('modal-element')`, you need to append it to the DOM before setting this property to `true`. Otherwise, you will get an error like this: `Uncaught DOMException: Failed to execute 'showModal' on 'HTMLDialogElement': The element is not in a Document.` This is because the native [`showModal`](https://developer.mozilla.org/docs/Web/API/HTMLDialogElement/showModal) method of the `HTMLDialogElement` requires the element to be in the DOM before it can be called. |
-| `closedBy`<br>*`closed-by`* | ✓ | `'any' \| 'closerequest' \| 'none'` | - | `'any'` | Controls which native user interactions can dismiss the modal. The value is forwarded to the native `<dialog>` element's closedby attribute. See [Native closing behavior](#native-closing-behavior) for details. |
-| `noHeader`<br>*`no-header`* | ✓ | Boolean | - | `false` | Determines whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
-| `noAnimations`<br>*`no-animations`*<sup>1</sup> | ✓ | Boolean | - | `false` | Determines whether the modal's opening and closing animations are disabled. |
-| `noCloseButton`<br>*`no-close-button`* | ✓ | Boolean | - | `false` | Determines whether the modal should have a default close button or not. If the modal has no close button, you probably need to provide an accessible way for users to dismiss the modal. |
-| `fullscreen` | ✓ | Boolean | - | `false` | Determines whether the modal should be displayed in fullscreen or not. Note, the `--modal-width` and `--modal-height` CSS custom properties will be overridden if this property is set to `true`. Notice that the backdrop is not visible in fullscreen mode. If you still want a full-width modal with a backdrop, you can use `--modal-width: 100%;` and `--modal-height: 100%;` instead. |
-| `preserveOverflow`<br>*`preserve-overflow`* | ✓ | Boolean | - | `false` | Determines whether the modal should preserve the document's overflow when the modal is open. If this property is set to `true`, the document's overflow will not be hidden when the modal is open. |
-| `placement` | ✓ | String | - | `'center'` | Determines the placement of the modal. Possible values are 'top-start', 'top-center', 'top-end', 'center-start', 'center', 'center-end', 'bottom-start', 'bottom-center', 'bottom-end'. Placement respects the direction of the document, eg if the document is in RTL mode, the placement will be mirrored accordingly. Note, that the placement is not applied when the modal is in fullscreen mode and it might not be visible in some cases when the modal is too large for the viewport, eg in small viewports. |
-| `closeLabel`<br>*`close-label`* | ✓ | String | - | `'Close'` | The accessible label for the default close button, used as its `aria-label` attribute. When providing custom text content through the `close` slot, make sure `closeLabel` matches the visible text to ensure accessibility. |
+### Properties and attributes
+
+| Property / Attribute | Type | Required | Default | Description |
+| -------------------- | ---- | -------- | ------- | ----------- |
+| `open` | Boolean | `false` | Determines whether the modal is open or not.<br><br>**NOTE:** If you create a modal-element programmatically via `document.createElement('modal-element')`, you need to append it to the DOM before setting this property to `true`. Otherwise, you will get an error like this: `Uncaught DOMException: Failed to execute 'showModal' on 'HTMLDialogElement': The element is not in a Document.` This is because the native [`showModal`](https://developer.mozilla.org/docs/Web/API/HTMLDialogElement/showModal) method of the `HTMLDialogElement` requires the element to be in the DOM before it can be called. |
+| `closedBy` / `closed-by` | `'any' \| 'closerequest' \| 'none'` | `'any'` | Controls which native user interactions can dismiss the modal. The value is forwarded to the native `<dialog>` element's closedby attribute. See [Native closing behavior](#native-closing-behavior) for details. |
+| `noHeader` / `no-header` | Boolean | `false` | Determines whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
+| `noAnimations` / `no-animations`<sup>1</sup> | Boolean | `false` | Determines whether the modal's opening and closing animations are disabled. |
+| `noCloseButton` / `no-close-button` | Boolean | `false` | Determines whether the modal should have a default close button or not. If the modal has no close button, you probably need to provide an accessible way for users to dismiss the modal. |
+| `fullscreen` | Boolean | `false` | Determines whether the modal should be displayed in fullscreen or not. Note, the `--modal-width` and `--modal-height` CSS custom properties will be overridden if this property is set to `true`. Notice that the backdrop is not visible in fullscreen mode. If you still want a full-width modal with a backdrop, you can use `--modal-width: 100%;` and `--modal-height: 100%;` instead. |
+| `preserveOverflow` / `preserve-overflow` | Boolean | `false` | Determines whether the modal should preserve the document's overflow when the modal is open. If this property is set to `true`, the document's overflow will not be hidden when the modal is open. |
+| `placement` | `'top-start' \| 'top-center' \| 'top-end' \| 'center-start' \| 'center' \| 'center-end' \| 'bottom-start' \| 'bottom-center' \| 'bottom-end'` | `'center'` | Determines the placement of the modal. Placement respects the direction of the document, eg if the document is in RTL mode, the placement will be mirrored accordingly. Note, that the placement is not applied when the modal is in fullscreen mode and it might not be visible in some cases when the modal is too large for the viewport, eg in small viewports. |
+| `closeLabel` / `close-label` | String | `'Close'` | The accessible label for the default close button, used as its `aria-label` attribute. When providing custom text content through the `close` slot, make sure `closeLabel` matches the visible text to ensure accessibility. |
 
 <sup>1</sup> The modal's entry/exit animations are implemented using modern CSS features, including [`@starting-style`](https://developer.mozilla.org/docs/Web/CSS/Reference/At-rules/@starting-style) and [`transition-behavior: allow-discrete`](https://developer.mozilla.org/docs/Web/CSS/transition-behavior). Browser support for these features varies, so some animations may not work as expected in certain browsers. When animations are not supported, the modal remains fully functional. Additionally, animations are disabled when the user has [reduced motion](https://developer.mozilla.org/docs/Web/CSS/@media/prefers-reduced-motion) enabled in their operating system.
 
-All of the above properties reflect their values as HTML attributes to keep the element's DOM representation in sync with its JavaScript state.
+All properties are reflected through their corresponding HTML attributes. When only one name is listed, the property and attribute share the same name.
 
 ### Slots
 
@@ -87,7 +90,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 > [!NOTE]
 > Providing a `title` slot is recommended for accessibility, even when using `no-header`. The title remains available as the dialog's accessible name, despite the header being hidden.
 
-### CSS Parts
+### CSS parts
 
 | Name | Description |
 | ---- | ----------- |
@@ -100,7 +103,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 | `body` | The modal's body element, where all main content is rendered. |
 | `footer` | The modal's footer element. |
 
-### CSS Custom Properties
+### CSS custom properties
 
 | Name | Description | Default |
 | ---- | ----------- | ------- |
@@ -155,7 +158,7 @@ All of the above properties reflect their values as HTML attributes to keep the 
 
 Instance methods are only available after the custom element has been defined. Use [`customElements.whenDefined()`](https://developer.mozilla.org/docs/Web/API/CustomElementRegistry/whenDefined) to ensure the element is registered before calling these methods.
 
-### Static Properties
+### Static properties
 
 Below are static properties exposed on the `ModalElement` class for consumer reference.
 
@@ -237,7 +240,7 @@ modal.requestClose(); // Can be prevented
 modal.hide(); // Always closes
 ```
 
-## Invoker Commands
+## Invoker commands
 
 Invoker Commands are supported to provide a more declarative way to handle user interactions. The modal provides the following commands:
 
@@ -310,6 +313,24 @@ Create a production build by running the following command.
 
 ```sh
 npm run build
+```
+
+### Git hooks
+
+This repository includes a pre-commit hook that runs linting and formatting checks before each commit.
+
+To enable the hook, run the following command from the repository root:
+
+```sh
+git config --local core.hooksPath .githooks
+```
+
+This configuration only needs to be applied once per clone and does not affect other repositories.
+
+To disable the hook, run:
+
+```sh
+git config --local --unset core.hooksPath
 ```
 
 ## License
