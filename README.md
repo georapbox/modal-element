@@ -62,8 +62,8 @@ By default, the component comes with minimal styling to remain as less opinionat
 
 ### Properties and attributes
 
-| Property / Attribute | Type | Required | Default | Description |
-| -------------------- | ---- | -------- | ------- | ----------- |
+| Property / Attribute | Type | Default | Description |
+| -------------------- | ---- | ------- | ----------- |
 | `open` | Boolean | `false` | Determines whether the modal is open or not.<br><br>**NOTE:** If you create a modal-element programmatically via `document.createElement('modal-element')`, you need to append it to the DOM before setting this property to `true`. Otherwise, you will get an error like this: `Uncaught DOMException: Failed to execute 'showModal' on 'HTMLDialogElement': The element is not in a Document.` This is because the native [`showModal`](https://developer.mozilla.org/docs/Web/API/HTMLDialogElement/showModal) method of the `HTMLDialogElement` requires the element to be in the DOM before it can be called. |
 | `closedBy` / `closed-by` | `'any' \| 'closerequest' \| 'none'` | `'any'` | Controls which native user interactions can dismiss the modal. The value is forwarded to the native `<dialog>` element's closedby attribute. See [Native closing behavior](#native-closing-behavior) for details. |
 | `noHeader` / `no-header` | Boolean | `false` | Determines whether the modal should have a header or not. Note, that if the modal has no header, the default close button will not be visible as well, therefore you probably need to provide an accessible way for users to dismiss the modal. |
