@@ -1,6 +1,6 @@
 {
   "name": "@georapbox/modal-element",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A custom element to create a modal, using the native dialog element under the hood.",
   "type": "module",
   "main": "dist/modal-element.js",
@@ -36,6 +36,7 @@
     "test:coverage": "npm run test -- --coverage",
     "lint": "eslint",
     "format": "prettier --ignore-unknown --write .",
+    "format:check": "prettier --ignore-unknown --check .",
     "types": "tsc --project tsconfig.json",
     "analyze": "custom-elements-manifest analyze",
     "clean": "rimraf dist",

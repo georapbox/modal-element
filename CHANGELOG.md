@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-11-12
+
+### Fixed
+
+- Corrected the default tag name in the generated Custom Elements Manifest.
+
+### Changed
+
+- Updated the build process to reuse the main module in the auto-defined entry point instead of creating a separate bundle.
+
+### Documentation
+
+- Simplified JSDoc annotations by removing redundant attribute, property, and method declarations already handled by the Custom Elements Manifest analyzer.
+
 ## [2.0.0] - 2026-11-02
 
 ### Breaking Changes
@@ -236,7 +250,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial release.
 
-[unreleased]: https://github.com/georapbox/modal-element/compare/v2.0.0...HEAD
+[unreleased]: https://github.com/georapbox/modal-element/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/georapbox/modal-element/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/georapbox/modal-element/compare/v1.11.2...v2.0.0
 [1.11.2]: https://github.com/georapbox/modal-element/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/georapbox/modal-element/compare/v1.11.0...v1.11.1

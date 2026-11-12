@@ -4,12 +4,8 @@ const url = window.location.href;
 const isLocalhost = url.includes('127.0.0.1') || url.includes('localhost');
 const componentUrl = isLocalhost ? '../../dist/modal-element.js' : '../lib/modal-element.js';
 
-try {
-  const { ModalElement } = await import(componentUrl);
-  ModalElement.define();
-} catch (err) {
-  console.error(err);
-}
+const { ModalElement } = await import(componentUrl);
+ModalElement.define();
 
 document.querySelectorAll('[data-open^="modal"]').forEach(btn => {
   btn.addEventListener('click', () => {
