@@ -82,7 +82,7 @@ All properties are reflected through their corresponding HTML attributes. When o
 
 | Name | Description |
 | ---- | ----------- |
-| (default/unnamed) | The modal's main content. |
+| (default) | The modal's main content. |
 | `title` | The modal's title, used as its accessible name via `aria-labelledby`. Displayed in the header alongside the default close button. |
 | `footer` | The modal's footer content. Usually used for buttons or other actions. |
 | `close` | The content of the close button in the modal's header. When providing visible text, ensure the closeLabel property matches the text. |
