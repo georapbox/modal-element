@@ -37,6 +37,6 @@ export default [
     }
   },
   {
-    ignores: ['dist', 'docs/lib', 'coverage']
+    ignores: ['dist', 'docs/lib', 'coverage', '.pages']
   }
 ];

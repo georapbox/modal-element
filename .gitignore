@@ -129,5 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# GitHub Pages
+.pages/
+
 # Misc
 .DS_Store

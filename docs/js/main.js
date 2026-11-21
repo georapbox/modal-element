@@ -1,8 +1,8 @@
 import '../lib/browser-window.js';
 
-const url = window.location.href;
-const isLocalhost = url.includes('127.0.0.1') || url.includes('localhost');
-const componentUrl = isLocalhost ? '../../dist/modal-element.js' : '../lib/modal-element.js';
+const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+const basePath = isLocal ? '../..' : '..';
+const componentUrl = `${basePath}/dist/modal-element.js`;
 
 const { ModalElement } = await import(componentUrl);
 ModalElement.define();
