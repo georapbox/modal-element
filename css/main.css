@@ -1,0 +1,304 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --alert-danger-bg-color: #f8d7da;
+  --alert-danger-color: #721c24;
+
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --alert-danger-bg-color: #721c24;
+    --alert-danger-color: #f8d7da;
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.noscript-banner {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  background-color: #f8d7da;
+  text-align: center;
+  color: #000000;
+}
+
+.component-description p {
+  margin: 0 0 0.5rem 0;
+}
+
+.component-description p:last-child {
+  margin-bottom: 0;
+}
+
+.card {
+  background-color: var(--background-card);
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+}
+
+.card > button {
+  margin: 0;
+}
+
+.card > details {
+  margin-bottom: 0;
+}
+
+.card details summary {
+  font-weight: 500;
+}
+
+.form-control {
+  margin-bottom: 1rem;
+}
+
+.back-top {
+  text-align: end;
+  font-size: 0.875rem;
+}
+
+.table-of-contents {
+  columns: 15.625rem 3;
+}
+
+.table-of-contents>li {
+  line-height: 1.7;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.alert-danger {
+  background-color: var(--alert-danger-bg-color);
+  color: var(--alert-danger-color);
+}
+
+.alert-danger a {
+  color: var(--alert-danger-color);
+}
+
+browser-window {
+  --bw-background: var(--background-alt);
+  display: block;
+  text-align: center;
+}
+
+browser-window:not(:defined) {
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  background-color: var(--background);
+}
+
+browser-window::part(base) {
+  border-color: transparent;
+  border-radius: var(--border-radius);
+}
+
+browser-window::part(title) {
+  border-radius: var(--border-radius);
+}
+
+browser-window > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  padding: 1rem 2rem;
+}
+
+modal-element:not(:defined) {
+  display: none !important;
+}
+
+modal-element [slot="title"] {
+  margin: 0;
+  font-weight: normal;
+  font-size: 1.25rem;
+  color: inherit;
+}
+
+modal-element p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+modal-element p:last-of-type {
+  margin-bottom: 0;
+}
+
+modal-element button {
+  border: 1px solid var(--border);
+}
+
+#modal-placement {
+  --modal-width: 22rem;
+}
+
+form[name="modal-placement-form"] {
+  text-align: start;
+}
+
+form[name="modal-placement-form"] > fieldset > p {
+  margin-top: 0;
+}
+
+
+form[name="modal-placement-form"] > fieldset > div {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 32rem;
+}
+
+@media screen and (max-width: 576px) {
+  #modal-placement {
+    --modal-width: 15rem;
+  }
+
+  form[name="modal-placement-form"] > fieldset > div {
+    flex-direction: column;
+  }
+}
+
+form p:has(input[type="checkbox"] + label) {
+  display: flex;
+  gap: 0.25rem;
+}
+
+form input[type="checkbox"] {
+  min-width: 16px;
+}
+
+/* Custom styling on modal-element */
+modal-element.custom-styling {
+  --modal-width: 35rem;
+  --modal-border-width: 1px;
+  --modal-border-color: var(--border);
+  --modal-border-radius: 0.375rem;
+  --modal-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+  --modal-header-background-color: var(--background-alt);
+  --modal-body-background-color: var(--background-body);
+  --modal-footer-background-color: var(--background-alt);
+  --modal-backdrop-background: rgba(0, 0, 0, 0.7);
+  --modal-backdrop-filter: blur(5px);
+}
+
+modal-element.custom-styling[fullscreen] {
+  --modal-border-style: none;
+  --modal-border-radius: 0;
+  --modal-backdrop-background: transparent;
+  --modal-backdrop-filter: none;
+}
+
+modal-element.custom-styling::part(header) {
+  border-bottom: 1px solid var(--border);
+}
+
+modal-element.custom-styling::part(footer) {
+  border-top: 1px solid var(--border);
+}
+
+modal-element.custom-styling::part(close) {
+  background-color: var(--button-base);
+  border-radius: 0.25rem;
+  border: 1px solid var(--border);
+  color: var(--text-bright);
+  transition: background-color 0.2s ease;
+}
+
+modal-element.custom-styling::part(close):hover {
+  background-color: var(--button-hover);
+}
+
+modal-element.custom-styling [slot="footer"] button {
+  margin: 0;
+}
+
+/* Customize animations */
+@media (prefers-reduced-motion: no-preference) {
+  modal-element.custom-transition:not([no-animations])::part(base) {
+    transition: transform 0.35s, opacity 0.35s, display 0.35s allow-discrete, overlay 0.35s allow-discrete;
+  }
+
+  /* IS-OPEN STATE */
+  modal-element.custom-transition:not([no-animations])[open]::part(base) {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* EXIT STATE */
+  modal-element.custom-transition:not([no-animations])::part(base) {
+    transform: translateY(-2rem);
+    opacity: 0;
+  }
+
+  /* BEFORE-OPEN STATE */
+  @starting-style {
+    modal-element.custom-transition[open]:not([no-animations])::part(base) {
+      transform: translateY(-2rem);
+      opacity: 0;
+    }
+  }
+}
+
+/* Custom backdrop */
+modal-element.custom-backdrop {
+  --modal-backdrop-background: linear-gradient(
+    135deg,
+    rgb(79 70 229 / 95%) 0%,
+    rgb(147 51 234 / 90%) 50%,
+    rgb(236 72 153 / 85%) 100%
+  );
+}
+
+modal-element.custom-backdrop::part(base) {
+  filter: opacity(0.9);
+}
+
+/* Truncate title */
+modal-element.truncate-title::part(title) {
+  min-width: 0; /* https://dfmcphee.com/flex-items-and-min-width-0 */
+}
+
+@supports not selector(:has(a, b)) {
+  modal-element.truncate-title [slot="title"] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  modal-element.truncate-title #truncate-action {
+    display: none !important;
+  }
+}
+
+modal-element.truncate-title:has(input[type="checkbox"]:checked) [slot="title"] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+modal-element.truncate-title #truncate-action {
+  margin-top: 1.5rem;
+}
+
+/* Utils */
+.d-block {
+  display: block;
+}
