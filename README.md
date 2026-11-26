@@ -327,6 +327,12 @@ git config --local core.hooksPath .githooks
 
 This configuration only needs to be applied once per clone and does not affect other repositories.
 
+To verify that the hook is enabled, run:
+
+```sh
+git config --local --get core.hooksPath
+```
+
 To disable the hook, run:
 
 ```sh
