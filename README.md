@@ -16,7 +16,7 @@ A custom element to create a modal, using the native [&lt;dialog&gt;](https://de
 ## Installation
 
 ```sh
-$ npm install --save @georapbox/modal-element
+npm install --save @georapbox/modal-element
 ```
 
 ## Registration
@@ -300,7 +300,13 @@ npm run lint
 
 ### Testing
 
-Run the tests by running any of the following commands.
+The tests use Playwright to run in real browsers. Install the required browser binaries if they are not already installed:
+
+```sh
+npx playwright install
+```
+
+Run the tests using any of the following commands:
 
 ```sh
 npm test
