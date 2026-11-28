@@ -4,8 +4,8 @@
 [demo]: https://georapbox.github.io/modal-element/
 [example-custom-styling]: https://georapbox.github.io/modal-element#example-custom-styling
 [example-prevent-close]: https://georapbox.github.io/modal-element#example-prevent-close
-[license]: https://github.com/georapbox/modal-element/blob/main/LICENSE
-[changelog]: https://github.com/georapbox/modal-element/blob/main/CHANGELOG.md
+[license]: ./LICENSE
+[changelog]: ./CHANGELOG.md
 
 # &lt;modal-element&gt;
 

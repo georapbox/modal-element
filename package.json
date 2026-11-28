@@ -40,7 +40,8 @@
     "types": "tsc --project tsconfig.json",
     "analyze": "custom-elements-manifest analyze",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm-run-all clean lint test build types analyze"
+    "prepack": "npm-run-all build types analyze",
+    "prepublishOnly": "npm-run-all lint format:check test"
   },
   "keywords": [
     "custom element",
