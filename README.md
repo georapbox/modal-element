@@ -16,7 +16,7 @@ A custom element to create a modal, using the native [&lt;dialog&gt;](https://de
 ## Installation
 
 ```sh
-npm install --save @georapbox/modal-element
+npm install @georapbox/modal-element
 ```
 
 ## Registration
